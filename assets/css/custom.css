@@ -1,0 +1,15 @@
+:root {
+  --my-color: #3a86ff;
+}
+
+.my-btn {
+  background: var(--my-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --my-color: #8338ec;
+  }
+}
