@@ -1,0 +1,8 @@
+title: AarusWebsite!
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Allow custom assets
+include:
+  - assets
