@@ -1,16 +1,16 @@
-# AarusWebsite
+# 🚀 AarusWebsite
 
-## Description
+## 📝 Description
 A personal website showcasing my portfolio, skills, and experiences.
 
-## Table of Contents
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
+## 📑 Table of Contents
+- [Installation](#installation) 🔧
+- [Usage](#usage) 🖥️
+- [Features](#features) ✨
+- [Contributing](#contributing) 🤝
+- [License](#license) 📄
 
-## Installation
+## 🔧 Installation
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/AarusWebsite.git
@@ -22,7 +22,7 @@ cd AarusWebsite
 npm install
 ```
 
-## Usage
+## 🖥️ Usage
 ```bash
 # Run development server
 npm run dev
@@ -34,24 +34,22 @@ npm run build
 npm start
 ```
 
-## Features
-- Responsive design
-- Portfolio showcase
-- Contact form
-- Blog section
-- Dark/Light mode toggle
+## ✨ Features
+- 📱 Responsive design
+- 🎨 Portfolio showcase
+- ✉️ Contact form
+- 📝 Blog section
+- 🌓 Dark/Light mode toggle
 
-## Contributing
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 🤝 Contributing
+1. 🍴 Fork the project
+2. 🌿 Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. 💾 Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. 🚀 Push to the branch (`git push origin feature/amazing-feature`)
+5. 📬 Open a Pull Request
 
-## License
+## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Contact
-Your Name - [@yourusername](https://twitter.com/yourusername) - email@example.com
-
-Project Link: [https://github.com/yourusername/AarusWebsite](https://github.com/yourusername/AarusWebsite)
+## 📞 Contact
+📞 [Contact Me!](mail.to:tribejustice35@gmail.com)
