@@ -50,6 +50,3 @@ npm start
 
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
-
-## 📞 Contact
-📞 [Contact Me!](mail.to:tribejustice35@gmail.com)
