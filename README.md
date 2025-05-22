@@ -1,17 +1,57 @@
-# Aaru's Website!
+# AarusWebsite
 
-[![Pages](https://img.shields.io/badge/-Live_on_GitHub_Pages-blue?logo=github)](https://Aarav2709.github.io)
-[![Theme](https://img.shields.io/badge/Theme-Minima-9cf)](https://github.com/jekyll/minima)
+## Description
+A personal website showcasing my portfolio, skills, and experiences.
 
-Hybrid Jekyll site using Minima theme + custom assets.
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Structure
-```plaintext
-_config.yml
-index.md
-about.md
-assets/
-  css/custom.css
-  js/custom.js
-_includes/
-  head.html
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/AarusWebsite.git
+
+# Navigate to the project directory
+cd AarusWebsite
+
+# Install dependencies
+npm install
+```
+
+## Usage
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## Features
+- Responsive design
+- Portfolio showcase
+- Contact form
+- Blog section
+- Dark/Light mode toggle
+
+## Contributing
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+Your Name - [@yourusername](https://twitter.com/yourusername) - email@example.com
+
+Project Link: [https://github.com/yourusername/AarusWebsite](https://github.com/yourusername/AarusWebsite)
