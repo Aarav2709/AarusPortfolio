@@ -1,0 +1,720 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Developer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #000;
+            background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            opacity: 0;
+            animation: fadeIn 1.2s ease-out forwards;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0,0,0,0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 5px rgba(0,0,0,0.1);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(0,0,0,0.2);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 40px;
+            animation: slideInFromBottom 1s ease-out 0.3s both;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #000, transparent);
+            animation: expandLine 2s ease-out 1.5s forwards;
+            transform: translateX(-50%);
+        }
+
+        @keyframes expandLine {
+            to {
+                width: 100%;
+            }
+        }
+
+        .name {
+            font-size: 2.5rem;
+            font-weight: normal;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        .name::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            animation: shimmer 3s ease-in-out infinite 2s;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: normal;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .contact {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .contact a {
+            color: #000;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.2s;
+        }
+
+        .contact a:hover {
+            border-bottom: 1px solid #000;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInFromBottom 0.8s ease-out forwards;
+            transition: all 0.3s ease;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.5s; }
+        .section:nth-child(3) { animation-delay: 0.7s; }
+        .section:nth-child(4) { animation-delay: 0.9s; }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: normal;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .about {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #333;
+            text-align: justify;
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        .project {
+            border-left: 2px solid #000;
+            padding-left: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .project::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05), rgba(0,0,0,0.02));
+            transition: width 0.4s ease;
+            z-index: -1;
+        }
+
+        .project::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background: linear-gradient(180deg, #000, #333, #000);
+            transition: height 0.4s ease;
+        }
+
+        .project:hover {
+            border-left: 4px solid #000;
+            transform: translateX(8px) translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .project:hover::before {
+            width: 100%;
+        }
+
+        .project:hover::after {
+            height: 100%;
+        }
+
+        .project-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .project-name a {
+            color: #000;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .project-name a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #000, #333, #000);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-name a:hover {
+            transform: translateY(-1px);
+            letter-spacing: 1px;
+        }
+
+        .project-name a:hover::after {
+            width: 100%;
+        }
+
+        .project-tech {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .project-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .project-links {
+            font-size: 0.9rem;
+        }
+
+        .project-links a {
+            color: #000;
+            text-decoration: none;
+            margin-right: 15px;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.2s;
+        }
+
+        .project-links a:hover {
+            border-bottom: 1px solid #000;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .skill-category {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            border: 1px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
+            transition: left 0.8s ease;
+            border-radius: 8px;
+        }
+
+        .skill-category::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            padding: 1px;
+            background: linear-gradient(45deg, transparent, rgba(0,0,0,0.1), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: subtract;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border: 1px solid #ddd;
+            background: rgba(255,255,255,0.8);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .skill-category:hover::before {
+            left: 100%;
+        }
+
+        .skill-category:hover::after {
+            opacity: 1;
+        }
+
+        .skill-category h3 {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .skill-list {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #000;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 20px;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .skills {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="name">Aarav Gupta</h1>
+        <p class="title">14 Year Old Developer from India!</p>
+        <div class="contact">
+            <a href="mailto:tribejustice35@gmail.com">Mail</a> | 
+            <a href="https://github.com/Aarav2709">GitHub</a> | 
+            <a href="https://linkedin.com/in/aarav2709">LinkedIn</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2 class="section-title">About</h2>
+            <p class="about">
+                Hi, I'm Aarav Gupta, a 14-year-old developer from India with a passion for coding and technology. I have a keen interest in game development, web applications, and automation scripts. In my free time, I enjoy working on personal projects, contributing to open-source, and exploring new programming languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out! I love connecting with fellow developers and sharing knowledge, so don't hesitate to drop me a message.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project">
+                    <div class="project-name">
+                        <a href="https://github.com/Aarav2709/OddEven-SP">OddEven Singleplayer!</a>
+                    </div>
+                    <div class="project-tech">Python</div>
+                    <div class="project-description">
+                        OddEvenSP is a fun, interactive terminal-based game where you challenge a computer opponent in a thrilling game of odd-even cricket! Featuring dark/light mode, rank progression, achievements, and smart AI.
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-name">
+                        <a href="https://github.com/Aarav2709/PyType">PyType!</a>
+                    </div>
+                    <div class="project-tech">Python</div>
+                    <div class="project-description">
+                        A project that mimics all Typing Websites, but now in Python. A simple terminal-based typing speed test tool made in Python.
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-name">
+                        <a href="https://github.com/Aarav2709/FR2-Reborn">Fun Run 2 - Reborn!</a>
+                    </div>
+                    <div class="project-tech">Lua, Solar2D API</div>
+                    <div class="project-description">
+                        This is a fully reimagined version of Fun Run 2, built from the ground up in the original engine, Solar2D (formerly Corona SDK). The goal is to bring back the chaotic fun of the original with modern enhancements, while staying faithful to its roots. Whether you're here to relive the nostalgia or contribute to a fan-driven revival — welcome aboard!
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-name">
+                        <a href="https://github.com/Aarav2709/AarusWebsite">AarusWebsite!</a>
+                    </div>
+                    <div class="project-tech">HTML, CSS, JavaScript</div>
+                    <div class="project-description">
+                        A one stop destination for all my projects. A personal website showcasing my portfolio, skills, and experiences.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Miscellaneous</h2>
+            <div class="miscellaneous">
+                <div class="skill-category">
+                    <h3>Coding Applications</h3>
+                    <div class="coding-apps">
+                        Visual Studio Code for HTML, JavaScript, CSS!<br>
+                        PyCharm Community Edition for Python!<br>
+                        Solar2D for LuaScript!<br>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Artificial Intelligence</h3>
+                    <div class="ai-apps">
+                        Gemini 2.5 Pro for Brainstorming!<br>
+                        Claude Opus 4 for Code!<br>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Laptop #1 Specifications</h3>
+                    <div class="laptop1-specs">
+                        CPU: Intel i3 11th Generation @4.1Ghz<br>
+                        RAM: 2x4 RAM w/ 2666mHz<br>
+                        GPU: Intel UHD Graphic Card<br>
+                        OS: Fedora 42 Workstation
+                    </div>
+                </div>    
+                <div class="skill-category">
+                    <h3>Laptop #2 Specifications</h3>
+                    <div class="laptop2-specs">
+                        CPU: Intel i5 12th Generation @4.4Ghz<br>
+                        RAM: 2x8 RAM w/ 3200mHz<br>
+                        GPU: RTX 2050 4GB Laptop<br>
+                        OS: Windows 11 Pro
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Desktop Specifications</h3>
+                    <div class="laptop2-specs">
+                        CPU: AMD Ryzen 5600 @4.5Ghz<br>
+                        RAM: 2x16 RAM w/ 3600mHz<br>
+                        GPU: RTX 3060 6GB<br>
+                        OS: Windows 11 Home
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p id="copyright">© 2025 Aarav Gupta. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Enhanced smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Advanced scroll animation observer with stagger effect
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for scroll animations
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Enhanced typing effect with cursor
+            const nameElement = document.querySelector('.name');
+            const originalText = nameElement.textContent;
+            nameElement.innerHTML = '<span class="typing-text"></span><span class="cursor">|</span>';
+            
+            const typingText = document.querySelector('.typing-text');
+            const cursor = document.querySelector('.cursor');
+            
+            // Add cursor blinking animation
+            const style = document.createElement('style');
+            style.textContent = `
+                .cursor {
+                    animation: blink 1s infinite;
+                    font-weight: normal;
+                }
+                @keyframes blink {
+                    0%, 50% { opacity: 1; }
+                    51%, 100% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    typingText.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 120 + Math.random() * 100);
+                } else {
+                    setTimeout(() => {
+                        cursor.style.display = 'none';
+                    }, 2000);
+                }
+            };
+            
+            setTimeout(typeWriter, 800);
+
+            // Enhanced click effects for projects with ripple animation
+            document.querySelectorAll('.project').forEach(project => {
+                project.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'A') {
+                        const link = this.querySelector('.project-name a');
+                        if (link) {
+                            // Create ripple effect
+                            const ripple = document.createElement('span');
+                            const rect = this.getBoundingClientRect();
+                            const size = Math.max(rect.width, rect.height);
+                            const x = e.clientX - rect.left - size / 2;
+                            const y = e.clientY - rect.top - size / 2;
+                            
+                            ripple.style.cssText = `
+                                position: absolute;
+                                width: ${size}px;
+                                height: ${size}px;
+                                left: ${x}px;
+                                top: ${y}px;
+                                background: rgba(0,0,0,0.1);
+                                border-radius: 50%;
+                                transform: scale(0);
+                                animation: ripple 0.6s ease-out;
+                                pointer-events: none;
+                                z-index: 1;
+                            `;
+                            
+                            this.appendChild(ripple);
+                            
+                            setTimeout(() => {
+                                ripple.remove();
+                                window.open(link.href, '_blank');
+                            }, 300);
+                        }
+                    }
+                });
+
+                // Enhanced pulse effect on mousedown
+                project.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateX(8px) translateY(-2px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(8px) translateY(-2px) scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Add advanced floating animation to skills with different phases
+            document.querySelectorAll('.skill-category').forEach((skill, index) => {
+                const delay = index * 0.8;
+                const duration = 4 + (index * 0.5);
+                skill.style.animation = `float ${duration}s ease-in-out infinite ${delay}s`;
+                
+                // Add random subtle rotation on hover
+                skill.addEventListener('mouseenter', function() {
+                    const rotation = (Math.random() - 0.5) * 4; // -2deg to +2deg
+                    this.style.transform += ` rotate(${rotation}deg)`;
+                });
+                
+                skill.addEventListener('mouseleave', function() {
+                    this.style.transform = this.style.transform.replace(/rotate\([^)]*\)/, '');
+                });
+            });
+
+            // Add ripple effect animation
+            const rippleStyle = document.createElement('style');
+            rippleStyle.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(2);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(rippleStyle);
+
+            // Dynamic copyright year
+            document.getElementById('copyright').textContent = 
+                `© ${new Date().getFullYear()} Your Name. All rights reserved.`;
+
+            // Enhanced parallax effect with multiple layers
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const header = document.querySelector('.header');
+                const sections = document.querySelectorAll('.section');
+                
+                header.style.transform = `translateY(${scrolled * 0.1}px)`;
+                
+                sections.forEach((section, index) => {
+                    const speed = 0.05 + (index * 0.01);
+                    section.style.transform += ` translateY(${scrolled * speed}px)`;
+                });
+            });
+
+            // Enhanced smooth reveal for contact links with bounce effect
+            document.querySelectorAll('.contact a').forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateY(30px) scale(0.8)';
+                setTimeout(() => {
+                    link.style.transition = 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateY(0) scale(1)';
+                }, 1200 + (index * 200));
+            });
+
+            // Add mouse trail effect
+            let mouseTrail = [];
+            document.addEventListener('mousemove', function(e) {
+                mouseTrail.push({x: e.clientX, y: e.clientY, time: Date.now()});
+                
+                if (mouseTrail.length > 10) {
+                    mouseTrail.shift();
+                }
+                
+                // Clean up old trail points
+                mouseTrail = mouseTrail.filter(point => Date.now() - point.time < 1000);
+            });
+
+            // Smooth scroll behavior for better navigation
+            document.documentElement.style.scrollBehavior = 'smooth';
+        });
+    </script>
+</body>
+</html>
