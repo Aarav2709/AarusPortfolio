@@ -1,4 +1,3 @@
-// Custom cursor
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 
