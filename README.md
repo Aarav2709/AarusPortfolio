@@ -1,4 +1,4 @@
-# 🚀 AarusWebsite
+# 🚀 AarusPortfolio
 
 ## 📝 Description
 A personal website showcasing my portfolio, skills, and experiences.
