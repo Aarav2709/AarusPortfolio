@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aarav gupta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>AarusPortfolio!</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
     <style>
         * {
             margin: 0;
@@ -13,12 +14,23 @@
         }
 
         :root {
-            --primary-text: #1a1a1a;
-            --secondary-text: #666;
-            --tertiary-text: #999;
-            --border-color: #e5e5e5;
-            --hover-bg: #f8f8f8;
-            --accent-color: #000;
+            --primary-text: #000000;
+            --secondary-text: #555555;
+            --tertiary-text: #888888;
+            --border-color: #e0e0e0;
+            --hover-bg: #f5f5f5;
+            --accent-color: #000000;
+            --bg-color: #ffffff;
+        }
+
+        body.dark-mode {
+            --primary-text: #ffffff;
+            --secondary-text: #aaaaaa;
+            --tertiary-text: #777777;
+            --border-color: #333333;
+            --hover-bg: #222222;
+            --accent-color: #ffffff;
+            --bg-color: #121212;
         }
 
         /* Custom cursor */
@@ -54,12 +66,22 @@
             font-weight: 300;
             line-height: 1.7;
             color: var(--primary-text);
-            background: #fefefe;
+            background: var(--bg-color);
             max-width: 800px;
             margin: 0 auto;
             padding: 80px 40px;
             font-size: 15px;
             letter-spacing: -0.01em;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        body.dark-mode {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
 
         /* Fade in animation */
@@ -102,7 +124,7 @@
         .contact {
             font-size: 0.95rem;
             color: var(--secondary-text);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-weight: 300;
         }
 
@@ -127,6 +149,35 @@
 
         .contact a:hover::after {
             width: 100%;
+        }
+
+        /* Dark mode toggle */
+        .dark-mode-toggle {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            opacity: 1;
+        }
+
+        /* Reading progress */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--accent-color);
+            width: 0%;
+            z-index: 9998;
+            transition: width 0.2s ease-out;
         }
 
         /* Sections */
@@ -178,6 +229,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             cursor: pointer;
+            transform-origin: left center;
         }
 
         .project:last-child {
@@ -200,7 +252,7 @@
         }
 
         .project:hover {
-            transform: translateX(20px);
+            transform: translateX(20px) scale(1.02);
             padding-left: 20px;
         }
 
@@ -217,7 +269,7 @@
         }
 
         .project-tech {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 0.8rem;
             color: var(--tertiary-text);
             margin-bottom: 12px;
@@ -276,7 +328,7 @@
         }
 
         .misc-content {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 0.85rem;
             line-height: 1.6;
             color: var(--secondary-text);
@@ -295,7 +347,7 @@
             text-align: center;
             color: var(--tertiary-text);
             font-size: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
         }
 
         /* Floating elements animation */
@@ -310,6 +362,20 @@
 
         .floating:nth-child(2) { animation-delay: -2s; }
         .floating:nth-child(3) { animation-delay: -4s; }
+
+        /* Link preview */
+        .link-preview {
+            position: fixed;
+            background: var(--primary-text);
+            color: var(--bg-color);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            pointer-events: none;
+            z-index: 10001;
+            white-space: nowrap;
+            font-family: 'IBM Plex Mono', monospace;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -332,6 +398,11 @@
                 margin-bottom: 8px;
                 display: inline-block;
             }
+
+            .dark-mode-toggle {
+                top: 30px;
+                right: 30px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -340,8 +411,13 @@
             }
             
             .project:hover {
-                transform: translateX(10px);
+                transform: translateX(10px) scale(1.01);
                 padding-left: 10px;
+            }
+
+            .dark-mode-toggle {
+                top: 20px;
+                right: 20px;
             }
         }
 
@@ -353,12 +429,7 @@
         /* Selection styling */
         ::selection {
             background: var(--primary-text);
-            color: white;
-        }
-
-        /* Link hover effects */
-        a:hover {
-            opacity: 0.7;
+            color: var(--bg-color);
         }
 
         /* Typing indicator animation */
@@ -380,10 +451,15 @@
 <body>
     <div class="cursor"></div>
     <div class="cursor-dot"></div>
+    <div class="reading-progress"></div>
+
+    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="toggle-icon">🌓</span>
+    </button>
 
     <header class="header fade-in">
         <h1 class="name">aarav gupta<span class="typing-indicator"></span></h1>
-        <p class="title">14 year old developer from india.</p>
+        <p class="title">14-year-old developer from India.</p>
         <div class="contact">
             <a href="mailto:tribejustice35@gmail.com">mail</a>
             <a href="https://github.com/Aarav2709">github</a>
@@ -395,7 +471,7 @@
         <section class="section fade-in">
             <h2 class="section-title">about</h2>
             <p class="about">
-                hi, i'm aarav gupta, a 14-year-old developer from india with a passion for coding and technology. i have a keen interest in game development, web applications, and automation scripts. in my free time, i enjoy working on personal projects, contributing to open-source, and exploring new programming languages. i'm always looking for new challenges and opportunities to collaborate with other developers. if you're interested in working together or just want to chat about tech, feel free to reach out. i love connecting with fellow developers and sharing knowledge, so don't hesitate to drop me a message.
+                Hi, i'm Aarav Gupta, a 14-year-old Developer from India with a Passion for Coding and Technology. I have a keen interest in Game Development, Web Applications, and Automation Scripts. In my free time, I enjoy working on Personal Projects, Contributing to open-source, and exploring new Programming Languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out. I love connecting with fellow developers and sharing knowledge, so don't hesitate to drop me a message.
             </p>
         </section>
 
@@ -404,41 +480,41 @@
             <div class="projects-grid">
                 <div class="project">
                     <div class="project-name">
-                        <a href="https://github.com/Aarav2709/OddEven-SP">oddeven singleplayer</a>
+                        <a href="https://github.com/Aarav2709/OddEven-SP">OddEven-SP</a>
                     </div>
                     <div class="project-tech">python</div>
                     <div class="project-description">
-                        oddevens is a fun, interactive terminal-based game where you challenge a computer opponent in a thrilling game of odd-even cricket. featuring dark/light mode, rank progression, achievements, and smart ai.
+                        OddEven Singleplayer is a fun, interactive terminal-based game where you challenge a computer opponent in a thrilling game of odd-even cricket. Featuring Dark/Light mode, Rank Progression, Achievements, and Smart AI.
                     </div>
                 </div>
 
                 <div class="project">
                     <div class="project-name">
-                        <a href="https://github.com/Aarav2709/PyType">pytype</a>
+                        <a href="https://github.com/Aarav2709/PyType">PyType</a>
                     </div>
                     <div class="project-tech">python</div>
                     <div class="project-description">
-                        a project that mimics all typing websites, but now in python. a simple terminal-based typing speed test tool made in python.
+                        A Project that mimics all Typing Websites, but now in Python. A Simple Terminal-based Typing Speed Test tool made in Python.
                     </div>
                 </div>
 
                 <div class="project">
                     <div class="project-name">
-                        <a href="https://github.com/Aarav2709/FR2-Reborn">fun run 2 - reborn</a>
+                        <a href="https://github.com/Aarav2709/FR2-Reborn">Fun Run 2 - Reborn</a>
                     </div>
                     <div class="project-tech">lua, solar2d api</div>
                     <div class="project-description">
-                        this is a fully reimagined version of fun run 2, built from the ground up in the original engine, solar2d (formerly corona sdk). the goal is to bring back the chaotic fun of the original with modern enhancements, while staying faithful to its roots.
+                        This is a fully Reimagined Version of Fun Run 2, built from the ground up in the original engine, Solar2D (formerly Corona SDK). The goal is to bring back the chaotic fun of the Original with Modern Enhancements, while staying faithful to its roots.
                     </div>
                 </div>
 
                 <div class="project">
                     <div class="project-name">
-                        <a href="https://github.com/Aarav2709/AarusWebsite">aarus website</a>
+                        <a href="https://github.com/Aarav2709/AarusWebsite">AarusPortfolio!</a>
                     </div>
                     <div class="project-tech">html, css, javascript</div>
                     <div class="project-description">
-                        a one stop destination for all my projects. a personal website showcasing my portfolio, skills, and experiences.
+                        A one stop destination for all my projects. a Personal Website showcasing my Portfolio, Skills, and Experiences.
                     </div>
                 </div>
             </div>
@@ -448,26 +524,26 @@
             <h2 class="section-title">tools & setup</h2>
             <div class="misc-grid">
                 <div class="misc-item floating">
-                    <h3>development environment</h3>
+                    <h3>Development Environment</h3>
                     <div class="misc-content">
-                        <span class="highlight">vscode</span> for web development<br>
-                        <span class="highlight">pycharm</span> community edition<br>
-                        <span class="highlight">solar2d</span> for lua scripting<br>
-                        <span class="highlight">git</span> for version control
+                        <span class="highlight">vscode</span> for web development.<br>
+                        <span class="highlight">pycharm</span> community edition.<br>
+                        <span class="highlight">solar2d</span> for lua scripting.<br>
+                        <span class="highlight">git</span> for version control.
                     </div>
                 </div>
 
                 <div class="misc-item floating">
-                    <h3>ai assistance</h3>
+                    <h3>AI Assistance</h3>
                     <div class="misc-content">
-                        <span class="highlight">gemini 2.5 pro</span> for brainstorming<br>
-                        <span class="highlight">claude sonnet 4</span> for code review<br>
-                        <span class="highlight">github copilot</span> for suggestions
+                        <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br>
+                        <span class="highlight">claude sonnet 4</span> for code review.<br>
+                        <span class="highlight">github copilot</span> for suggestions.
                     </div>
                 </div>
 
                 <div class="misc-item floating">
-                    <h3>primary workstation</h3>
+                    <h3>Primary Workstation</h3>
                     <div class="misc-content">
                         <span class="highlight">amd ryzen 5600</span> @4.5ghz<br>
                         <span class="highlight">32gb ddr4</span> @3600mhz<br>
@@ -477,7 +553,7 @@
                 </div>
 
                 <div class="misc-item floating">
-                    <h3>laptop #1</h3>
+                    <h3>Laptop #1</h3>
                     <div class="misc-content">
                         <span class="highlight">intel i3 11th gen</span> @4.1ghz<br>
                         <span class="highlight">8gb ddr4</span> @2666mhz<br>
@@ -487,7 +563,7 @@
                 </div>
 
                 <div class="misc-item floating">
-                    <h3>laptop #2</h3>
+                    <h3>Laptop #2</h3>
                     <div class="misc-content">
                         <span class="highlight">intel i5 12th gen</span> @4.4ghz<br>
                         <span class="highlight">16gb ddr4</span> @3200mhz<br>
@@ -497,12 +573,12 @@
                 </div>
 
                 <div class="misc-item floating">
-                    <h3>current focus</h3>
+                    <h3>Current Focus</h3>
                     <div class="misc-content">
-                        learning <span class="highlight">react</span> & <span class="highlight">node.js</span><br>
-                        exploring <span class="highlight">game dev</span> with unity<br>
-                        contributing to <span class="highlight">open source</span><br>
-                        building <span class="highlight">portfolio</span> projects
+                        completing <span class="highlight">fr2-reborn</span> & <span class="highlight">python</span>.<br>
+                        exploring <span class="highlight">game development</span> with roblox studio.<br>
+                        contributing to <span class="highlight">open source projects</span>.<br>
+                        building <span class="highlight">portfolio</span> projects.
                     </div>
                 </div>
             </div>
@@ -510,7 +586,7 @@
     </main>
 
     <footer class="footer fade-in">
-        <p>© 2025 aarav gupta. crafted with code & curiosity.</p>
+        <p>© <span id="currentYear"></span> aarav gupta. crafted with code & curiosity.</p>
     </footer>
 
     <script>
@@ -554,7 +630,7 @@
             
             el.addEventListener('mouseleave', () => {
                 cursor.style.transform = 'scale(1)';
-                cursor.style.borderColor = '#1a1a1a';
+                cursor.style.borderColor = 'var(--primary-text)';
             });
         });
 
@@ -669,6 +745,78 @@
                 el.style.cursor = 'auto';
             });
         }
+
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            updateFavicon();
+        });
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Reading progress indicator
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            document.querySelector('.reading-progress').style.width = `${progress}%`;
+        });
+
+        // Link previews
+        document.querySelectorAll('a[href^="http"]').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768) {
+                    const preview = document.createElement('div');
+                    preview.className = 'link-preview';
+                    preview.textContent = new URL(link.href).hostname.replace('www.', '');
+                    document.body.appendChild(preview);
+                    
+                    const updatePosition = (e) => {
+                        preview.style.left = `${e.clientX + 15}px`;
+                        preview.style.top = `${e.clientY + 15}px`;
+                    };
+                    
+                    link.addEventListener('mousemove', updatePosition);
+                    link.addEventListener('mouseleave', () => {
+                        preview.remove();
+                        link.removeEventListener('mousemove', updatePosition);
+                    });
+                }
+            });
+        });
+
+        // Dynamic favicon
+        const favicon = document.querySelector("link[rel='icon']");
+        const updateFavicon = () => {
+            const emoji = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${emoji}</text></svg>`;
+        };
+
+        // Update favicon initially and when dark mode changes
+        updateFavicon();
+        
+        // Console greeting
+        if (window.console) {
+            const styles = [
+                'color: #000000',
+                'background: #f5f5f5',
+                'font-size: 12px',
+                'padding: 4px 8px',
+                'border-radius: 3px',
+                'font-family: "IBM Plex Mono"'
+            ].join(';');
+            
+            console.log('%c👋 Hey there fellow developer!', styles);
+            console.log('%cLooking for something interesting? The source is right here!', styles);
+        }
+
+        // Dynamic year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
