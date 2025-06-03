@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnakeType - Live Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="toggle-text">dark</span>
+    </button>
+
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+    
+    <div class="header">
+        <h1>🐍 SnakeType</h1>
+        <p>Terminal-style Typing Speed Test - Web Version</p>
+    </div>
+    
+    <div class="typing-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">WPM</div>
+                <div class="stat-value" id="wpmStat">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Accuracy</div>
+                <div class="stat-value" id="accuracyStat">100%</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Time</div>
+                <div class="stat-value" id="timeStat">60s</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Errors</div>
+                <div class="stat-value" id="errorStat">0</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn active" id="mode60">60 seconds</button>
+            <button class="btn" id="mode30">30 seconds</button>
+            <button class="btn" id="modeWords">25 words</button>
+            <button class="btn" id="resetBtn">Reset</button>
+            <button class="btn" id="installBtn">Install Full Version</button>
+        </div>
+        
+        <div class="text-display" id="textDisplay"></div>
+        
+        <input type="text" class="typing-input" id="typingInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        
+        <div class="results" id="results">
+            <h3>Test Complete!</h3>
+            <div class="stats" style="margin-top: 20px;">
+                <div class="stat-box">
+                    <div class="stat-label">Final WPM</div>
+                    <div class="stat-value" id="finalWpm">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Final Accuracy</div>
+                    <div class="stat-value" id="finalAccuracy">100%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Characters</div>
+                    <div class="stat-value" id="finalChars">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Errors</div>
+                    <div class="stat-value" id="finalErrors">0</div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; color: var(--secondary-text);">
+                Install the full version for advanced analytics, achievements, and more!
+            </p>
+        </div>
+    </div>
+
+    <!-- Installation Modal -->
+    <div class="modal-overlay" id="installModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Install SnakeType</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-section">
+                    <h4>🚀 Quick Installation</h4>
+                    <ol class="modal-steps">
+                        <li>Open your terminal or command prompt</li>
+                        <li>Install the package using pip:
+                            <div class="modal-code">pip install SnakeType</div>
+                        </li>
+                        <li>Run the typing test:
+                            <div class="modal-code">python -c "from SnakeType import main; main()"</div>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="modal-section">
+                    <h4>✨ Full Version Features</h4>
+                    <ul class="modal-feature-list">
+                        <li><span class="modal-highlight">Advanced analytics</span> with detailed error tracking</li>
+                        <li><span class="modal-highlight">Achievement system</span> with 12+ achievements</li>
+                        <li><span class="modal-highlight">Multiple difficulty levels</span> for skill progression</li>
+                        <li><span class="modal-highlight">Custom text import</span> for personalized practice</li>
+                        <li><span class="modal-highlight">Typing lessons</span> and finger training exercises</li>
+                        <li><span class="modal-highlight">30-day performance reports</span> and progress tracking</li>
+                        <li><span class="modal-highlight">Dark/Light terminal themes</span> with customization</li>
+                        <li><span class="modal-highlight">Export results</span> to CSV and JSON formats</li>
+                        <li><span class="modal-highlight">Multi-language support</span> for diverse practice</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>📋 Requirements</h4>
+                    <ul class="modal-feature-list">
+                        <li>Python 3.6 or higher</li>
+                        <li>Terminal with color support</li>
+                        <li>Windows, macOS, or Linux</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>🔗 GitHub Repository</h4>
+                    <p>For source code, issues, and contributions, visit:</p>
+                    <div class="modal-code">https://github.com/Aarav2709/SnakeType</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

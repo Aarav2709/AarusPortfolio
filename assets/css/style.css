@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: none !important;
 }
 
 :root {
@@ -24,37 +25,39 @@ body.dark-mode {
     --bg-color: #121212;
 }
 
-/* Custom cursor */
-* {
-    cursor: none;
-}
-
 .cursor {
     position: fixed;
     width: 20px;
     height: 20px;
-    border: 1px solid var(--primary-text);
+    border: 1px solid var(--primary-text) !important;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    mix-blend-mode: difference;
-    transition: transform 0.1s ease;
+    transition: transform 0.1s ease, border-color 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .cursor-dot {
     position: fixed;
     width: 4px;
     height: 4px;
-    background: var(--primary-text);
+    background: var(--primary-text) !important;
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, background-color 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+body.dark-mode .cursor-dot {
+    background-color: var(--primary-text);
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 300;
+    font-family: 'Metropolis', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
     line-height: 1.7;
     color: var(--primary-text);
     background: var(--bg-color);
@@ -100,7 +103,7 @@ body.dark-mode {
 
 .name {
     font-size: 2.8rem;
-    font-weight: 300;
+    font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 16px;
     color: var(--primary-text);
@@ -110,14 +113,14 @@ body.dark-mode {
     font-size: 1.1rem;
     color: var(--secondary-text);
     margin-bottom: 24px;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .contact {
     font-size: 0.95rem;
     color: var(--secondary-text);
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 300;
+    font-family: 'Metropolis', monospace;
+    font-weight: 400;
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -188,7 +191,7 @@ body.dark-mode {
 
 .section-title {
     font-size: 1.2rem;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 40px;
     color: var(--primary-text);
     position: relative;
@@ -280,18 +283,116 @@ body.dark-mode {
     max-width: 500px;
 }
 
-/* Miscellaneous section */
+/* Demo button */
+.project-demo {
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project:hover .project-demo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.demo-button {
+    background: transparent;
+    border: 1px solid var(--primary-text);
+    color: var(--primary-text);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: 'Metropolis', monospace;
+    font-size: 0.8rem;
+    font-weight: 400;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+}
+
+.demo-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-text);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+.demo-button:hover::before {
+    left: 0;
+}
+
+.demo-button:hover {
+    color: var(--bg-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .demo-button:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure demo button visibility in dark mode */
+body.dark-mode .demo-button {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+body.dark-mode .demo-button:hover {
+    color: #121212;
+}
+
+.demo-text {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.demo-arrow {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.9rem;
+}
+
+.demo-button:hover .demo-text {
+    transform: translateX(-2px);
+}
+
+.demo-button:hover .demo-arrow {
+    transform: translateX(4px);
+}
+
+/* Active/focus states for accessibility */
+.demo-button:focus {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 2px;
+}
+
+.demo-button:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+}
+
+/* Tools & Setup section */
 .misc-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
 
 .misc-item {
     padding: 30px;
-    background: var(--hover-bg);
-    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -304,7 +405,7 @@ body.dark-mode {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.02), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
     transition: left 0.6s ease;
 }
 
@@ -313,92 +414,113 @@ body.dark-mode {
 }
 
 .misc-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    transform: translateY(-4px);
+    border-color: var(--primary-text);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .misc-item:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
 }
 
 .misc-item h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 400;
     margin-bottom: 16px;
     color: var(--primary-text);
+    font-family: 'IBM Plex Mono', monospace;
 }
 
 .misc-content {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.6;
     color: var(--secondary-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
-.misc-content .highlight {
+.highlight {
     color: var(--primary-text);
     font-weight: 400;
-}
-
-/* Footer */
-.footer {
-    margin-top: 120px;
-    padding-top: 40px;
-    border-top: 1px solid var(--border-color);
-    text-align: center;
-    color: var(--tertiary-text);
-    font-size: 0.85rem;
     font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    padding: 2px 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
 }
 
-/* Floating elements animation */
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
+body.dark-mode .highlight {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .floating {
     animation: float 6s ease-in-out infinite;
 }
 
-.floating:nth-child(2) { animation-delay: -2s; }
-.floating:nth-child(3) { animation-delay: -4s; }
+.floating:nth-child(even) {
+    animation-delay: -3s;
+}
 
-/* Link preview */
-.link-preview {
-    position: fixed;
-    background: var(--primary-text);
-    color: var(--bg-color);
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-size: 0.7rem;
-    pointer-events: none;
-    z-index: 10001;
-    white-space: nowrap;
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Footer */
+.footer {
+    margin-top: 120px;
+    padding-top: 60px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    animation-delay: 0.6s;
+}
+
+.footer p {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
     font-family: 'IBM Plex Mono', monospace;
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     body {
-        padding: 60px 30px;
+        padding: 40px 20px;
         font-size: 14px;
     }
-
-    .name {
-        font-size: 2.2rem;
+    
+    .header {
+        margin-bottom: 60px;
+        padding-bottom: 40px;
     }
-
+    
+    .name {
+        font-size: 1.8rem;
+    }
+    
+    .section {
+        margin-bottom: 60px;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
     .misc-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
-    .contact {
-        flex-direction: column;
-        gap: 8px;
-        align-items: center;
+    
+    .misc-item {
+        padding: 20px;
     }
-
-    .dark-mode-toggle {
-        top: 30px;
-        right: 30px;
+    
+    .project-demo {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .demo-button {
+        font-size: 0.75rem;
+        padding: 6px 12px;
     }
 }
 

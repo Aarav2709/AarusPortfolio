@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OddEven-SP - Live Demo</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="toggle-text">dark</span>
+    </button>
+
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+    
+    <div class="header">
+        <h1>🟡 OddEven-SP</h1>
+        <p>Terminal-based Cricket Game - Web Version</p>
+    </div>
+    
+    <div class="terminal-container">
+        <div class="controls">
+            <button class="btn" id="startGame">Start Game</button>
+            <button class="btn" id="resetGame">Reset</button>
+            <button class="btn" id="installLocal">Install Locally</button>
+        </div>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="terminal-dot dot-red"></div>
+                    <div class="terminal-dot dot-yellow"></div>
+                    <div class="terminal-dot dot-green"></div>
+                </div>
+                <div class="terminal-title">OddEven-SP Terminal</div>
+            </div>
+            
+            <div class="terminal-output" id="output">
+                <div class="info-output">Welcome to OddEven-SP!</div>
+                <div class="info-output">This is a web preview of the terminal-based cricket game.</div>
+                <div class="info-output">Click "Start Game" to begin or "Install Locally" for the full experience.</div>
+                <div class="info-output"></div>
+                <div class="info-output">📦 Install with: pip install OddEvenSP</div>
+                <div class="info-output">🎮 Features: Dark/Light mode, AI opponent, achievements, rank progression</div>
+                <div class="info-output"></div>
+            </div>
+            
+            <div class="terminal-input">
+                <span class="prompt">$</span>
+                <input type="text" class="input-field" id="gameInput" placeholder="Enter your choice..." disabled>
+            </div>
+        </div>
+    </div>
+
+    <!-- Installation Modal -->
+    <div class="modal-overlay" id="installModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Install OddEven-SP</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-section">
+                    <h4>🚀 Quick Installation</h4>
+                    <ol class="modal-steps">
+                        <li>Open your terminal or command prompt</li>
+                        <li>Install the package using pip:
+                            <div class="modal-code">pip install OddEvenSP</div>
+                        </li>
+                        <li>Run the game:
+                            <div class="modal-code">python -c "from OddEvenSP import main; main()"</div>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="modal-section">
+                    <h4>✨ Full Version Features</h4>
+                    <ul class="modal-feature-list">
+                        <li><span class="modal-highlight">Dark/Light</span> terminal themes</li>
+                        <li><span class="modal-highlight">Achievement system</span> with 15+ achievements</li>
+                        <li><span class="modal-highlight">Rank progression</span> from Rookie to Legend</li>
+                        <li><span class="modal-highlight">Statistics tracking</span> with detailed analytics</li>
+                        <li><span class="modal-highlight">Multiple difficulty levels</span> for varied gameplay</li>
+                        <li><span class="modal-highlight">Sound effects</span> and terminal animations</li>
+                        <li><span class="modal-highlight">Custom themes</span> and color schemes</li>
+                        <li><span class="modal-highlight">Tournament mode</span> for competitive play</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>📋 Requirements</h4>
+                    <ul class="modal-feature-list">
+                        <li>Python 3.6 or higher</li>
+                        <li>Terminal with color support</li>
+                        <li>Windows, macOS, or Linux</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>🔗 GitHub Repository</h4>
+                    <p>For source code, issues, and contributions, visit:</p>
+                    <div class="modal-code">https://github.com/Aarav2709/OddEven-SP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

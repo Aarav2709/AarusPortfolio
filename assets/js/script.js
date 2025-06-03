@@ -11,6 +11,9 @@ document.addEventListener('mousemove', (e) => {
 });
 
 function animate() {
+    // Safety check for cursor elements
+    if (!cursor || !cursorDot) return;
+    
     // Smooth cursor following
     cursorX += (mouseX - cursorX) * 0.1;
     cursorY += (mouseY - cursorY) * 0.1;
@@ -26,18 +29,26 @@ function animate() {
 
     requestAnimationFrame(animate);
 }
-animate();
+
+// Start animation after DOM is loaded
+if (cursor && cursorDot) {
+    animate();
+}
 
 // Cursor hover effects
 document.querySelectorAll('a, .project, .misc-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'scale(1.5)';
-        cursor.style.borderColor = '#999';
+        if (cursor) {
+            cursor.style.transform = 'scale(1.5)';
+            cursor.style.borderColor = '#999';
+        }
     });
 
     el.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'scale(1)';
-        cursor.style.borderColor = 'var(--primary-text)';
+        if (cursor) {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.borderColor = '';
+        }
     });
 });
 
@@ -236,3 +247,50 @@ const currentYearElement = document.getElementById('currentYear');
 if (currentYearElement) {
     currentYearElement.textContent = new Date().getFullYear();
 }
+
+// Demo button functionality
+document.querySelectorAll('.demo-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const demoUrl = button.getAttribute('data-demo');
+        
+        if (demoUrl) {
+            // Add click animation
+            button.style.transform = 'translateY(0) scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+                window.open(demoUrl, '_blank');
+            }, 150);
+        }
+    });
+
+    // Enhanced hover effects for demo button
+    button.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2)';
+        cursor.style.borderColor = '#999';
+        cursor.style.background = 'rgba(0, 0, 0, 0.1)';
+    });
+
+    button.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        cursor.style.borderColor = '';
+        cursor.style.background = 'transparent';
+    });
+});
+
+// Add demo button to existing cursor hover effects
+document.querySelectorAll('a, .project, .misc-item, .demo-button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        if (!el.classList.contains('demo-button')) {
+            cursor.style.transform = 'scale(1.5)';
+            cursor.style.borderColor = '#999';
+        }
+    });
+
+    el.addEventListener('mouseleave', () => {
+        if (!el.classList.contains('demo-button')) {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.borderColor = '';
+        }
+    });
+});
