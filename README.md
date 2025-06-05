@@ -10,6 +10,10 @@ A personal website showcasing my portfolio, skills, and experiences.
 - [Contributing](#contributing) 🤝
 - [License](#license) 📄
 
+## 🏆 Notable Achievements
+1) My website has been officially certified by Google!
+2) My website has been mentioned in the [Github's Most Famous Portfolio Repository!](https://github.com/emmabostian/developer-portfolios)
+
 ## 🔧 Installation
 ```bash
 # Clone the repository
@@ -37,8 +41,6 @@ npm start
 ## ✨ Features
 - 📱 Responsive design
 - 🎨 Portfolio showcase
-- ✉️ Contact form
-- 📝 Blog section
 - 🌓 Dark/Light mode toggle
 
 ## 🤝 Contributing
