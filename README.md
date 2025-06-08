@@ -17,10 +17,10 @@ A personal website showcasing my portfolio, skills, and experiences.
 ## 🔧 Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/AarusWebsite.git
+git clone https://github.com/Aarav2709/AarusPortfolio.git
 
 # Navigate to the project directory
-cd AarusWebsite
+cd AarusPortfolio
 
 # Install dependencies
 npm install
