@@ -131,15 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-if (window.innerWidth <= 768) {
-    if (cursor) cursor.style.display = 'none';
-    if (cursorDot) cursorDot.style.display = 'none';
-    document.body.style.cursor = 'auto';
-    document.querySelectorAll('*').forEach(el => {
-        el.style.cursor = 'auto';
-    });
-}
-
 const darkModeToggle = document.getElementById('darkModeToggle');
 const toggleText = darkModeToggle.querySelector('.toggle-text');
 
@@ -327,6 +318,11 @@ document.addEventListener('DOMContentLoaded', function() {
         skillObserver.observe(bar);
     });
 
+    // Initialize EmailJS
+    emailjs.init({
+        publicKey: "YOUR_PUBLIC_KEY", // Replace with your EmailJS public key
+    });
+
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
@@ -335,23 +331,48 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitButton = contactForm.querySelector('.submit-button');
             const originalText = submitButton.querySelector('.button-text').textContent;
             
+            // Show sending state
             submitButton.querySelector('.button-text').textContent = 'sending...';
             submitButton.disabled = true;
             submitButton.style.opacity = '0.7';
             
-            setTimeout(() => {
-                submitButton.querySelector('.button-text').textContent = 'message sent!';
-                submitButton.style.background = '#4ade80';
-                
-                contactForm.reset();
-                
-                setTimeout(() => {
-                    submitButton.querySelector('.button-text').textContent = originalText;
-                    submitButton.disabled = false;
-                    submitButton.style.opacity = '1';
-                    submitButton.style.background = '';
-                }, 2000);
-            }, 1500);
+            // Get form data
+            const templateParams = {
+                from_name: document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                to_email: 'tribejustice35@gmail.com'
+            };
+            
+            // Send email using EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    submitButton.querySelector('.button-text').textContent = 'message sent!';
+                    submitButton.style.background = '#4ade80';
+                    contactForm.reset();
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        submitButton.querySelector('.button-text').textContent = originalText;
+                        submitButton.disabled = false;
+                        submitButton.style.opacity = '1';
+                        submitButton.style.background = '';
+                    }, 2000);
+                })
+                .catch(function(error) {
+                    console.error('FAILED...', error);
+                    submitButton.querySelector('.button-text').textContent = 'failed to send';
+                    submitButton.style.background = '#ef4444';
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.querySelector('.button-text').textContent = originalText;
+                        submitButton.disabled = false;
+                        submitButton.style.opacity = '1';
+                        submitButton.style.background = '';
+                    }, 3000);
+                });
         });
     }
 

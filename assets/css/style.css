@@ -263,7 +263,98 @@ body.dark-mode .navigation {
     line-height: 1.8;
     color: var(--secondary-text);
     max-width: 600px;
-    margin: 0 auto;
+    margin: 0;
+}
+
+/* Achievements Section */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.achievement {
+    background: rgba(128, 128, 128, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement:hover {
+    transform: translateY(-5px);
+    background: var(--hover-bg);
+    border-color: var(--secondary-text);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .achievement:hover {
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+}
+
+.achievement-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.achievement-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-text);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+}
+
+.achievement-content p {
+    color: var(--secondary-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.achievement-content a {
+    color: var(--primary-text);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.achievement-content a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-text);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.achievement-content a:hover::after {
+    width: 100%;
+}
+
+.achievement-content a:hover {
+    color: var(--secondary-text);
+}
+
+.achievement::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-text), var(--secondary-text));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.achievement:hover::before {
+    opacity: 0.6;
 }
 
 
@@ -780,6 +871,11 @@ body.dark-mode .submit-button:hover {
     .projects-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .skills-grid {
