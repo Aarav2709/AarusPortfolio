@@ -1,0 +1,27 @@
+# Environment variables (if you decide to use them later)
+.env
+.env.local
+
+# Private configuration files
+config/private.js
+**/private-config.js
+
+# Backup files
+*.backup
+*.bak
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp

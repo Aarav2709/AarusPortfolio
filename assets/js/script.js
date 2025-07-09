@@ -318,63 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
         skillObserver.observe(bar);
     });
 
-    // Initialize EmailJS
-    emailjs.init({
-        publicKey: "YOUR_PUBLIC_KEY", // Replace with your EmailJS public key
-    });
 
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitButton = contactForm.querySelector('.submit-button');
-            const originalText = submitButton.querySelector('.button-text').textContent;
-            
-            // Show sending state
-            submitButton.querySelector('.button-text').textContent = 'sending...';
-            submitButton.disabled = true;
-            submitButton.style.opacity = '0.7';
-            
-            // Get form data
-            const templateParams = {
-                from_name: document.getElementById('name').value,
-                from_email: document.getElementById('email').value,
-                message: document.getElementById('message').value,
-                to_email: 'tribejustice35@gmail.com'
-            };
-            
-            // Send email using EmailJS
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    submitButton.querySelector('.button-text').textContent = 'message sent!';
-                    submitButton.style.background = '#4ade80';
-                    contactForm.reset();
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        submitButton.querySelector('.button-text').textContent = originalText;
-                        submitButton.disabled = false;
-                        submitButton.style.opacity = '1';
-                        submitButton.style.background = '';
-                    }, 2000);
-                })
-                .catch(function(error) {
-                    console.error('FAILED...', error);
-                    submitButton.querySelector('.button-text').textContent = 'failed to send';
-                    submitButton.style.background = '#ef4444';
-                    
-                    // Reset button after 3 seconds
-                    setTimeout(() => {
-                        submitButton.querySelector('.button-text').textContent = originalText;
-                        submitButton.disabled = false;
-                        submitButton.style.opacity = '1';
-                        submitButton.style.background = '';
-                    }, 3000);
-                });
-        });
-    }
 
     const enhancedElements = document.querySelectorAll('.nav-link, .contact-link, .submit-button, .skill-item');
     enhancedElements.forEach(el => {
@@ -518,3 +462,130 @@ backToTopButton.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+// EmailJS Configuration and Contact Form Handler
+(function() {
+    // Initialize EmailJS with your public key from EmailJS (safe to be public)
+    emailjs.init('kEXE9SEqYai171h5J');
+})();
+
+// Contact form handling
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const submitButton = contactForm.querySelector('.submit-button');
+    const buttonText = submitButton.querySelector('.button-text');
+    
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value
+        };
+        
+        // Update button state
+        buttonText.textContent = 'sending...';
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.7';
+        
+        // Send email using EmailJS (Autoreply service - working!)
+        emailjs.send('autoreply_service', 'portfolio_contact', {
+            from_name: formData.name,
+            from_email: formData.email,
+            message: formData.message,
+            to_email: 'tribejustice35@gmail.com'
+        })
+        .then(function(response) {
+            console.log('Email sent successfully:', response);
+            
+            // Success state
+            buttonText.textContent = 'message sent!';
+            submitButton.style.backgroundColor = '#4caf50';
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Show success message
+            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+            
+            // Reset button after delay
+            setTimeout(() => {
+                buttonText.textContent = 'send message';
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.backgroundColor = '';
+            }, 3000);
+            
+        })
+        .catch(function(error) {
+            console.error('Email failed to send:', error);
+            
+            // Error state
+            buttonText.textContent = 'failed to send';
+            submitButton.style.backgroundColor = '#f44336';
+            
+            // Show error message
+            showNotification('Failed to send message. Please try again or contact me directly.', 'error');
+            
+            // Reset button after delay
+            setTimeout(() => {
+                buttonText.textContent = 'send message';
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.backgroundColor = '';
+            }, 3000);
+        });
+    });
+});
+
+// Notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notification if any
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        max-width: 400px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        font-family: 'Metropolis', sans-serif;
+        font-size: 14px;
+        line-height: 1.4;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+    }, 5000);
+}

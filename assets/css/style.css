@@ -808,6 +808,90 @@ body.dark-mode .submit-button:hover {
     transform: translateY(0);
 }
 
+/* Enhanced form states and notifications */
+.submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.submit-button.success {
+    background: #4caf50 !important;
+}
+
+.submit-button.error {
+    background: #f44336 !important;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2196f3;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    max-width: 400px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    font-family: 'Metropolis', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.notification-success {
+    background: #4caf50;
+}
+
+.notification-error {
+    background: #f44336;
+}
+
+.notification-info {
+    background: #2196f3;
+}
+
+/* Form loading state */
+.form-loading .form-group input,
+.form-loading .form-group textarea {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Enhanced focus states for better accessibility */
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 2px;
+}
+
+.submit-button:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 2px;
+}
+
+body.dark-mode .form-group input:focus-visible,
+body.dark-mode .form-group textarea:focus-visible,
+body.dark-mode .submit-button:focus-visible {
+    outline-color: #ffffff;
+}
+
+/* Mobile notification adjustments */
+@media (max-width: 768px) {
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100%);
+    }
+    
+    .notification.show {
+        transform: translateY(0);
+    }
+}
 
 @keyframes slideInUp {
     from {
