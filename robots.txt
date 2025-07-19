@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aarus2709.me/sitemap.xml 
