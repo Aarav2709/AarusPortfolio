@@ -25,30 +25,30 @@ body.dark-mode {
     --bg-color: #121212;
 }
 
-.cursor {
+/* Custom cursor */
+.cursor, .cursor-dot {
     position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 1px solid var(--primary-text) !important;
-    border-radius: 50%;
+    top: 0;
+    left: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s ease, border-color 0.3s ease;
-    opacity: 1 !important;
-    visibility: visible !important;
+    transition: transform 0.1s ease;
+}
+
+.cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    opacity: 0.8;
 }
 
 .cursor-dot {
-    position: fixed;
     width: 4px;
     height: 4px;
-    background: var(--primary-text) !important;
+    background: #333;
     border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000;
-    transition: opacity 0.2s ease, background-color 0.3s ease;
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 1;
 }
 
 body.dark-mode .cursor-dot {
@@ -80,16 +80,64 @@ body.dark-mode {
 
 
 .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* Start visible - GSAP will handle animations */
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* Keep the keyframes for fallback but GSAP will override */
 @keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* GSAP Animation Classes */
+.gsap-fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.gsap-slide-left {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
+.gsap-slide-right {
+    opacity: 0;
+    transform: translateX(50px);
+}
+
+.gsap-scale {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.gsap-stagger {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Enhanced hover states for GSAP */
+.project, .achievement, .misc-item {
+    transition: none; /* GSAP will handle transitions */
+}
+
+.nav-link {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-text);
+    transition: none; /* GSAP will handle this */
 }
 
 
@@ -126,14 +174,14 @@ body.dark-mode .navigation {
     font-weight: 400;
     padding: 8px 16px;
     border-radius: 25px;
-    transition: all 0.3s ease;
+    /* Remove transition - GSAP will handle this */
     position: relative;
 }
 
 .nav-link:hover {
     color: var(--primary-text);
     background: var(--hover-bg);
-    transform: translateY(-2px);
+    /* Remove transform - GSAP will handle this */
 }
 
 .nav-link.active {
@@ -173,6 +221,8 @@ body.dark-mode .navigation {
     display: flex;
     justify-content: center;
     gap: 20px;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .contact a {
@@ -180,6 +230,8 @@ body.dark-mode .navigation {
     text-decoration: none;
     position: relative;
     transition: all 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .contact a::after {
@@ -887,7 +939,7 @@ body.dark-mode .submit-button:focus-visible {
         max-width: none;
         transform: translateY(-100%);
     }
-    
+
     .notification.show {
         transform: translateY(0);
     }
@@ -917,7 +969,7 @@ body.dark-mode .submit-button:focus-visible {
         padding: 40px 20px;
         font-size: 14px;
     }
-    
+
     .navigation {
         position: relative;
         top: auto;
@@ -927,60 +979,60 @@ body.dark-mode .submit-button:focus-visible {
         margin: 0 auto 40px auto;
         width: fit-content;
     }
-    
+
     .nav-container {
         justify-content: center;
         flex-wrap: wrap;
         gap: 10px;
     }
-    
+
     .nav-link {
         font-size: 13px;
         padding: 6px 12px;
     }
-    
+
     .header {
         margin-bottom: 60px;
         padding-bottom: 40px;
     }
-    
+
     .name {
         font-size: 28px;
     }
-    
+
     .title {
         font-size: 16px;
     }
-    
+
     .projects-grid {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .achievements-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .skills-grid {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .contact-section {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
     .misc-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .section {
         margin-bottom: 60px;
     }
-    
+
     .dark-mode-toggle {
         top: 15px;
         right: 15px;
@@ -993,24 +1045,24 @@ body.dark-mode .submit-button:focus-visible {
     body {
         padding: 30px 15px;
     }
-    
+
     .name {
         font-size: 24px;
     }
-    
+
     .header {
         margin-bottom: 50px;
         padding-bottom: 30px;
     }
-    
+
     .section {
         margin-bottom: 50px;
     }
-    
+
     .nav-container {
         gap: 8px;
     }
-    
+
     .nav-link {
         font-size: 12px;
         padding: 5px 10px;
