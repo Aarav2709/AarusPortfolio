@@ -43,31 +43,101 @@
       gtag('config', 'G-2J862SJ5KJ');
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css?v=2024">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
     <script src="assets/js/script.js?v=2024" defer></script>
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="69382255-5676-47b8-b5e5-07352a4e6f0c"></script>
 </head>
 <body>
+    <div class="preloader">
+        <div class="preloader-content">
+            <h1 class="preloader-name">
+                <span class="preloader-char">l</span><span class="preloader-char">o</span><span class="preloader-char">a</span><span class="preloader-char">d</span><span class="preloader-char">i</span><span class="preloader-char">n</span><span class="preloader-char">g</span>
+            </h1>
+            <div class="preloader-percentage">0%</div>
+            <div class="preloader-line"></div>
+        </div>
+    </div>
+
     <div class="cursor"></div>
     <div class="cursor-dot"></div>
     <div class="reading-progress"></div>
 
-    <nav class="navigation">
-        <div class="nav-container">
-            <a href="#about" class="nav-link">about</a>
-            <a href="#achievements" class="nav-link">achievements</a>
-            <a href="#projects" class="nav-link">projects</a>
-            <a href="#skills" class="nav-link">skills</a>
-            <a href="#setup" class="nav-link">setup</a>
-            <a href="#contact" class="nav-link">contact</a>
+    <button role="button" data-menu-toggle class="menu-button" aria-label="Toggle menu">
+        <div class="menu-button-text">
+            <p class="p-large">menu</p>
+            <p class="p-large">close</p>
         </div>
-    </nav>
+        <div class="icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 16 16" fill="none" class="menu-button-icon">
+                <path d="M7.33333 16L7.33333 -3.2055e-07L8.66667 -3.78832e-07L8.66667 16L7.33333 16Z" fill="currentColor"></path>
+                <path d="M16 8.66667L-2.62269e-07 8.66667L-3.78832e-07 7.33333L16 7.33333L16 8.66667Z" fill="currentColor"></path>
+                <path d="M6 7.33333L7.33333 7.33333L7.33333 6C7.33333 6.73637 6.73638 7.33333 6 7.33333Z" fill="currentColor"></path>
+                <path d="M10 7.33333L8.66667 7.33333L8.66667 6C8.66667 6.73638 9.26362 7.33333 10 7.33333Z" fill="currentColor"></path>
+                <path d="M6 8.66667L7.33333 8.66667L7.33333 10C7.33333 9.26362 6.73638 8.66667 6 8.66667Z" fill="currentColor"></path>
+                <path d="M10 8.66667L8.66667 8.66667L8.66667 10C8.66667 9.26362 9.26362 8.66667 10 8.66667Z" fill="currentColor"></path>
+            </svg>
+        </div>
+    </button>
+
+    <section class="osmo-cloneable">
+        <div data-nav="closed" class="nav">
+            <div data-menu-toggle class="overlay"></div>
+            <nav class="menu" aria-label="Sidebar navigation">
+                <div class="menu-bg">
+                    <div class="bg-panel first"></div>
+                    <div class="bg-panel second"></div>
+                    <div class="bg-panel"></div>
+                </div>
+                <div class="menu-inner">
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <a href="#about" class="menu-link w-inline-block">
+                                <p class="menu-link-heading">About</p>
+                                <p class="eyebrow">01</p>
+                                <div class="menu-link-bg"></div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="#projects" class="menu-link w-inline-block">
+                                <p class="menu-link-heading">Projects</p>
+                                <p class="eyebrow">02</p>
+                                <div class="menu-link-bg"></div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="#skills" class="menu-link w-inline-block">
+                                <p class="menu-link-heading">Skills</p>
+                                <p class="eyebrow">03</p>
+                                <div class="menu-link-bg"></div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="#setup" class="menu-link w-inline-block">
+                                <p class="menu-link-heading">Setup</p>
+                                <p class="eyebrow">04</p>
+                                <div class="menu-link-bg"></div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="#contact" class="menu-link w-inline-block">
+                                <p class="menu-link-heading">Contact</p>
+                                <p class="eyebrow">05</p>
+                                <div class="menu-link-bg"></div>
+                            </a>
+                        </li>
+                    </ul>
+                  </section>
+
+
+
 
     <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
         <span class="toggle-text">dark</span>
@@ -78,271 +148,344 @@
     </button>
 
     <header class="header fade-in">
-        <h1 class="name">aarav gupta<span class="typing-indicator"></span></h1>
-        <p class="title">14-year-old developer from India.</p>
+        <div class="container">
+            <h1 class="name">
+                <span class="name-line">
+                    <span class="name-char">a</span><span class="name-char">a</span><span class="name-char">r</span><span class="name-char">a</span><span class="name-char">v</span>
+                </span>
+                <span class="name-line">
+                    <span class="name-char">g</span><span class="name-char">u</span><span class="name-char">p</span><span class="name-char">t</span><span class="name-char">a</span>
+                </span>
+                <span class="typing-indicator"></span>
+            </h1>
+            <p class="title">14-year-old developer from India.</p>
+        </div>
+        <div class="hero-strips" aria-hidden="true">
+            <div class="strip"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+            <div class="strip reverse"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+            <div class="strip"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+            <div class="strip reverse"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+            <div class="strip"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+            <div class="strip reverse"><div class="strip-text">aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta · </div></div>
+        </div>
         <div class="contact">
-            <a href="mailto:tribejustice35@gmail.com">mail</a>
-            <a href="https://github.com/Aarav2709">github</a>
-            <a href="https://linkedin.com/in/aarav2709">linkedin</a>
+            <div class="contact-left">
+                <a href="mailto:tribejustice35@gmail.com">mail</a>
+                <a href="https://github.com/Aarav2709">github</a>
+                <a href="https://linkedin.com/in/aarav2709">linkedin</a>
+            </div>
+            <div class="scroll-indicator">
+                <span>scroll</span>
+                <div class="scroll-line"></div>
+            </div>
         </div>
     </header>
 
     <main>
         <section id="about" class="section fade-in">
-            <h2 class="section-title">about</h2>
-            <p class="about">
-                Hi, I'm Aarav Gupta, a 14-year-old Developer from India with a Passion for Coding and Technology. I have a keen interest in Game Development, Web Applications, and Automation Scripts. In my free time, I enjoy working on Personal Projects, Contributing to open-source, and exploring new Programming Languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out. I love connecting with fellow developers and sharing knowledge, so don't hesitate to drop me a message.
-            </p>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">a</span><span class="section-title-char">b</span><span class="section-title-char">o</span><span class="section-title-char">u</span><span class="section-title-char">t</span>
+                    </h2>
+                    <span class="section-number">01</span>
+                </div>
+                <div class="text">
+                    <p>
+                        I have a keen interest in game development, web applications, and automation scripts. In my free time, I enjoy working on personal projects, contributing to open-source, and exploring new programming languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <section id="achievements" class="section fade-in">
-            <h2 class="section-title">achievements</h2>
-            <div class="achievements-grid">
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>FreeCodeCamp Certification</h3>
-                        <p>Certified App Developer from <a href="https://www.freecodecamp.org/learn/full-stack-developer/" target="_blank" rel="noopener noreferrer" class="highlight">FreeCodeCamp.org</a>.</p>
-                    </div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">a</span><span class="section-title-char">c</span><span class="section-title-char">h</span><span class="section-title-char">i</span><span class="section-title-char">e</span><span class="section-title-char">v</span><span class="section-title-char">e</span><span class="section-title-char">m</span><span class="section-title-char">e</span><span class="section-title-char">n</span><span class="section-title-char">t</span><span class="section-title-char">s</span>
+                    </h2>
+                    <span class="section-number">02</span>
                 </div>
-
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>Game Development Certification</h3>
-                        <p>Certified Game Developer from <a href="https://gamedevacademy.org/category/game-engine-tutorials/roblox-tutorials/" target="_blank" rel="noopener noreferrer" class="highlight">Roblox</a>.</p>
+                <div class="achievements-grid">
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">01</span>
+                            <h3>FreeCodeCamp Certification</h3>
+                            <p>Certified App Developer from <a href="https://www.freecodecamp.org/learn/full-stack-developer/" target="_blank" rel="noopener noreferrer" class="highlight">FreeCodeCamp.org</a>.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>3rd Place - Sherlocked Cryptic Hunt</h3>
-                        <p>Third position in the <a href="https://thevoidclub.in/Events/sherlocked.html" target="_blank" rel="noopener noreferrer" class="highlight">Sherlocked</a> cryptic hunt competition.</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">02</span>
+                            <h3>Game Development Certification</h3>
+                            <p>Certified Game Developer from <a href="https://gamedevacademy.org/category/game-engine-tutorials/roblox-tutorials/" target="_blank" rel="noopener noreferrer" class="highlight">Roblox</a>.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>CBSE Web Development Competition</h3>
-                        <p>Participated in national web development competition certified by <a href="https://cbse.nic.in" target="_blank" rel="noopener noreferrer" class="highlight">CBSE</a>.</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">03</span>
+                            <h3>3rd Place - Sherlocked Cryptic Hunt</h3>
+                            <p>Third position in the <a href="https://thevoidclub.in/Events/sherlocked.html" target="_blank" rel="noopener noreferrer" class="highlight">Sherlocked</a> cryptic hunt competition.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>Hackathon Winner</h3>
-                        <p>Won <span class="highlight">2 hackathons</span> earning certificates, stickers, shirts, and a 2D game console with my game embedded.</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">04</span>
+                            <h3>CBSE Web Development Competition</h3>
+                            <p>Participated in national web development competition certified by <a href="https://cbse.nic.in" target="_blank" rel="noopener noreferrer" class="highlight">CBSE</a>.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>School IT Club Founder</h3>
-                        <p>Founded my school <span class="highlight">IT club</span> along with other people.</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">05</span>
+                            <h3>Hackathon Winner</h3>
+                            <p>Won <span class="highlight">2 hackathons</span> earning certificates, stickers, shirts, and a 2D game console with my game embedded.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>Google Certification</h3>
-                        <p>My website has been officially certified by <a href="https://developers.google.com/certification" target="_blank" rel="noopener noreferrer" class="highlight">Google</a>!</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">06</span>
+                            <h3>School IT Club Founder</h3>
+                            <p>Founded my school <span class="highlight">IT club</span> along with other people.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="achievement floating">
-                    <div class="achievement-content">
-                        <h3>GitHub Recognition</h3>
-                        <p>Featured in <a href="https://github.com/emmabostian/developer-portfolios" target="_blank" rel="noopener noreferrer" class="highlight">GitHub's Most Famous Portfolio Repository</a>!</p>
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">07</span>
+                            <h3>Google Certification</h3>
+                            <p>My website has been officially certified by <a href="https://developers.google.com/certification" target="_blank" rel="noopener noreferrer" class="highlight">Google</a>!</p>
+                        </div>
+                    </div>
+
+                    <div class="achievement floating">
+                        <div class="achievement-content">
+                            <span class="achievement-number">08</span>
+                            <h3>GitHub Recognition</h3>
+                            <p>Featured in <a href="https://github.com/emmabostian/developer-portfolios" target="_blank" rel="noopener noreferrer" class="highlight">GitHub's Most Famous Portfolio Repository</a>!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="section fade-in">
-            <h2 class="section-title">projects</h2>
-            <div class="projects-grid">
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Aarav2709/OddEven-SP">OddEven-SP</a>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">p</span><span class="section-title-char">r</span><span class="section-title-char">o</span><span class="section-title-char">j</span><span class="section-title-char">e</span><span class="section-title-char">c</span><span class="section-title-char">t</span><span class="section-title-char">s</span>
+                    </h2>
+                    <span class="section-number">03</span>
+                </div>
+                <div class="projects-grid">
+                    <div class="project">
+                        <div class="project-number">01</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">python</span>
+                                </div>
+                                <h3>OddEven Singleplayer</h3>
+                                <p class="project-description">
+                                    A fun, interactive terminal-based game where you challenge a computer opponent in a thrilling game of odd-even cricket. Features dark/light mode, rank progression, achievements, and smart AI.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/OddEven-SP" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://oddevensp.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
                         </div>
-                        <div class="project-tech">python</div>
                     </div>
-                    <div class="project-description">
-                        OddEven Singleplayer is a fun, interactive terminal-based game where you challenge a computer opponent in a thrilling game of odd-even cricket. Featuring Dark/Light mode, Rank Progression, Achievements, and Smart AI.
+
+                    <div class="project">
+                        <div class="project-number">02</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">python</span>
+                                </div>
+                                <h3>SnakeType</h3>
+                                <p class="project-description">
+                                    A project that mimics all typing websites, but now in Python. A simple terminal-based typing speed test tool made in Python.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/SnakeType" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://snaketype.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
                     </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Aarav2709/OddEven-SP" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <a href="https://oddevensp.vercel.app" class="project-link demo-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🚀</span>
-                            <span>website</span>
-                        </a>
+
+                    <div class="project">
+                        <div class="project-number">03</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">react, vite</span>
+                                </div>
+                                <h3>Typeconomy</h3>
+                                <p class="project-description">
+                                    A clicker game where you type words instead of clicking! Boost your typing skills, earn money, and unlock powerful upgrades to automate your economy—all through typing.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Nathan5471/typeconomy" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://typeconomy.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
+                    </div>
+
+                    <div class="project">
+                        <div class="project-number">04</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">python, typescript, react</span>
+                                </div>
+                                <h3>CyberQuest Jr</h3>
+                                <p class="project-description">
+                                    An AI-powered cybersecurity education platform for kids aged 8-18. Features personalized learning with Google Gemini AI, adaptive assessments, interactive gaming modules, and progress tracking with XP and achievements.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/CyberQuestJR" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://cyberquestjr.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
+                    </div>
+
+                    <div class="project">
+                        <div class="project-number">05</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">html css and java</span>
+                                </div>
+                                <h3>Stronghold</h3>
+                                <p class="project-description">
+                                    The official repository and website for SSVE's IT Club, Stronghold. A platform designed to showcase the club's activities, projects, and provide resources for students interested in technology and programming.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/Stronghold" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://stronghold.tech" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
+                    </div>
+
+                    <div class="project">
+                        <div class="project-number">06</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">lua, solar2d</span>
+                                </div>
+                                <h3>Fun Run 1: Replayed</h3>
+                                <p class="project-description">
+                                    A fully reimagined version of Fun Run 1, built from the ground up in Solar2D. Brings back the chaotic fun of the original with modern enhancements, rewritten mechanics, and online multiplayer capabilities.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/FR1-Replayed" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
+                    </div>
+
+                    <div class="project">
+                        <div class="project-number">07</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">lua, solar2d</span>
+                                </div>
+                                <h3>Fun Run 2: Reborn</h3>
+                                <p class="project-description">
+                                    A complete enhanced remake of the classic multiplayer racing game, rebuilt from scratch using Solar2D. Features local multiplayer, character progression, power-ups, and modern enhancements while preserving the original gameplay.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/FR2-Reborn" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Aarav2709/SnakeType">SnakeType</a>
-                        </div>
-                        <div class="project-tech">python</div>
-                    </div>
-                    <div class="project-description">
-                        A Project that mimics all Typing Websites, but now in Python. A Simple Terminal-based Typing Speed Test tool made in Python.
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Aarav2709/SnakeType" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <a href="https://snaketype.vercel.app" class="project-link demo-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🚀</span>
-                            <span>website</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Aarav2709/DecryptionToolkeet">DecryptionToolkeet</a>
-                        </div>
-                        <div class="project-tech">python</div>
-                    </div>
-                    <div class="project-description">
-                        A comprehensive Python CLI tool for automatically decoding and decrypting strings using classic ciphers and encodings.
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Aarav2709/DecryptionToolkeet" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <a href="https://pypi.org/project/DecryptionToolkeet/" class="project-link demo-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🚀</span>
-                            <span>website</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Nathan5471/typeconomy">Typeconomy</a>
-                        </div>
-                        <div class="project-tech">react, tailwindcss, vite, localstorage</div>
-                    </div>
-                    <div class="project-description">
-                       Typeconomy is a clicker game where you type words instead of clicking! Boost your typing skills, earn money, and unlock powerful upgrades to automate your economy—all through typing.
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Nathan5471/typeconomy" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <a href="https://typeconomy.vercel.app/" class="project-link demo-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🚀</span>
-                            <span>website</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Aarav2709/FR1-Replayed">Fun Run 1 - Replayed</a>
-                        </div>
-                        <div class="project-tech">lua, solar2d api</div>
-                    </div>
-                    <div class="project-description">
-                        The FR1 Replayed Project, Originally Developed by DirtyBit, recreation by us!
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Aarav2709/FR1-Replayed" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <span class="project-status">in development</span>
-                    </div>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <div class="project-name">
-                            <a href="https://github.com/Aarav2709/FR2-Reborn">Fun Run 2 - Reborn</a>
-                        </div>
-                        <div class="project-tech">lua, solar2d api</div>
-                    </div>
-                    <div class="project-description">
-                        This is a fully Reimagined Version of Fun Run 2, built from the ground up in the original engine, Solar2D (formerly Corona SDK). The goal is to bring back the chaotic fun of the Original with Modern Enhancements, while staying faithful to its roots.
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Aarav2709/FR2-Reborn" class="project-link" target="_blank" rel="noopener noreferrer">
-                            <span class="link-icon">🔗</span>
-                            <span>github</span>
-                        </a>
-                        <span class="project-status">in development</span>
-                    </div>
-                </div>
-
-        </div>
-    </section>
+            </div>
+        </section>
 
         <section id="skills" class="section fade-in">
-            <h2 class="section-title">skills</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Programming Languages</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">Python</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="90"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">JavaScript</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="85"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">HTML/CSS</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="95"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Lua</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="70"></div>
-                        </div>
-                    </div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">s</span><span class="section-title-char">k</span><span class="section-title-char">i</span><span class="section-title-char">l</span><span class="section-title-char">l</span><span class="section-title-char">s</span>
+                    </h2>
+                    <span class="section-number">04</span>
                 </div>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Programming Languages</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">HTML/CSS</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Lua</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="70"></div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="skill-category">
-                    <h3>Frameworks & Tools</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">Git</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="95"></div>
+                    <div class="skill-category">
+                        <h3>Frameworks & Tools</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">Git</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Solar2D</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="60"></div>
+                        <div class="skill-item">
+                            <span class="skill-name">Solar2D</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="60"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">VS Code</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="100"></div>
+                        <div class="skill-item">
+                            <span class="skill-name">VS Code</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="100"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">PyCharm</span>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-progress="100"></div>
+                        <div class="skill-item">
+                            <span class="skill-name">PyCharm</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="100"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -350,103 +493,120 @@
         </section>
 
         <section id="setup" class="section fade-in">
-            <h2 class="section-title">tools & setup</h2>
-            <div class="misc-grid">
-                <div class="misc-item floating">
-                    <h3>Development Environment</h3>
-                    <div class="misc-content">
-                        <span class="highlight">vscode</span> for web development.<br>
-                        <span class="highlight">pycharm</span> professional edition.<br>
-                        <span class="highlight">solar2d</span> for lua scripting.<br>
-                        <span class="highlight">git</span> for version control.
-                    </div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">t</span><span class="section-title-char">o</span><span class="section-title-char">o</span><span class="section-title-char">l</span><span class="section-title-char">s</span> <span class="section-title-char">&</span> <span class="section-title-char">s</span><span class="section-title-char">e</span><span class="section-title-char">t</span><span class="section-title-char">u</span><span class="section-title-char">p</span>
+                    </h2>
+                    <span class="section-number">05</span>
                 </div>
-
-                <div class="misc-item floating">
-                    <h3>AI Assistance</h3>
-                    <div class="misc-content">
-                        <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br>
-                        <span class="highlight">claude opus 4</span> for code review.<br>
-                        <span class="highlight">github copilot pro+</span> for suggestions.
+                <div class="misc-grid">
+                    <div class="misc-item floating">
+                        <span class="misc-number">01</span>
+                        <h3>Development Environment</h3>
+                        <div class="misc-content">
+                            <span class="highlight">vscode</span> for web development.<br>
+                            <span class="highlight">pycharm</span> professional edition.<br>
+                            <span class="highlight">solar2d</span> for lua scripting.<br>
+                            <span class="highlight">git</span> for version control.
+                        </div>
                     </div>
-                </div>
 
-                <div class="misc-item floating">
-                    <h3>Primary Workstation</h3>
-                    <div class="misc-content">
-                        <span class="highlight">amd ryzen 5600</span> @4.5ghz<br>
-                        <span class="highlight">32gb ddr4</span> @3600mhz<br>
-                        <span class="highlight">rtx 3060</span> 6gb gddr6<br>
-                        <span class="highlight">windows 11</span> home
+                    <div class="misc-item floating">
+                        <span class="misc-number">02</span>
+                        <h3>AI Assistance</h3>
+                        <div class="misc-content">
+                            <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br>
+                            <span class="highlight">claude opus 4</span> for code review.<br>
+                            <span class="highlight">github copilot pro+</span> for suggestions.
+                        </div>
                     </div>
-                </div>
 
-                <div class="misc-item floating">
-                    <h3>Laptop #1</h3>
-                    <div class="misc-content">
-                        <span class="highlight">intel i3 11th gen</span> @4.1ghz<br>
-                        <span class="highlight">8gb ddr4</span> @2666mhz<br>
-                        <span class="highlight">intel uhd</span> graphics<br>
-                        <span class="highlight">fedora 42</span> workstation
+                    <div class="misc-item floating">
+                        <span class="misc-number">03</span>
+                        <h3>Primary Workstation</h3>
+                        <div class="misc-content">
+                            <span class="highlight">amd ryzen 5600</span> @4.5ghz<br>
+                            <span class="highlight">32gb ddr4</span> @3600mhz<br>
+                            <span class="highlight">rtx 3060</span> 6gb gddr6<br>
+                            <span class="highlight">windows 11</span> home
+                        </div>
                     </div>
-                </div>
 
-                <div class="misc-item floating">
-                    <h3>Laptop #2</h3>
-                    <div class="misc-content">
-                        <span class="highlight">intel i5 12th gen</span> @4.4ghz<br>
-                        <span class="highlight">16gb ddr4</span> @3200mhz<br>
-                        <span class="highlight">rtx 2050</span> 4gb laptop<br>
-                        <span class="highlight">windows 11</span> pro
+                    <div class="misc-item floating">
+                        <span class="misc-number">04</span>
+                        <h3>Laptop #1</h3>
+                        <div class="misc-content">
+                            <span class="highlight">intel i3 11th gen</span> @4.1ghz<br>
+                            <span class="highlight">8gb ddr4</span> @2666mhz<br>
+                            <span class="highlight">intel uhd</span> graphics<br>
+                            <span class="highlight">fedora 42</span> workstation
+                        </div>
                     </div>
-                </div>
 
-                <div class="misc-item floating">
-                    <h3>Current Focus</h3>
-                    <div class="misc-content">
-                        completing <span class="highlight">fr2-reborn</span> & <span class="highlight">snaketype</span>.<br>
-                        exploring <span class="highlight">game development</span> with roblox studio.<br>
-                        contributing to <span class="highlight">open source projects</span>.<br>
-                        building <span class="highlight">portfolio</span> projects.
+                    <div class="misc-item floating">
+                        <span class="misc-number">05</span>
+                        <h3>Laptop #2</h3>
+                        <div class="misc-content">
+                            <span class="highlight">intel i5 12th gen</span> @4.4ghz<br>
+                            <span class="highlight">16gb ddr4</span> @3200mhz<br>
+                            <span class="highlight">rtx 2050</span> 4gb laptop<br>
+                            <span class="highlight">windows 11</span> pro
+                        </div>
+                    </div>
+
+                    <div class="misc-item floating">
+                        <span class="misc-number">06</span>
+                        <h3>Current Focus</h3>
+                        <div class="misc-content">
+                            completing <span class="highlight">fr2-reborn</span> & <span class="highlight">snaketype</span>.<br>
+                            exploring <span class="highlight">game development</span> with roblox studio.<br>
+                            contributing to <span class="highlight">open source projects</span>.<br>
+                            building <span class="highlight">portfolio</span> projects.
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="contact" class="section fade-in">
-            <h2 class="section-title">get in touch</h2>
-            <div class="contact-section">
-                <div class="contact-info">
-                    <p>Have a project in mind or just want to chat about tech? I'd love to hear from you!</p>
-                    <div class="contact-links">
-                        <a href="mailto:tribejustice35@gmail.com" class="contact-link">
-                            <span class="contact-icon">✉</span>
-                            <span>tribejustice35@gmail.com</span>
-                        </a>
-                        <a href="https://github.com/Aarav2709" class="contact-link" target="_blank">
-                            <span class="contact-icon">🐱</span>
-                            <span>github.com/Aarav2709</span>
-                        </a>
-                        <a href="https://linkedin.com/in/aarav2709" class="contact-link" target="_blank">
-                            <span class="contact-icon">💼</span>
-                            <span>linkedin.com/in/aarav2709</span>
-                        </a>
-                    </div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-title-char">g</span><span class="section-title-char">e</span><span class="section-title-char">t</span> <span class="section-title-char">i</span><span class="section-title-char">n</span> <span class="section-title-char">t</span><span class="section-title-char">o</span><span class="section-title-char">u</span><span class="section-title-char">c</span><span class="section-title-char">h</span>
+                    </h2>
+                    <span class="section-number">06</span>
                 </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                <div class="contact-section">
+                    <div class="contact-info">
+                        <p>Have a project in mind or just want to chat about tech? I'd love to hear from you!</p>
+                        <div class="contact-links">
+                            <a href="mailto:tribejustice35@gmail.com" class="contact-link">
+                                <span>tribejustice35@gmail.com</span>
+                            </a>
+                            <a href="https://github.com/Aarav2709" class="contact-link" target="_blank">
+                                <span>github.com/Aarav2709</span>
+                            </a>
+                            <a href="https://linkedin.com/in/aarav2709" class="contact-link" target="_blank">
+                                <span>linkedin.com/in/aarav2709</span>
+                            </a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Your message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-button">
-                        <span class="button-text">send message</span>
-                    </button>
-                </form>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">
+                            <span class="button-text">send message</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>

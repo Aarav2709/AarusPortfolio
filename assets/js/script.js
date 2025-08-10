@@ -21,6 +21,9 @@ if (typeof gsap === 'undefined') {
     };
 } else {
     gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
+    if (typeof CustomEase !== 'undefined' && typeof CustomEase.create === 'function') {
+        try { CustomEase.create('main', '0.65, 0.01, 0.05, 0.99'); } catch(e) {}
+    }
 }
 gsap.defaults({ overwrite: 'auto' });
 let isSmoothScrolling = false;
@@ -43,6 +46,146 @@ function initSmoothScroll() {
     }, { passive: true });
 }
 initSmoothScroll();
+
+
+function initPreloader() {
+    const preloader = document.querySelector('.preloader');
+    const percentageEl = document.querySelector('.preloader-percentage');
+    const preloaderLine = document.querySelector('.preloader-line');
+    const preloaderChars = document.querySelectorAll('.preloader-char');
+    if (!preloader || !percentageEl) return;
+
+
+    const minDisplayTime = 3000;
+    const maxDisplayTime = 5000;
+    const startTime = Date.now();
+    let currentPercentage = 0;
+    let isLoading = true;
+
+
+    const animatePercentage = () => {
+        if (!isLoading) return;
+
+        const elapsed = Date.now() - startTime;
+        const totalDuration = Math.random() * (maxDisplayTime - minDisplayTime) + minDisplayTime;
+
+
+        let targetPercentage = Math.min(100, (elapsed / totalDuration) * 100);
+
+
+        if (targetPercentage > 85) {
+            targetPercentage = 85 + (targetPercentage - 85) * 0.3;
+        }
+
+
+        const ease = 0.08;
+        currentPercentage += (targetPercentage - currentPercentage) * ease;
+
+        if (percentageEl) {
+            percentageEl.textContent = Math.floor(currentPercentage) + '%';
+        }
+
+
+        if (document.readyState === 'complete' && elapsed >= minDisplayTime && currentPercentage >= 85) {
+            completeLoading();
+        } else {
+            requestAnimationFrame(animatePercentage);
+        }
+    };
+
+
+    const completeLoading = () => {
+        if (!isLoading) return;
+        isLoading = false;
+
+
+        const finishToHundred = () => {
+            currentPercentage += (100 - currentPercentage) * 0.15;
+            if (percentageEl) {
+                percentageEl.textContent = Math.floor(currentPercentage) + '%';
+            }
+
+            if (currentPercentage < 99.8) {
+                requestAnimationFrame(finishToHundred);
+            } else {
+                percentageEl.textContent = '100%';
+                startCompletionAnimations();
+            }
+        };
+        finishToHundred();
+    };
+
+
+    const startCompletionAnimations = () => {
+        const tl = gsap.timeline();
+
+
+        tl.to(percentageEl, {
+            scale: 1.2,
+            duration: 0.3,
+            ease: "back.out(1.7)"
+        })
+
+
+        .to(percentageEl, {
+            scale: 1,
+            duration: 0.2,
+            ease: "power2.out"
+        })
+        .to(preloaderLine, {
+            width: "120px",
+            duration: 0.4,
+            ease: "power2.out"
+        }, "-=0.1")
+
+
+        .to(preloaderChars, {
+            y: -10,
+            duration: 0.3,
+            ease: "power2.out",
+            stagger: 0.05
+        }, "-=0.3")
+
+        .to(preloaderChars, {
+            y: 0,
+            duration: 0.3,
+            ease: "bounce.out",
+            stagger: 0.05
+        })
+
+
+        .to('.preloader-content', {
+            filter: "brightness(1.2)",
+            duration: 0.2,
+        })
+
+        .to('.preloader-content', {
+            filter: "brightness(1)",
+            duration: 0.3,
+        })
+
+
+        .to({}, { duration: 0.3 })
+
+
+        .to('.preloader', {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+                document.querySelector('.preloader').style.display = 'none';
+            }
+        });
+    };
+    setTimeout(() => {
+        if (isLoading) completeLoading();
+    }, maxDisplayTime + 2000);
+
+
+    setTimeout(() => {
+        animatePercentage();
+    }, 1200);
+}
+initPreloader();
 
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
@@ -117,47 +260,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.addEventListener('load', () => {
-    gsap.set('.header, .section, .navigation, .project, .achievement, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title', {
+    gsap.set('.header, .section, .project, .achievement, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title', {
         opacity: 1,
         visibility: 'visible',
         clearProps: 'transform'
     });
 
-    const tl = gsap.timeline({ delay: 0.1 });
 
-    tl.from('.header', {
-        duration: 1.2,
-        y: 30,
-        opacity: 0,
-        ease: "power3.out"
-    })
-    .from('.header .name', {
-        duration: 0.8,
-        y: 20,
-        opacity: 0,
-        ease: "power2.out"
-    }, "-=0.8")
-    .from('.header .title', {
-        duration: 0.8,
-        y: 15,
-        opacity: 0,
-        ease: "power2.out"
-    }, "-=0.6")
-    .from('.header .contact a', {
-        duration: 0.6,
-        y: 10,
-        opacity: 0,
-        stagger: 0.1,
-        ease: "power2.out"
-    }, "-=0.4");
 
-    gsap.from('.navigation', {
-        duration: 0.6,
-        y: -8,
-        opacity: 0,
-        ease: "power2.out",
-        delay: 0.2
-    });
+
 
     gsap.to('.typing-indicator', {
         opacity: 0,
@@ -166,7 +277,272 @@ window.addEventListener('load', () => {
         yoyo: true,
         ease: "power2.inOut"
     });
+
+    initTextRevealAnimations();
+    initProjectAnimations();
+    initScrollAnimations();
+
+    initAchievementsAnimations();
+    initSkillsAnimations();
+    initHeroStrips();
+    initScrollContrast();
+
+    initAboutLineReveal();
+    initProjectWordReveal();
+    initOsmoMenu();
 });
+
+function initTextRevealAnimations() {
+    gsap.utils.toArray('.section-title').forEach((title) => {
+        const chars = title.querySelectorAll('.section-title-char');
+
+        gsap.set(chars, { y: '100%' });
+
+        ScrollTrigger.create({
+            trigger: title,
+            start: "top 80%",
+            onEnter: () => {
+                gsap.to(chars, {
+                    duration: 1,
+                    y: 0,
+                    ease: "power4.out",
+                    stagger: {
+                        amount: 0.3,
+                        from: "start"
+                    }
+                });
+            },
+            once: true
+        });
+    });
+
+    gsap.utils.toArray('.about, .about-large').forEach((text, index) => {
+        gsap.from(text, {
+            duration: 1.2,
+            y: 60,
+            opacity: 0,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: text,
+                start: "top 85%",
+                toggleActions: "play none none none",
+                once: true
+            },
+            delay: index * 0.2
+        });
+    });
+}
+
+function initAboutLineReveal() {
+    const p = document.querySelector('#about .text p');
+    if (!p) return;
+
+
+    const words = p.textContent.trim().split(/\s+/);
+    p.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
+    const wordEls = Array.from(p.querySelectorAll('.word'));
+    wordEls.forEach(w => { w.style.display = 'inline-block'; w.style.whiteSpace = 'nowrap'; });
+
+
+    const lines = [];
+    let currentTop = null;
+    let line = [];
+    wordEls.forEach((w, i) => {
+        const top = w.offsetTop;
+        if (currentTop === null) currentTop = top;
+        if (Math.abs(top - currentTop) <= 2) {
+            line.push(w);
+        } else {
+            lines.push(line);
+            line = [w];
+            currentTop = top;
+        }
+    });
+    if (line.length) lines.push(line);
+
+
+    lines.forEach(group => {
+        const wrapper = document.createElement('span');
+        wrapper.className = 'line';
+        group[0].parentNode.insertBefore(wrapper, group[0]);
+        group.forEach((w, idx) => {
+            wrapper.appendChild(w);
+            if (idx < group.length - 1) wrapper.appendChild(document.createTextNode(' '));
+        });
+    });
+
+
+    const lineEls = p.querySelectorAll('.line');
+    if (typeof ScrollTrigger === 'undefined') {
+        lineEls.forEach(el => el.style.backgroundPositionX = '0%');
+        return;
+    }
+    lineEls.forEach((target) => {
+        gsap.to(target, {
+            backgroundPositionX: 0,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: target,
+                scrub: 1,
+                start: 'top 70%',
+                end: 'bottom 30%'
+            }
+        });
+    });
+}
+
+function initProjectWordReveal() {
+    const descriptions = Array.from(document.querySelectorAll('#projects .project-description'));
+    if (!descriptions.length) return;
+
+    descriptions.forEach(desc => {
+        const raw = desc.textContent.trim().replace(/\s+/g, ' ');
+        const words = raw.split(' ');
+        desc.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
+
+        const wordEls = desc.querySelectorAll('.word');
+        if (typeof ScrollTrigger === 'undefined') {
+            wordEls.forEach(w => w.classList.add('reveal'));
+            return;
+        }
+
+        ScrollTrigger.create({
+            trigger: desc,
+            start: 'top 85%',
+            end: 'bottom 55%',
+            onUpdate: self => {
+                const p = self.progress;
+                const count = Math.floor(p * wordEls.length);
+                wordEls.forEach((el, i) => {
+                    if (i < count) el.classList.add('reveal');
+                    else el.classList.remove('reveal');
+                });
+            },
+            once: false
+        });
+    });
+}
+
+function initProjectAnimations() {
+    gsap.utils.toArray('.project').forEach((project, index) => {
+        const content = project.querySelector('.project-content');
+        const number = project.querySelector('.project-number');
+        const visual = project.querySelector('.project-visual');
+        const info = project.querySelector('.project-info');
+
+        gsap.set([content, number], { opacity: 0 });
+        gsap.set(info, { x: -60 });
+        gsap.set(visual, { x: 60, scale: 0.8 });
+        gsap.set(number, { x: 100 });
+
+        ScrollTrigger.create({
+            trigger: project,
+            start: "top 70%",
+            onEnter: () => {
+                const tl = gsap.timeline();
+
+                tl.to([content, number], {
+                    duration: 0.8,
+                    opacity: 1,
+                    ease: "power3.out"
+                })
+                .to(info, {
+                    duration: 1,
+                    x: 0,
+                    ease: "power3.out"
+                }, 0.2)
+                .to(visual, {
+                    duration: 1,
+                    x: 0,
+                    scale: 1,
+                    ease: "power3.out"
+                }, 0.2)
+                .to(number, {
+                    duration: 1.2,
+                    x: 0,
+                    ease: "power4.out"
+                }, 0.4);
+            },
+            once: true
+        });
+
+        project.addEventListener('mouseenter', () => {
+            gsap.to(visual, {
+                duration: 0.6,
+                scale: 1.05,
+                ease: "power2.out"
+            });
+            gsap.to(number, {
+                duration: 0.6,
+                x: -20,
+                ease: "power2.out"
+            });
+        });
+
+        project.addEventListener('mouseleave', () => {
+            gsap.to(visual, {
+                duration: 0.6,
+                scale: 1,
+                ease: "power2.out"
+            });
+            gsap.to(number, {
+                duration: 0.6,
+                x: 0,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
+function initScrollAnimations() {
+    gsap.utils.toArray('.section').forEach((section, index) => {
+        ScrollTrigger.create({
+            trigger: section,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => {
+                gsap.to(section, {
+                    duration: 0.8,
+                    backgroundColor: index % 2 === 0 ? 'rgba(0,0,0,0.01)' : 'transparent',
+                    ease: "power2.out"
+                });
+            },
+            onLeave: () => {
+                gsap.to(section, {
+                    duration: 0.8,
+                    backgroundColor: 'transparent',
+                    ease: "power2.out"
+                });
+            },
+            onEnterBack: () => {
+                gsap.to(section, {
+                    duration: 0.8,
+                    backgroundColor: index % 2 === 0 ? 'rgba(0,0,0,0.01)' : 'transparent',
+                    ease: "power2.out"
+                });
+            },
+            onLeaveBack: () => {
+                gsap.to(section, {
+                    duration: 0.8,
+                    backgroundColor: 'transparent',
+                    ease: "power2.out"
+                });
+            }
+        });
+    });
+
+    ScrollTrigger.create({
+        trigger: ".header",
+        start: "bottom top",
+        onUpdate: self => {
+            gsap.to('.header .name', {
+                duration: 0.3,
+                y: -self.progress * 100,
+                ease: "none"
+            });
+        }
+    });
+}
 
 gsap.utils.toArray('.section').forEach((section, index) => {
     gsap.from(section.querySelector('.section-title'), {
@@ -274,6 +650,20 @@ document.querySelectorAll('.project').forEach(project => {
     });
 });
 
+
+if (typeof IntersectionObserver !== 'undefined') {
+    const sectionInViewObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.target.id === 'about') {
+                entry.target.classList.toggle('in-view', entry.isIntersecting);
+            }
+        });
+    }, { root: null, rootMargin: '-30% 0px -40% 0px', threshold: 0.01 });
+
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) sectionInViewObserver.observe(aboutSection);
+}
+
 document.querySelectorAll('.achievement').forEach(achievement => {
     achievement.addEventListener('mouseenter', () => {
         gsap.to(achievement, {
@@ -292,22 +682,7 @@ document.querySelectorAll('.achievement').forEach(achievement => {
     });
 });
 
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('mouseenter', () => {
-        gsap.to(link, {
-            duration: 0.2,
-            color: '#666',
-            ease: "power2.out"
-        });
-    });
-    link.addEventListener('mouseleave', () => {
-        gsap.to(link, {
-            duration: 0.2,
-            color: '',
-            ease: "power2.out"
-        });
-    });
-});
+
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -317,17 +692,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
 
-        if (this.classList.contains('nav-link')) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        }
+
 
         if (target) {
             isSmoothScrolling = true;
 
             const targetRect = target.getBoundingClientRect();
             const currentScroll = window.pageYOffset;
-            const targetScroll = currentScroll + targetRect.top - 80;
+
+            const targetScroll = currentScroll + targetRect.top;
 
             gsap.to(window, {
                 duration: smoothScrollConfig.duration,
@@ -397,32 +770,7 @@ function initAdvancedScrollEffects() {
                 }
             });
         });
-        let lastScrollTop = 0;
-        ScrollTrigger.create({
-            trigger: document.body,
-            start: "top top",
-            end: "bottom bottom",
-            onUpdate: self => {
-                const nav = document.querySelector('.navigation');
-                if (nav) {
-                    const currentScrollTop = self.scroll();
-                    if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
-                        gsap.to(nav, {
-                            y: -100,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                    } else {
-                        gsap.to(nav, {
-                            y: 0,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                    }
-                    lastScrollTop = currentScrollTop;
-                }
-            }
-        });
+
     }
 }
 
@@ -430,6 +778,22 @@ initAdvancedScrollEffects();
 const darkModeToggle = document.querySelector('.dark-mode-toggle');
 const body = document.body;
 const toggleTextEl = document.querySelector('.dark-mode-toggle .toggle-text');
+let toggleTextTimeline = null;
+let isTogglingDark = false;
+
+function animateToggleLabel(next) {
+    if (!toggleTextEl) return;
+    if (gsap && typeof gsap.fromTo === 'function') {
+        if (toggleTextTimeline) toggleTextTimeline.kill();
+        toggleTextTimeline = gsap.timeline();
+        toggleTextTimeline
+            .fromTo(toggleTextEl, { yPercent: 0 }, { yPercent: -100, duration: 0.25, ease: 'power2.in' })
+            .add(() => { toggleTextEl.textContent = next; })
+            .fromTo(toggleTextEl, { yPercent: 100 }, { yPercent: 0, duration: 0.3, ease: 'power2.out' });
+    } else {
+        toggleTextEl.textContent = next;
+    }
+}
 
 function applyDarkModeState(isDark) {
     body.classList.toggle('dark-mode', isDark);
@@ -438,6 +802,8 @@ function applyDarkModeState(isDark) {
 }
 
 function toggleDarkMode() {
+    if (isTogglingDark) return;
+    isTogglingDark = true;
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
     applyDarkModeState(isDark);
@@ -446,6 +812,11 @@ function toggleDarkMode() {
         duration: 0.3,
         ease: "power2.inOut"
     });
+
+
+    animateToggleLabel(isDark ? 'light' : 'dark');
+
+    setTimeout(() => { isTogglingDark = false; }, 400);
 }
 
 if (darkModeToggle) {
@@ -487,35 +858,9 @@ if (backToTopButton) {
     });
 }
 
-const sections = document.querySelectorAll('.section');
-const navLinks = document.querySelectorAll('.nav-link');
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const currentSection = entry.target.getAttribute('id');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    });
-}, { root: null, rootMargin: '-40% 0px -50% 0px', threshold: 0.01 });
 
-sections.forEach(section => {
-    observer.observe(section);
-});
 
-function updateFavicon() {
-    const favicon = document.querySelector('link[rel="icon"]');
-    if (favicon) {
-        favicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>";
-    }
-}
-
-updateFavicon();
 
 document.querySelectorAll('.project').forEach(project => {
     project.addEventListener('click', function(e) {
@@ -540,12 +885,12 @@ document.querySelectorAll('.project').forEach(project => {
     });
 });
 
-console.log('%c👨‍💻 Aarav Gupta - Portfolio', 'color: #4a90e2; font-size: 24px; font-weight: bold;');
-console.log('%cWelcome to my portfolio! 🚀', 'color: #666; font-size: 16px;');
+console.log('%cAarav Gupta - Portfolio', 'color: #4a90e2; font-size: 24px; font-weight: bold;');
+console.log('%cWelcome to my portfolio!', 'color: #666; font-size: 16px;');
 console.log('%cFeel free to explore the code and reach out if you have any questions!', 'color: #666; font-size: 14px;');
-console.log('%c📧 Email: tribejustice35@gmail.com', 'color: #4a90e2; font-size: 14px;');
-console.log('%c🔗 GitHub: https://github.com/Aarav2709', 'color: #4a90e2; font-size: 14px;');
-console.log('%c💼 LinkedIn: https://linkedin.com/in/aarav2709', 'color: #4a90e2; font-size: 14px;');
+console.log('%cEmail: tribejustice35@gmail.com', 'color: #4a90e2; font-size: 14px;');
+console.log('%cGitHub: https://github.com/Aarav2709', 'color: #4a90e2; font-size: 14px;');
+console.log('%cLinkedIn: https://linkedin.com/in/aarav2709', 'color: #4a90e2; font-size: 14px;');
 
 const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 let konamiIndex = 0;
@@ -841,3 +1186,263 @@ function initMomentumScrolling() {
 }
 
 initMomentumScrolling();
+
+
+
+function initAchievementsAnimations() {
+    const achievements = gsap.utils.toArray('.achievement');
+
+    achievements.forEach((achievement, index) => {
+        gsap.from(achievement, {
+            duration: 0.8,
+            y: 60,
+            opacity: 0,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: achievement,
+                start: "top 80%",
+                toggleActions: "play none none none",
+                once: true
+            }
+        });
+
+        achievement.addEventListener('mouseenter', () => {
+            gsap.to(achievement, {
+                scale: 1.02,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            gsap.to(achievement.querySelector('.achievement-number'), {
+                scale: 1.1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+
+        achievement.addEventListener('mouseleave', () => {
+            gsap.to(achievement, {
+                scale: 1,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            gsap.to(achievement.querySelector('.achievement-number'), {
+                scale: 1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
+function initSkillsAnimations() {
+    const skillBars = gsap.utils.toArray('.skill-progress');
+
+    skillBars.forEach(bar => {
+        const progress = bar.getAttribute('data-progress');
+        gsap.set(bar, { width: '0%' });
+
+        ScrollTrigger.create({
+            trigger: bar,
+            start: "top 80%",
+            onEnter: () => {
+                gsap.to(bar, {
+                    width: `${progress}%`,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    delay: 0.2
+                });
+            },
+            once: true
+        });
+    });
+
+    const skillItems = gsap.utils.toArray('.skill-item');
+    skillItems.forEach((item, index) => {
+        gsap.from(item, {
+            duration: 0.6,
+            y: 30,
+            opacity: 0,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: item,
+                start: "top 85%",
+                toggleActions: "play none none none",
+                once: true
+            },
+            delay: index * 0.1
+        });
+    });
+
+    const miscItems = gsap.utils.toArray('.misc-item');
+    miscItems.forEach((item, index) => {
+        gsap.from(item, {
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: item,
+                start: "top 80%",
+                toggleActions: "play none none none",
+                once: true
+            },
+            delay: index * 0.15
+        });
+
+        item.addEventListener('mouseenter', () => {
+            gsap.to(item, {
+                scale: 1.02,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            const miscNumber = item.querySelector('.misc-number');
+            if (miscNumber) {
+                gsap.to(miscNumber, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+        });
+
+        item.addEventListener('mouseleave', () => {
+            gsap.to(item, {
+                scale: 1,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            const miscNumber = item.querySelector('.misc-number');
+            if (miscNumber) {
+                gsap.to(miscNumber, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+        });
+    });
+}
+
+function initHeroStrips() {
+    const strips = document.querySelectorAll('.hero-strips .strip-text');
+    if (!strips.length) return;
+    strips.forEach((el, i) => {
+        const dir = el.closest('.strip')?.classList.contains('reverse') ? -1 : 1;
+        gsap.to(el, {
+            xPercent: dir * -50,
+            duration: 30 + i * 5,
+            ease: 'none',
+            repeat: -1
+        });
+    });
+}
+
+function initScrollContrast() {
+
+    document.querySelectorAll('#about .about, #projects .project-description, #achievements .achievement-content p, #setup .misc-content, #contact .contact-info p').forEach(p => {
+        p.classList.add('contrast-text');
+    });
+
+    if (typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            entry.target.classList.toggle('in-contrast', entry.isIntersecting);
+        });
+    }, { root: null, rootMargin: '-45% 0px -45% 0px', threshold: 0.01 });
+
+    document.querySelectorAll('.contrast-text').forEach(el => io.observe(el));
+}
+
+
+function alignSkillsNumber() {
+    const header = document.querySelector('#skills .section-header');
+    if (!header) return;
+    const title = header.querySelector('.section-title');
+    const number = header.querySelector('.section-number');
+    if (!title || !number) return;
+
+    const headerTop = header.getBoundingClientRect().top + window.scrollY;
+    const titleRect = title.getBoundingClientRect();
+    const titleCenterInHeader = (titleRect.top + window.scrollY) - headerTop + (titleRect.height / 2);
+
+    number.style.top = `${titleCenterInHeader}px`;
+    number.style.transform = 'translateY(-50%)';
+}
+
+window.addEventListener('load', () => {
+    alignSkillsNumber();
+
+    setTimeout(alignSkillsNumber, 300);
+});
+window.addEventListener('resize', alignSkillsNumber);
+
+if ('ResizeObserver' in window) {
+    const skillsHeader = document.querySelector('#skills .section-header');
+    if (skillsHeader) {
+        const ro = new ResizeObserver(() => alignSkillsNumber());
+        ro.observe(skillsHeader);
+        const title = skillsHeader.querySelector('.section-title');
+        if (title) ro.observe(title);
+    }
+}
+
+
+function initOsmoMenu() {
+  if (typeof gsap === 'undefined') return;
+    const navWrap = document.querySelector('.osmo-cloneable .nav');
+    const menuButton = document.querySelector('button.menu-button[data-menu-toggle]') || document.querySelector('.menu-button');
+  if (!navWrap || !menuButton) return;
+
+  const overlay = navWrap.querySelector('.overlay');
+  const menu = navWrap.querySelector('.menu');
+  const bgPanels = navWrap.querySelectorAll('.bg-panel');
+  const menuToggles = document.querySelectorAll('[data-menu-toggle]');
+  const menuLinks = navWrap.querySelectorAll('.menu-link');
+  const fadeTargets = navWrap.querySelectorAll('[data-menu-fade]');
+  const menuButtonTexts = menuButton.querySelectorAll('p');
+  const menuButtonIcon = menuButton.querySelector('.menu-button-icon');
+
+  gsap.set(navWrap, { display: 'none' });
+  let tl = gsap.timeline({ defaults: { ease: 'main', duration: 0.7 } });
+
+  const openNav = () => {
+    navWrap.setAttribute('data-nav', 'open');
+    tl.clear()
+      .set(navWrap, { display: 'block' })
+      .set(menu, { xPercent: 0 }, '<')
+      .fromTo(menuButtonTexts, { yPercent: 0 }, { yPercent: -100, stagger: 0.2 })
+      .fromTo(menuButtonIcon, { rotate: 0 }, { rotate: 315 }, '<')
+      .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1 }, '<')
+      .fromTo(bgPanels, { xPercent: 101 }, { xPercent: 0, stagger: 0.12, duration: 0.575 }, '<')
+      .fromTo(menuLinks, { yPercent: 140, rotate: 10 }, { yPercent: 0, rotate: 0, stagger: 0.05 }, '<+=0.35')
+      .fromTo(fadeTargets, { autoAlpha: 0, yPercent: 50 }, { autoAlpha: 1, yPercent: 0, stagger: 0.04 }, '<+=0.2');
+  };
+
+  const closeNav = () => {
+    navWrap.setAttribute('data-nav', 'closed');
+    tl.clear()
+      .to(overlay, { autoAlpha: 0 })
+      .to(menu, { xPercent: 120 }, '<')
+      .to(menuButtonTexts, { yPercent: 0 }, '<')
+      .to(menuButtonIcon, { rotate: 0 }, '<')
+      .set(navWrap, { display: 'none' });
+  };
+
+  menuToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const state = navWrap.getAttribute('data-nav');
+      if (state === 'open') closeNav(); else openNav();
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navWrap.getAttribute('data-nav') === 'open') closeNav();
+  });
+
+
+  menuLinks.forEach((a) => a.addEventListener('click', () => closeNav()));
+}
