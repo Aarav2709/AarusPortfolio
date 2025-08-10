@@ -4,6 +4,15 @@
     box-sizing: border-box;
     cursor: none !important;
 }
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+html, body {
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+}
 
 :root {
     --primary-text: #000000;
@@ -24,15 +33,14 @@ body.dark-mode {
     --accent-color: #ffffff;
     --bg-color: #121212;
 }
-
-/* Custom cursor */
 .cursor, .cursor-dot {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    /* GSAP controls movement for smoothness */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    pointer-events: none !important;
+    z-index: 9999 !important;
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .cursor {
@@ -54,6 +62,9 @@ body.dark-mode {
 body.dark-mode .cursor-dot {
     background-color: var(--primary-text);
 }
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     font-family: 'Metropolis', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -63,13 +74,15 @@ body {
     background: var(--bg-color);
     max-width: 800px;
     margin: 0 auto;
-    padding: 80px 40px;
+    padding: 60px 40px;
     font-size: 15px;
     letter-spacing: -0.01em;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
     background-size: 20px 20px;
+    overscroll-behavior: none;
+    transform: none !important;
 }
 
 body.dark-mode {
@@ -78,22 +91,21 @@ body.dark-mode {
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-
 .fade-in {
-    /* Start visible - GSAP will handle animations */
     opacity: 1;
     transform: translateY(0);
 }
-
-/* Keep the keyframes for fallback but GSAP will override */
+.section, .project, .achievement, .misc-item, .header, .navigation {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform, opacity;
+}
 @keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-/* GSAP Animation Classes */
 .gsap-fade-in {
     opacity: 0;
     transform: translateY(50px);
@@ -118,10 +130,8 @@ body.dark-mode {
     opacity: 0;
     transform: translateY(30px);
 }
-
-/* Enhanced hover states for GSAP */
 .project, .achievement, .misc-item {
-    transition: none; /* GSAP will handle transitions */
+    transition: none;
 }
 
 .nav-link {
@@ -137,7 +147,7 @@ body.dark-mode {
     width: 0;
     height: 1px;
     background: var(--primary-text);
-    transition: none; /* GSAP will handle this */
+    transition: none;
 }
 
 
@@ -154,7 +164,6 @@ body.dark-mode {
     border-radius: 50px;
     padding: 8px 16px;
     border: 1px solid var(--border-color);
-    /* Let GSAP control visibility/animation */
 }
 
 body.dark-mode .navigation {
@@ -173,14 +182,12 @@ body.dark-mode .navigation {
     font-weight: 400;
     padding: 8px 16px;
     border-radius: 25px;
-    /* Remove transition - GSAP will handle this */
     position: relative;
 }
 
 .nav-link:hover {
     color: var(--primary-text);
     background: var(--hover-bg);
-    /* Remove transform - GSAP will handle this */
 }
 
 .nav-link.active {
@@ -190,9 +197,9 @@ body.dark-mode .navigation {
 
 
 .header {
-    margin-bottom: 100px;
+    margin-bottom: 70px;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 60px;
+    padding-bottom: 40px;
     animation-delay: 0.1s;
     text-align: center;
 }
@@ -254,13 +261,14 @@ body.dark-mode .navigation {
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    opacity: 0.7;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    opacity: 0.8;
     transition: opacity 0.3s;
     font-family: 'IBM Plex Mono', monospace;
     color: var(--primary-text);
+    z-index: 1100;
 }
 
 .dark-mode-toggle:hover {
@@ -282,8 +290,13 @@ body.dark-mode .navigation {
 
 
 .section {
-    margin-bottom: 80px;
+    margin-bottom: 28px !important;
     animation-delay: 0.2s;
+}
+@media (min-width: 769px) {
+    .section {
+    margin-bottom: 36px !important;
+    }
 }
 
 .section:nth-child(3) { animation-delay: 0.3s; }
@@ -293,7 +306,7 @@ body.dark-mode .navigation {
 .section-title {
     font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     color: var(--primary-text);
     position: relative;
     display: inline-block;
@@ -317,8 +330,6 @@ body.dark-mode .navigation {
     max-width: 600px;
     margin: 0;
 }
-
-/* Achievements Section */
 .achievements-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -412,11 +423,11 @@ body.dark-mode .achievement:hover {
 
 .projects-grid {
     display: grid;
-    gap: 50px;
+    gap: 28px;
 }
 
 .project {
-    padding: 30px 0;
+    padding: 18px 0;
     border-bottom: 1px solid var(--border-color);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -425,7 +436,7 @@ body.dark-mode .achievement:hover {
     background: rgba(128, 128, 128, 0.1);
     border: 1px solid rgba(128, 128, 128, 0.2);
     border-radius: 12px;
-    padding: 25px;
+    padding: 20px;
     overflow: hidden;
 }
 
@@ -695,8 +706,8 @@ body.dark-mode .demo-button:hover {
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    margin-top: 40px;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .skill-category h3 {
@@ -731,8 +742,6 @@ body.dark-mode .demo-button:hover {
     background: linear-gradient(45deg, var(--primary-text), var(--secondary-text));
     border-radius: 3px;
     width: 0%;
-    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    animation-delay: 0.5s;
 }
 
 .skill-progress.animate {
@@ -743,8 +752,8 @@ body.dark-mode .demo-button:hover {
 .contact-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-top: 40px;
+    gap: 28px;
+    margin-top: 20px;
 }
 
 .contact-info p {
@@ -860,7 +869,6 @@ body.dark-mode .submit-button:hover {
     transform: translateY(0);
 }
 
-/* Enhanced form states and notifications */
 .submit-button:disabled {
     opacity: 0.7;
     cursor: not-allowed;
@@ -875,13 +883,11 @@ body.dark-mode .submit-button:hover {
     background: #f44336 !important;
 }
 
-/* Notification styles */
 .notification {
     position: fixed;
     top: 20px;
     right: 20px;
     background: #2196f3;
-    color: white;
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -906,14 +912,11 @@ body.dark-mode .submit-button:hover {
     background: #2196f3;
 }
 
-/* Form loading state */
 .form-loading .form-group input,
 .form-loading .form-group textarea {
     opacity: 0.6;
     pointer-events: none;
 }
-
-/* Enhanced focus states for better accessibility */
 .form-group input:focus-visible,
 .form-group textarea:focus-visible {
     outline: 2px solid var(--primary-text);
@@ -930,8 +933,6 @@ body.dark-mode .form-group textarea:focus-visible,
 body.dark-mode .submit-button:focus-visible {
     outline-color: #ffffff;
 }
-
-/* Mobile notification adjustments */
 @media (max-width: 768px) {
     .notification {
         right: 10px;
@@ -968,6 +969,14 @@ body.dark-mode .submit-button:focus-visible {
     body {
         padding: 40px 20px;
         font-size: 14px;
+    }
+
+    .section {
+        margin-bottom: 35px;
+    }
+
+    .section-title {
+        margin-bottom: 20px;
     }
 
     .navigation {
@@ -1056,7 +1065,11 @@ body.dark-mode .submit-button:focus-visible {
     }
 
     .section {
-        margin-bottom: 50px;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        margin-bottom: 15px;
     }
 
     .nav-container {
@@ -1068,10 +1081,6 @@ body.dark-mode .submit-button:focus-visible {
         padding: 5px 10px;
     }
 }
-
-
-/* Let GSAP ScrollTo handle smooth scrolling */
-
 
 .skill-progress[data-progress="90"] { --progress-width: 90%; }
 .skill-progress[data-progress="85"] { --progress-width: 85%; }
@@ -1116,7 +1125,7 @@ body.dark-mode .project:hover {
 .back-to-top {
     position: fixed;
     bottom: 30px;
-    right: 30px;
+    right: 20px;
     width: 50px;
     height: 50px;
     background: #000000;
@@ -1127,7 +1136,7 @@ body.dark-mode .project:hover {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
+    z-index: 1100;
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
@@ -1167,8 +1176,8 @@ body.dark-mode .back-to-top:hover {
 .misc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
+    gap: 22px;
+    margin-top: 20px;
 }
 
 .misc-item {

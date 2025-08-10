@@ -22,31 +22,47 @@ if (typeof gsap === 'undefined') {
 } else {
     gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
 }
-
-// Prevent overlapping tweens causing double animations
 gsap.defaults({ overwrite: 'auto' });
+let isSmoothScrolling = false;
+const smoothScrollConfig = {
+    duration: 1.2,
+    ease: "power3.inOut"
+};
+function initSmoothScroll() {
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.body.style.WebkitOverflowScrolling = 'touch';
+    let scrollTimeout;
+    window.addEventListener('wheel', (e) => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            gsap.to(window, {
+                duration: 0.2,
+                ease: "power2.out"
+            });
+        }, 100);
+    }, { passive: true });
+}
+initSmoothScroll();
 
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 let curX = mouseX, curY = mouseY;
-
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
 });
 
 if (cursor && cursorDot) {
-    gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10, scale: 1 });
+    gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-
     gsap.ticker.add(() => {
-        // Lerp towards the mouse for smoothness
-        curX += (mouseX - curX) * 0.2;
-        curY += (mouseY - curY) * 0.2;
-        gsap.set(cursor, { x: curX - 10, y: curY - 10 });
-        gsap.set(cursorDot, { x: curX - 2, y: curY - 2 });
+        curX += (mouseX - curX) * 0.1;
+        curY += (mouseY - curY) * 0.1;
+
+    gsap.set(cursor, { x: curX - 10, y: curY - 10, force3D: true });
+    gsap.set(cursorDot, { x: curX - 2, y: curY - 2, force3D: true });
     });
 
     document.querySelectorAll('a, .project, .misc-item, .achievement, .nav-link, .demo-button, .submit-button').forEach(el => {
@@ -76,14 +92,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (cursor && cursorDot) {
+        cursor.style.display = 'block';
+        cursor.style.visibility = 'visible';
+        cursor.style.opacity = '0.8';
+        cursorDot.style.display = 'block';
+        cursorDot.style.visibility = 'visible';
+        cursorDot.style.opacity = '1';
+
         gsap.set(cursor, {
             x: window.innerWidth / 2 - 10,
-            y: window.innerHeight / 2 - 10
+            y: window.innerHeight / 2 - 10,
+            force3D: true
         });
         gsap.set(cursorDot, {
             x: window.innerWidth / 2 - 2,
-            y: window.innerHeight / 2 - 2
+            y: window.innerHeight / 2 - 2,
+            force3D: true
         });
+        mouseX = window.innerWidth / 2;
+        mouseY = window.innerHeight / 2;
+        curX = mouseX;
+        curY = mouseY;
     }
 });
 
@@ -172,68 +201,6 @@ gsap.utils.toArray('.section').forEach((section, index) => {
             }
         });
     }
-});
-
-gsap.from('.project', {
-    duration: 0.8,
-    y: 40,
-    opacity: 0,
-    stagger: 0.15,
-    immediateRender: false,
-    ease: "power2.out",
-    scrollTrigger: {
-        trigger: '.projects-grid',
-        start: "top 80%",
-    toggleActions: "play none none none",
-    once: true
-    }
-});
-
-gsap.from('.achievement', {
-    duration: 0.8,
-    y: 30,
-    opacity: 0,
-    stagger: 0.1,
-    immediateRender: false,
-    ease: "power2.out",
-    scrollTrigger: {
-        trigger: '.achievements-grid',
-        start: "top 80%",
-    toggleActions: "play none none none",
-    once: true
-    }
-});
-
-gsap.from('.skill-item', {
-    duration: 0.6,
-    scale: 0.8,
-    opacity: 0,
-    stagger: 0.05,
-    immediateRender: false,
-    ease: "back.out(1.7)",
-    scrollTrigger: {
-        trigger: '.skills-grid',
-        start: "top 80%",
-    toggleActions: "play none none none",
-    once: true
-    }
-});
-
-gsap.utils.toArray('.misc-item').forEach((item, i) => {
-    gsap.from(item, {
-        duration: 0.7,
-        x: -30,
-        opacity: 0,
-    immediateRender: false,
-        ease: "power2.out",
-        delay: i * 0.05,
-        scrollTrigger: {
-            trigger: item,
-            start: "top 85%",
-            toggleActions: "play none none none",
-            once: true
-        }
-    });
 });
 
 gsap.from('.contact-form .form-group', {
@@ -333,7 +300,6 @@ document.querySelectorAll('.nav-link').forEach(link => {
             ease: "power2.out"
         });
     });
-
     link.addEventListener('mouseleave', () => {
         gsap.to(link, {
             duration: 0.2,
@@ -346,17 +312,44 @@ document.querySelectorAll('.nav-link').forEach(link => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        // If it's a nav link, set active immediately
+        if (isSmoothScrolling) return;
+
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
+
         if (this.classList.contains('nav-link')) {
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
         }
+
         if (target) {
+            isSmoothScrolling = true;
+
+            const targetRect = target.getBoundingClientRect();
+            const currentScroll = window.pageYOffset;
+            const targetScroll = currentScroll + targetRect.top - 80;
+
             gsap.to(window, {
-                duration: 1,
-                scrollTo: { y: target, offsetY: 50 },
-                ease: "power2.inOut"
+                duration: smoothScrollConfig.duration,
+                scrollTo: {
+                    y: targetScroll,
+                    autoKill: false
+                },
+                ease: smoothScrollConfig.ease,
+                onComplete: () => {
+                    isSmoothScrolling = false;
+                    if (targetId !== '#') {
+                        history.pushState(null, null, targetId);
+                    }
+                }
+            });
+
+            gsap.to(target, {
+                duration: smoothScrollConfig.duration * 0.8,
+                y: -5,
+                ease: "power2.out",
+                yoyo: true,
+                repeat: 1
             });
         }
     });
@@ -384,13 +377,70 @@ if (progressBar) {
         });
     }
 }
+
+function initAdvancedScrollEffects() {
+    if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.section').forEach((section, index) => {
+        });
+    gsap.utils.toArray('.project, .achievement, .misc-item').forEach((item) => {
+            gsap.from(item, {
+                y: 24,
+                opacity: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                clearProps: 'all',
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                    toggleActions: "play none none none",
+                    once: true
+                }
+            });
+        });
+        let lastScrollTop = 0;
+        ScrollTrigger.create({
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            onUpdate: self => {
+                const nav = document.querySelector('.navigation');
+                if (nav) {
+                    const currentScrollTop = self.scroll();
+                    if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
+                        gsap.to(nav, {
+                            y: -100,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    } else {
+                        gsap.to(nav, {
+                            y: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    }
+                    lastScrollTop = currentScrollTop;
+                }
+            }
+        });
+    }
+}
+
+initAdvancedScrollEffects();
 const darkModeToggle = document.querySelector('.dark-mode-toggle');
 const body = document.body;
+const toggleTextEl = document.querySelector('.dark-mode-toggle .toggle-text');
+
+function applyDarkModeState(isDark) {
+    body.classList.toggle('dark-mode', isDark);
+    localStorage.setItem('darkMode', isDark);
+    if (toggleTextEl) toggleTextEl.textContent = isDark ? 'light' : 'dark';
+}
 
 function toggleDarkMode() {
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDark);
+    applyDarkModeState(isDark);
 
     gsap.to(body, {
         duration: 0.3,
@@ -401,15 +451,13 @@ function toggleDarkMode() {
 if (darkModeToggle) {
     darkModeToggle.addEventListener('click', toggleDarkMode);
 }
-
-if (localStorage.getItem('darkMode') === 'true') {
-    body.classList.add('dark-mode');
-}
+const initialDark = localStorage.getItem('darkMode') === 'true';
+applyDarkModeState(initialDark);
 
 const backToTopButton = document.querySelector('.back-to-top');
 
 if (backToTopButton) {
-    gsap.set(backToTopButton, { opacity: 0, y: 20 });
+    gsap.set(backToTopButton, { opacity: 0, y: 10 });
 
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 300) {
@@ -423,18 +471,19 @@ if (backToTopButton) {
             gsap.to(backToTopButton, {
                 duration: 0.3,
                 opacity: 0,
-                y: 20,
+                y: 10,
                 ease: "power2.in"
             });
         }
     });
 
     backToTopButton.addEventListener('click', () => {
-        gsap.to(window, {
+    gsap.to(window, {
             duration: 1,
             scrollTo: { y: 0 },
             ease: "power2.inOut"
         });
+    if (window.smoothScrollControl) window.smoothScrollControl.set(0);
     });
 }
 
@@ -647,6 +696,7 @@ if (contactForm) {
 
 const skillsGrid = document.querySelector('.skills-grid');
 const skillBars = document.querySelectorAll('.skill-progress');
+let skillBarsAnimated = false;
 skillBars.forEach(bar => {
     const percent = parseInt(bar.getAttribute('data-progress') || '0', 10) || 0;
     bar.style.width = percent + '%';
@@ -657,44 +707,137 @@ if (skillsGrid && skillBars.length) {
     ScrollTrigger.create({
         trigger: skillsGrid,
         start: 'top 80%',
-        once: true,
-        onEnter: () => {
+        onEnter: (self) => {
+            if (skillBarsAnimated) { self.kill(); return; }
             gsap.to(skillBars, {
                 scaleX: 1,
                 duration: 1.2,
                 ease: 'power2.out',
                 stagger: 0.05
             });
+            skillBarsAnimated = true;
+            self.kill();
         }
     });
 }
-
-// Lightweight smooth wheel scrolling using GSAP
 (() => {
     let isScrolling = false;
     let targetY = window.scrollY;
-    const maxDelta = 120; // normalize big wheel deltas
+    let currentY = window.scrollY;
+    const maxDelta = 100;
+    const lerp = 0.08;
 
     function onWheel(e) {
         e.preventDefault();
         const delta = Math.max(-maxDelta, Math.min(maxDelta, e.deltaY));
-        targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + delta));
+        targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + delta * 1.5));
         if (!isScrolling) animateScroll();
     }
 
     function animateScroll() {
         isScrolling = true;
-        gsap.to(window, {
-            scrollTo: targetY,
-            duration: 0.4,
-            ease: 'power2.out',
-            onComplete: () => { isScrolling = false; }
-        });
-    }
 
-    // Only enable on non-touch devices
+        function updateScroll() {
+            currentY += (targetY - currentY) * lerp;
+
+            if (Math.abs(targetY - currentY) > 0.5) {
+                window.scrollTo(0, currentY);
+                requestAnimationFrame(updateScroll);
+            } else {
+                window.scrollTo(0, targetY);
+                currentY = targetY;
+                isScrolling = false;
+            }
+        }
+
+        updateScroll();
+    }
+    function onKeyDown(e) {
+        const scrollAmount = window.innerHeight * 0.8;
+
+        switch(e.key) {
+            case 'ArrowDown':
+            case 'PageDown':
+                e.preventDefault();
+                targetY = Math.min(document.body.scrollHeight - window.innerHeight, targetY + scrollAmount);
+                if (!isScrolling) animateScroll();
+                break;
+            case 'ArrowUp':
+            case 'PageUp':
+                e.preventDefault();
+                targetY = Math.max(0, targetY - scrollAmount);
+                if (!isScrolling) animateScroll();
+                break;
+            case 'Home':
+                e.preventDefault();
+                targetY = 0;
+                if (!isScrolling) animateScroll();
+                break;
+            case 'End':
+                e.preventDefault();
+                targetY = document.body.scrollHeight - window.innerHeight;
+                if (!isScrolling) animateScroll();
+                break;
+        }
+    }
+    function updateCurrentY() {
+        currentY = window.scrollY;
+        targetY = window.scrollY;
+    }
+    window.smoothScrollControl = {
+        set(y) {
+            targetY = y;
+            currentY = y;
+        },
+        syncToWindow() {
+            targetY = window.scrollY;
+            currentY = window.scrollY;
+        }
+    };
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (!isTouch) {
         window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('load', updateCurrentY);
+        window.addEventListener('resize', updateCurrentY);
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                targetY = window.scrollY;
+                currentY = window.scrollY;
+            }
+        }, { passive: true });
     }
 })();
+function initMomentumScrolling() {
+    let velocity = 0;
+    let isTouch = false;
+    let lastY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+        isTouch = true;
+        lastY = e.touches[0].clientY;
+        velocity = 0;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!isTouch) return;
+        const currentY = e.touches[0].clientY;
+        velocity = currentY - lastY;
+        lastY = currentY;
+    });
+
+    window.addEventListener('touchend', () => {
+        if (!isTouch) return;
+        isTouch = false;
+
+        if (Math.abs(velocity) > 5) {
+            gsap.to(window, {
+                scrollTo: `+=${velocity * 3}`,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        }
+    });
+}
+
+initMomentumScrolling();
