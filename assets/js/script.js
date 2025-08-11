@@ -56,8 +56,8 @@ function initPreloader() {
     if (!preloader || !percentageEl) return;
 
 
-    const minDisplayTime = 3000;
-    const maxDisplayTime = 5000;
+    const minDisplayTime = 800;
+    const maxDisplayTime = 1200;
     const startTime = Date.now();
     let currentPercentage = 0;
     let isLoading = true;
@@ -122,29 +122,31 @@ function initPreloader() {
 
         tl.to(percentageEl, {
             scale: 1.2,
-            duration: 0.3,
+            duration: 0.15,
             ease: "back.out(1.7)"
         })
 
 
         .to(percentageEl, {
             scale: 1,
-            duration: 0.2,
+            duration: 0.1,
             ease: "power2.out"
         })
         .to(preloaderLine, {
             width: "120px",
-            duration: 0.4,
+            duration: 0.2,
             ease: "power2.out"
-        }, "-=0.1")
+        }, "-=0.05")
 
 
         .to(preloaderChars, {
             y: -10,
-            duration: 0.3,
+            duration: 0.15,
             ease: "power2.out",
-            stagger: 0.05
-        }, "-=0.3")
+            stagger: 0.025,
+            force3D: true,
+            backfaceVisibility: "hidden"
+        }, "-=0.15")
 
         .to(preloaderChars, {
             y: 0,
@@ -191,22 +193,29 @@ const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
-let curX = mouseX, curY = mouseY;
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-});
+let curX = mouseX;
+let curY = mouseY;
 
 if (cursor && cursorDot) {
+    // Initialize cursor position
     gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-    gsap.ticker.add(() => {
-        curX += (mouseX - curX) * 0.1;
-        curY += (mouseY - curY) * 0.1;
 
-    gsap.set(cursor, { x: curX - 10, y: curY - 10, force3D: true });
-    gsap.set(cursorDot, { x: curX - 2, y: curY - 2, force3D: true });
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        // Dot follows cursor instantly
+        gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2, force3D: true });
     });
+
+    // Smooth follow for main cursor
+    const updateCursor = () => {
+        curX += (mouseX - curX) * 0.2; // Increased from 0.1 to 0.2 for faster follow
+        curY += (mouseY - curY) * 0.2;
+        gsap.set(cursor, { x: curX - 10, y: curY - 10, force3D: true });
+        requestAnimationFrame(updateCursor);
+    };
+    updateCursor();
 
     document.querySelectorAll('a, .project, .misc-item, .achievement, .nav-link, .demo-button, .submit-button').forEach(el => {
         el.addEventListener('mouseenter', () => {
@@ -296,18 +305,24 @@ function initTextRevealAnimations() {
     gsap.utils.toArray('.section-title').forEach((title) => {
         const chars = title.querySelectorAll('.section-title-char');
 
-        gsap.set(chars, { y: '100%' });
+        gsap.set(chars, {
+            y: '120%',
+            opacity: 0,
+            scale: 0.8
+        });
 
         ScrollTrigger.create({
             trigger: title,
-            start: "top 80%",
+            start: "top 95%", // Trigger earlier
             onEnter: () => {
                 gsap.to(chars, {
-                    duration: 1,
+                    duration: 0.8,
                     y: 0,
-                    ease: "power4.out",
+                    opacity: 1,
+                    scale: 1,
+                    ease: "back.out(1.3)",
                     stagger: {
-                        amount: 0.3,
+                        amount: 0.4,
                         from: "start"
                     }
                 });
@@ -317,18 +332,26 @@ function initTextRevealAnimations() {
     });
 
     gsap.utils.toArray('.about, .about-large').forEach((text, index) => {
-        gsap.from(text, {
-            duration: 1.2,
-            y: 60,
+        // Set initial state
+        gsap.set(text, {
+            y: 80,
             opacity: 0,
-            ease: "power3.out",
+            filter: 'blur(8px)'
+        });
+
+        gsap.to(text, {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: "expo.out",
             scrollTrigger: {
                 trigger: text,
-                start: "top 85%",
+                start: "top 95%", // Trigger earlier
                 toggleActions: "play none none none",
                 once: true
             },
-            delay: index * 0.2
+            delay: index * 0.15
         });
     });
 }
@@ -384,8 +407,8 @@ function initAboutLineReveal() {
             scrollTrigger: {
                 trigger: target,
                 scrub: 1,
-                start: 'top 70%',
-                end: 'bottom 30%'
+                start: 'top 90%', // Trigger earlier
+                end: 'bottom 40%'  // Extended animation range
             }
         });
     });
@@ -408,8 +431,8 @@ function initProjectWordReveal() {
 
         ScrollTrigger.create({
             trigger: desc,
-            start: 'top 85%',
-            end: 'bottom 55%',
+            start: 'top 95%', // Trigger earlier
+            end: 'bottom 65%',  // Extended animation range
             onUpdate: self => {
                 const p = self.progress;
                 const count = Math.floor(p * wordEls.length);
