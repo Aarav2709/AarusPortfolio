@@ -1,4 +1,49 @@
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none !important;
+}
+
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+html, body {
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+}
 
 #skills .section-header {
     justify-content: center;
@@ -18,21 +63,6 @@
 
 
 #contact .section-title { padding-top: 0.15em; }
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    cursor: none !important;
-}
-html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-html, body {
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-}
 
 :root {
     --primary-text: #000000;
@@ -1660,7 +1690,7 @@ body.dark-mode .misc-item {
 }
 
 
-@font-face { font-family: 'PP Neue Corp Tight'; src: url('https://cdn.prod.website-files.com/673af51dea86ab95d124c3ee/673b0f5784f7060c0ac05534_PPNeueCorp-TightUltrabold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'PP Neue Corp Tight'; src: url('https://example.com/font.woff2'); }
 
 .osmo-ui { z-index: 0; pointer-events: none; display: flex; flex-flow: column; }
 .osmo-header { display: none; }

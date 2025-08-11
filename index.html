@@ -9,12 +9,17 @@
     <meta http-equiv="Clear-Site-Data" content="cache">
     <title>AarusPortfolio</title>
 
-    <!-- Preload critical resources -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
     <link rel="preload" href="assets/css/style.css?v=2024" as="style">
     <link rel="preload" href="assets/js/script.js?v=2024" as="script">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" as="style">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://cloud.umami.is">
     <meta name="description" content="Portfolio of Aarav Gupta, a 14-year-old developer from India passionate about game development, web applications, and automation scripts.">
     <meta name="keywords" content="Aarav Gupta, developer, portfolio, Python, JavaScript, game development, web development.">
     <meta name="author" content="Aarav Gupta">
@@ -34,7 +39,7 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Aarav Gupta",
-    "url": "https://aarus2709.me/",
+      "url": "https://aarus2709.me/",
       "sameAs": [
         "https://github.com/Aarav2709",
         "https://linkedin.com/in/aarav2709"
@@ -50,8 +55,8 @@
       gtag('js', new Date());
       gtag('config', 'G-2J862SJ5KJ');
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css?v=2024">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -59,8 +64,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
     <script src="assets/js/script.js?v=2024" defer></script>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3">
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico?v=4">
+    <link rel="shortcut icon" type="image/x-icon" href="public/favicon.ico?v=4">
+    <link rel="apple-touch-icon" href="public/favicon.ico?v=4">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="69382255-5676-47b8-b5e5-07352a4e6f0c"></script>
 </head>
@@ -143,10 +149,10 @@
                             </a>
                         </li>
                     </ul>
-                  </section>
-
-
-
+                </div>
+            </nav>
+        </div>
+    </section>
 
     <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
         <span class="toggle-text">dark</span>
@@ -337,15 +343,15 @@
                         <div class="project-content">
                             <div class="project-info">
                                 <div class="project-meta">
-                                    <span class="project-tech">react, vite</span>
+                                    <span class="project-tech">python</span>
                                 </div>
-                                <h3>Typeconomy</h3>
+                                <h3>DecryptionToolkeet</h3>
                                 <p class="project-description">
-                                    A clicker game where you type words instead of clicking! Boost your typing skills, earn money, and unlock powerful upgrades to automate your economy—all through typing.
+                                    A comprehensive Python CLI tool for automatically decoding and decrypting strings using 33+ classic ciphers and encodings. Features intelligent auto-detection, colorized output, entropy analysis, and supports Base64, Caesar, Morse, Hex, and many more.
                                 </p>
                                 <div class="project-links">
-                                    <a href="https://github.com/Nathan5471/typeconomy" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
-                                    <a href="https://typeconomy.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                    <a href="https://github.com/Aarav2709/DecryptionToolkeet" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://pypi.org/project/DecryptionToolkeet/" target="_blank" rel="noopener noreferrer" class="project-link">pypi</a>
                                 </div>
                             </div>
                             <div class="project-visual"></div>
@@ -377,15 +383,15 @@
                         <div class="project-content">
                             <div class="project-info">
                                 <div class="project-meta">
-                                    <span class="project-tech">html css and java</span>
+                                    <span class="project-tech">react, vite</span>
                                 </div>
-                                <h3>Stronghold</h3>
+                                <h3>Typeconomy</h3>
                                 <p class="project-description">
-                                    The official repository and website for SSVE's IT Club, Stronghold. A platform designed to showcase the club's activities, projects, and provide resources for students interested in technology and programming.
+                                    A clicker game where you type words instead of clicking! Boost your typing skills, earn money, and unlock powerful upgrades to automate your economy—all through typing.
                                 </p>
                                 <div class="project-links">
-                                    <a href="https://github.com/Aarav2709/Stronghold" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
-                                    <a href="https://stronghold.tech" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
+                                    <a href="https://github.com/Nathan5471/typeconomy" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://typeconomy.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
                                 </div>
                             </div>
                             <div class="project-visual"></div>
@@ -397,14 +403,15 @@
                         <div class="project-content">
                             <div class="project-info">
                                 <div class="project-meta">
-                                    <span class="project-tech">lua, solar2d</span>
+                                    <span class="project-tech">html css and java</span>
                                 </div>
-                                <h3>Fun Run 1: Replayed</h3>
+                                <h3>Stronghold</h3>
                                 <p class="project-description">
-                                    A fully reimagined version of Fun Run 1, built from the ground up in Solar2D. Brings back the chaotic fun of the original with modern enhancements, rewritten mechanics, and online multiplayer capabilities.
+                                    The official repository and website for SSVE's IT Club, Stronghold. A platform designed to showcase the club's activities, projects, and provide resources for students interested in technology and programming.
                                 </p>
                                 <div class="project-links">
-                                    <a href="https://github.com/Aarav2709/FR1-Replayed" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://github.com/Aarav2709/Stronghold" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://stronghold-zeta.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">live site</a>
                                 </div>
                             </div>
                             <div class="project-visual"></div>
@@ -418,12 +425,31 @@
                                 <div class="project-meta">
                                     <span class="project-tech">lua, solar2d</span>
                                 </div>
+                                <h3>Fun Run 1: Replayed</h3>
+                                <p class="project-description">
+                                    A fully reimagined version of Fun Run 1, built from the ground up in Solar2D. Brings back the chaotic fun of the original with modern enhancements, rewritten mechanics, and online multiplayer capabilities.
+                                </p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Aarav2709/FunRun1-Replayed" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                </div>
+                            </div>
+                            <div class="project-visual"></div>
+                        </div>
+                    </div>
+
+                    <div class="project">
+                        <div class="project-number">08</div>
+                        <div class="project-content">
+                            <div class="project-info">
+                                <div class="project-meta">
+                                    <span class="project-tech">lua, solar2d</span>
+                                </div>
                                 <h3>Fun Run 2: Reborn</h3>
                                 <p class="project-description">
                                     A complete enhanced remake of the classic multiplayer racing game, rebuilt from scratch using Solar2D. Features local multiplayer, character progression, power-ups, and modern enhancements while preserving the original gameplay.
                                 </p>
                                 <div class="project-links">
-                                    <a href="https://github.com/Aarav2709/FR2-Reborn" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
+                                    <a href="https://github.com/Aarav2709/FunRun2-Reborn" target="_blank" rel="noopener noreferrer" class="project-link">github</a>
                                 </div>
                             </div>
                             <div class="project-visual"></div>
