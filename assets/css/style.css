@@ -245,6 +245,14 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* Hide custom cursor on mobile */
+    .cursor, .cursor-dot { display: none !important; }
+    /* Fix scroll behavior */
+    html, body { overscroll-behavior: auto !important; }
+    /* Ensure navigation and menu are visible */
+    .navigation { display: block !important; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg-color); }
+    .menu-button { display: block !important; }
+    .osmo-cloneable .menu { display: flex !important; }
     .container {
         padding: 0 20px;
     }
@@ -591,7 +599,7 @@ body.dark-mode .navigation.scrolled {
 
 
 .osmo-cloneable .menu { font-family: 'Gowun Batang', serif; }
-.osmo-cloneable .menu-link-heading { font-family: 'Gowun Batang', serif; text-transform: none; letter-spacing: -0.02em; font-weight: 400; font-size: clamp(28px, 6vw, 56px); }
+.osmo-cloneable .menu-link-heading { font-family: 'Gowun Batang', serif; text-transform: none; letter-spacing: -0.02em; font-weight: 400; font-size: clamp(28px, 6vw, 48px); text-align: left; }
 .osmo-cloneable .menu-link { justify-content: flex-end; }
 .osmo-cloneable .menu-details, .osmo-cloneable .menu-list { align-items: stretch; }
 .osmo-cloneable .menu { --menu-padding: clamp(20px, 4vw, 40px); }
@@ -600,7 +608,7 @@ body.dark-mode .navigation.scrolled {
 .osmo-cloneable .eyebrow { font-family: 'Gowun Batang', serif; letter-spacing: 0.12em; align-self: flex-end; margin-left: 0; margin-right: 0; }
 
 
-.osmo-cloneable .menu-link, .osmo-cloneable .menu-link-heading { text-align: right; }
+.osmo-cloneable .menu-link, .osmo-cloneable .menu-link-heading { text-align: left; }
 
 
 .osmo-cloneable .menu,
@@ -685,20 +693,20 @@ body.dark-mode .navigation.scrolled {
     white-space: nowrap;
 }
 
-.about {
-    font-size: var(--text-size);
-    line-height: 1.6;
-    color: var(--secondary-text);
-    max-width: 800px;
-    margin: 0;
-    font-weight: 300;
-}
-
-.about-large {
-    font-size: calc(var(--text-size) * 1.5);
-    line-height: 1.3;
+body {
+    font-family: 'Gowun Batang', serif;
+    font-weight: 400;
+    line-height: 1.4;
     color: var(--primary-text);
-    font-weight: 300;
+    background: var(--bg-color);
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    overscroll-behavior: contain;
+    transform: none !important;
+    overflow-x: hidden;
     margin-bottom: 60px;
 }
 
@@ -1690,7 +1698,14 @@ body.dark-mode .misc-item {
 }
 
 
-@font-face { font-family: 'PP Neue Corp Tight'; src: url('https://example.com/font.woff2'); }
+@font-face {
+@font-face {
+    font-family: 'Gowun Batang';
+    src: url('/assets/fonts/GowunBatang.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+}
 
 .osmo-ui { z-index: 0; pointer-events: none; display: flex; flex-flow: column; }
 .osmo-header { display: none; }
@@ -1715,7 +1730,7 @@ body.dark-mode .misc-item {
 .osmo-cloneable .menu-link::after { content: ''; position: absolute; right: 0; top: .35em; bottom: .35em; width: 3px; background: var(--accent-color); transform: scaleY(0); transform-origin: center bottom; transition: transform .25s cubic-bezier(.4,0,.2,1), opacity .25s; opacity: 0.7; }
 .osmo-cloneable .menu-link:hover::after,
 .osmo-cloneable .menu-link:focus-visible::after { transform: scaleY(1); }
-.osmo-cloneable .menu-link-heading { z-index: 1; text-transform: uppercase; font-family: 'PP Neue Corp Tight', 'Gowun Batang', serif; font-size: clamp(42px, 9vw, 90px); font-weight: 700; line-height: .75; transition: transform .55s cubic-bezier(.65, .05, 0, 1); position: relative; text-shadow: none; }
+.osmo-cloneable .menu-link-heading { z-index: 1; text-transform: uppercase; font-family: 'Gowun Batang', serif; font-size: clamp(28px, 6vw, 48px); font-weight: 700; line-height: .75; transition: transform .55s cubic-bezier(.65, .05, 0, 1); position: relative; text-shadow: none; text-align: left; }
 .osmo-cloneable .eyebrow { z-index: 1; color: var(--accent-color); text-transform: uppercase; font-family: monospace; font-weight: 400; position: relative; }
 .osmo-cloneable .menu-link-bg { display: none !important; }
 .osmo-cloneable .menu-link:hover .menu-link-heading { transform: translateY(-1em); transition-delay: .1s; }
@@ -1735,10 +1750,10 @@ body.dark-mode .misc-item {
 }
 
 @media screen and (max-width: 767px) {
-    .osmo-cloneable .menu { padding-top: 7em; width: min(24em, 88vw); }
+    .osmo-cloneable .menu { padding-top: 7em; width: min(36em, 100vw); }
     .osmo-cloneable .bg-panel { border-top-left-radius: 0; border-bottom-left-radius: 0; }
     .osmo-cloneable .menu-list-item { height: 4.5em; }
-    .osmo-cloneable .menu-link-heading { font-size: clamp(32px, 12vw, 64px); }
+    .osmo-cloneable .menu-link-heading { font-size: clamp(22px, 8vw, 36px); text-align: left; }
 }
 
 .osmo-credits, .osmo-credits__p, .osmo-credits__p-a { display: none; }
