@@ -6,72 +6,16 @@
     cursor: none !important;
 }
 
-
-::-webkit-scrollbar {
-    width: 4px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-body.dark-mode ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-body.dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-}
-
-html, body {
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-}
-
-#skills .section-header {
-    justify-content: center;
-    position: relative;
-}
-
-#skills .section-title {
-    text-align: center;
-}
-
-#skills .section-number {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-
-#contact .section-title { padding-top: 0.15em; }
-
 :root {
+    /* Light theme defaults */
     --primary-text: #000000;
-    --secondary-text: #555555;
-    --tertiary-text: #888888;
+    --secondary-text: #444444; /* improved contrast vs background */
+    --tertiary-text: #666666;
     --border-color: #e0e0e0;
     --hover-bg: #f5f5f5;
     --accent-color: #000000;
     --bg-color: #ffffff;
+    /* Sizing scales */
     --hero-size: clamp(4rem, 12vw, 12rem);
     --section-size: clamp(2rem, 6vw, 4rem);
     --text-size: clamp(1rem, 2.5vw, 1.5rem);
@@ -79,8 +23,8 @@ html, body {
 
 body.dark-mode {
     --primary-text: #ffffff;
-    --secondary-text: #aaaaaa;
-    --tertiary-text: #777777;
+    --secondary-text: #eaeaea; /* brighter for contrast on dark */
+    --tertiary-text: #c8c8c8;
     --border-color: #333333;
     --hover-bg: #222222;
     --accent-color: #ffffff;
@@ -120,84 +64,7 @@ body.dark-mode .cursor { border-color: #fff; }
 body.dark-mode .cursor-dot { background-color: #fff; }
 
 
-.preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
-}
-
-.preloader.fade-out {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.preloader-content {
-    text-align: center;
-}
-
-.preloader-name {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    font-weight: 200;
-    letter-spacing: -0.02em;
-    margin: 0;
-    color: var(--primary-text);
-    line-height: 1;
-    text-transform: lowercase;
-    font-family: 'Gowun Batang', serif;
-}
-
-.preloader-char {
-    display: inline-block;
-    opacity: 0;
-    animation: fadeInChar 0.6s ease-out forwards;
-}
-
-.preloader-char:nth-child(1) { animation-delay: 0.1s; }
-.preloader-char:nth-child(2) { animation-delay: 0.2s; }
-.preloader-char:nth-child(3) { animation-delay: 0.3s; }
-.preloader-char:nth-child(4) { animation-delay: 0.4s; }
-.preloader-char:nth-child(5) { animation-delay: 0.5s; }
-.preloader-char:nth-child(6) { animation-delay: 0.6s; }
-.preloader-char:nth-child(7) { animation-delay: 0.7s; }
-
-.preloader-percentage {
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    font-weight: 300;
-    color: var(--secondary-text);
-    margin: 1rem 0 0.5rem 0;
-    letter-spacing: 0.1em;
-    opacity: 0;
-    animation: fadeInLine 0.4s ease-out 1s forwards;
-    transition: color 0.3s ease, transform 0.3s ease;
-    transform-origin: center;
-}
-
-.preloader-line {
-    width: 40px;
-    height: 1px;
-    background: var(--primary-text);
-    margin: 1rem auto 0;
-    opacity: 0;
-    animation: fadeInLine 0.4s ease-out 1.2s forwards, expandLine 1s ease-out 1.4s forwards;
-    transition: width 0.4s ease;
-}
-
-
-.preloader-content {
-    transition: filter 0.3s ease;
-}
-
-.preloader-char {
-    transition: transform 0.3s ease;
-}
+/* removed preloader styles */
 
 @keyframes fadeInChar {
     to {
