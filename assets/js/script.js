@@ -136,11 +136,31 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
+    // Ensure every .project has a .project-number element (create at runtime if missing)
+    ensureProjectNumbers();
     // render star badges, then reorder projects by star count (descending)
     renderGitHubStars().then((starMap) => {
         try { sortProjectsByStars(starMap); } catch(e) { /* noop */ }
     }).catch(() => {/* ignore errors */});
 });
+
+// Create .project-number elements for projects that don't have them.
+function ensureProjectNumbers() {
+    const projects = document.querySelectorAll('.projects-grid .project');
+    projects.forEach((proj, i) => {
+        let numEl = proj.querySelector('.project-number');
+        if (!numEl) {
+            numEl = document.createElement('div');
+            numEl.className = 'project-number';
+            // insert as first child of project (before project-content)
+            const content = proj.querySelector('.project-content');
+            if (content && content.parentNode) content.parentNode.insertBefore(numEl, content);
+            else proj.insertBefore(numEl, proj.firstChild);
+        }
+        // initialize with a placeholder (will be updated after sorting)
+        numEl.textContent = String(i + 1).padStart(2, '0');
+    });
+}
 
 // Render GitHub star badges next to project GitHub links.
 function renderGitHubStars() {
