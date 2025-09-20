@@ -136,76 +136,135 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
-    renderGitHubStars();
+    // render star badges, then reorder projects by star count (descending)
+    renderGitHubStars().then((starMap) => {
+        try { sortProjectsByStars(starMap); } catch(e) { /* noop */ }
+    }).catch(() => {/* ignore errors */});
 });
 
 // Render GitHub star badges next to project GitHub links.
 function renderGitHubStars() {
-    // Find project link containers and their GitHub link (owner/repo)
-    const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
-    if (!projectContainers.length) return;
+    // Returns a Promise resolving to a map of repoKey -> starCount
+    return new Promise((resolve) => {
+        const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
+        if (!projectContainers.length) return resolve({});
 
-    const cacheKey = 'gh_star_cache_v1';
-    const cacheTTL = 1000 * 60 * 60; // 1 hour
-    let cache = {};
-    try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
+        const cacheKey = 'gh_star_cache_v1';
+        const cacheTTL = 1000 * 60 * 60; // 1 hour
+        let cache = {};
+        try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
 
-    projectContainers.forEach(container => {
-        const link = container.querySelector('a[href*="github.com/"]');
-        if (!link) return;
-        // mark single-link containers
-        const linkCount = container.querySelectorAll('a').length;
-        if (linkCount === 1) container.classList.add('single-link');
+        const starMap = {};
+        const fetchPromises = [];
 
-        try {
-            const url = new URL(link.href);
-            const parts = url.pathname.split('/').filter(Boolean);
-            if (parts.length < 2) return;
-            const owner = parts[0];
-            const repo = parts[1];
-            const repoKey = `${owner}/${repo}`;
+        projectContainers.forEach(container => {
+            const link = container.querySelector('a[href*="github.com/"]');
+            if (!link) return;
+            const linkCount = container.querySelectorAll('a').length;
+            if (linkCount === 1) container.classList.add('single-link');
 
-            const badge = document.createElement('span');
-            badge.className = 'star-badge loading';
-            badge.setAttribute('aria-hidden', 'true');
-            badge.innerHTML = `
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.4 9.75l-5.7 5.556L19.335 24 12 19.897 4.665 24l1.634-8.694L.6 9.75l7.732-1.732z"></path></svg>
-                <span class="star-count">—</span>`;
+            try {
+                const url = new URL(link.href);
+                const parts = url.pathname.split('/').filter(Boolean);
+                if (parts.length < 2) return;
+                const owner = parts[0];
+                const repo = parts[1];
+                const repoKey = `${owner}/${repo}`;
 
-            // append badge to the container (so it's after all links)
-            container.appendChild(badge);
+                const badge = document.createElement('span');
+                badge.className = 'star-badge loading';
+                badge.setAttribute('aria-hidden', 'true');
+                badge.innerHTML = `
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.4 9.75l-5.7 5.556L19.335 24 12 19.897 4.665 24l1.634-8.694L.6 9.75l7.732-1.732z"></path></svg>
+                    <span class="star-count">—</span>`;
 
-            const updateBadge = (count) => {
-                badge.classList.remove('loading');
-                badge.querySelector('.star-count').textContent = count != null ? String(count) : '—';
-            };
+                container.appendChild(badge);
 
-            const setError = () => { badge.classList.remove('loading'); badge.classList.add('error'); badge.querySelector('.star-count').textContent = '—'; };
+                const updateBadge = (count) => {
+                    badge.classList.remove('loading');
+                    badge.querySelector('.star-count').textContent = count != null ? String(count) : '—';
+                };
+                const setError = () => { badge.classList.remove('loading'); badge.classList.add('error'); badge.querySelector('.star-count').textContent = '—'; };
 
-            const cached = cache[repoKey];
-            const now = Date.now();
-            if (cached && (now - cached.ts) < cacheTTL) {
-                updateBadge(cached.stars);
-                return;
-            }
+                const projectEl = container.closest('.project');
 
-            fetch(`https://api.github.com/repos/${owner}/${repo}`)
-                .then(res => {
-                    if (!res.ok) throw new Error('GitHub API error');
-                    return res.json();
-                })
-                .then(data => {
-                    const stars = data.stargazers_count ?? null;
+                const cached = cache[repoKey];
+                const now = Date.now();
+                if (cached && (now - cached.ts) < cacheTTL) {
+                    const stars = cached.stars ?? 0;
                     updateBadge(stars);
-                    cache[repoKey] = { stars, ts: Date.now() };
-                    try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
-                })
-                .catch(err => {
-                    setError();
-                });
-        } catch(e) {
-            // ignore malformed links
+                    starMap[repoKey] = stars;
+                    if (projectEl) projectEl.dataset.stars = String(stars);
+                    return;
+                }
+
+                const p = fetch(`https://api.github.com/repos/${owner}/${repo}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error('GitHub API error');
+                        return res.json();
+                    })
+                    .then(data => {
+                        const stars = Number(data.stargazers_count ?? 0) || 0;
+                        updateBadge(stars);
+                        starMap[repoKey] = stars;
+                        if (projectEl) projectEl.dataset.stars = String(stars);
+                        cache[repoKey] = { stars, ts: Date.now() };
+                    })
+                    .catch(() => {
+                        setError();
+                        starMap[repoKey] = 0;
+                        if (projectEl) projectEl.dataset.stars = '0';
+                    });
+
+                fetchPromises.push(p);
+            } catch(e) {
+                // ignore malformed links
+            }
+        });
+
+        Promise.all(fetchPromises).finally(() => {
+            try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
+            resolve(starMap);
+        });
+    });
+}
+
+// Sorts .projects-grid children in-place by star count (descending). Projects without
+// stars are treated as 0 and placed after projects with stars.
+function sortProjectsByStars(starMap = {}) {
+    const grid = document.querySelector('.projects-grid');
+    if (!grid) return;
+    const projects = Array.from(grid.querySelectorAll('.project'));
+    // capture original index to keep stable sort for ties
+    const withMeta = projects.map((el, idx) => {
+        // try to deduce repoKey from the github link
+        const link = el.querySelector('.project-links a[href*="github.com/"]');
+        let key = null;
+        if (link) {
+            try {
+                const url = new URL(link.href);
+                const parts = url.pathname.split('/').filter(Boolean);
+                if (parts.length >= 2) key = `${parts[0]}/${parts[1]}`;
+            } catch(e) { key = null; }
         }
+        const viaMap = key && (starMap[key] != null);
+        const stars = viaMap ? Number(starMap[key] || 0) : Number(el.dataset.stars || 0) || 0;
+        return { el, stars, idx };
+    });
+
+    withMeta.sort((a, b) => {
+        if (b.stars !== a.stars) return b.stars - a.stars;
+        return a.idx - b.idx;
+    });
+
+    // re-append in sorted order
+    withMeta.forEach(item => grid.appendChild(item.el));
+    // After reordering, update displayed project numbers (01, 02, ...)
+    const pad = (n) => String(n).padStart(2, '0');
+    const reordered = Array.from(grid.querySelectorAll('.project'));
+    reordered.forEach((proj, i) => {
+        const numEl = proj.querySelector('.project-number');
+        if (numEl) numEl.textContent = pad(i + 1);
     });
 }
 function initTextRevealAnimations() {
