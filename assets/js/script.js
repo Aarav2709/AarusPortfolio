@@ -136,7 +136,71 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
+    renderGitHubStars();
 });
+
+// Render GitHub star badges next to project GitHub links.
+function renderGitHubStars() {
+    const githubLinks = Array.from(document.querySelectorAll('.project-links a[href*="github.com/"]'));
+    if (!githubLinks.length) return;
+
+    const cacheKey = 'gh_star_cache_v1';
+    const cacheTTL = 1000 * 60 * 60; // 1 hour
+    let cache = {};
+    try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
+
+    githubLinks.forEach(link => {
+        // find owner/repo from href
+        try {
+            const url = new URL(link.href);
+            const parts = url.pathname.split('/').filter(Boolean);
+            if (parts.length < 2) return;
+            const owner = parts[0];
+            const repo = parts[1];
+            const repoKey = `${owner}/${repo}`;
+
+            const badge = document.createElement('span');
+            badge.className = 'star-badge loading';
+            badge.setAttribute('aria-hidden', 'true');
+            badge.innerHTML = `
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.4 9.75l-5.7 5.556L19.335 24 12 19.897 4.665 24l1.634-8.694L.6 9.75l7.732-1.732z"></path></svg>
+                <span class="star-count">—</span>`;
+            link.after(badge);
+
+            const updateBadge = (count) => {
+                badge.classList.remove('loading');
+                badge.querySelector('.star-count').textContent = count != null ? String(count) : '—';
+            };
+
+            const setError = () => { badge.classList.remove('loading'); badge.classList.add('error'); badge.querySelector('.star-count').textContent = '—'; };
+
+            const cached = cache[repoKey];
+            const now = Date.now();
+            if (cached && (now - cached.ts) < cacheTTL) {
+                updateBadge(cached.stars);
+                return;
+            }
+
+            // unauthenticated API call; rate limits apply
+            fetch(`https://api.github.com/repos/${owner}/${repo}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('GitHub API error');
+                    return res.json();
+                })
+                .then(data => {
+                    const stars = data.stargazers_count ?? null;
+                    updateBadge(stars);
+                    cache[repoKey] = { stars, ts: Date.now() };
+                    try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
+                })
+                .catch(err => {
+                    setError();
+                });
+        } catch(e) {
+            // ignore malformed links
+        }
+    });
+}
 function initTextRevealAnimations() {
     gsap.utils.toArray('.section-title').forEach((title) => {
         const chars = title.querySelectorAll('.section-title-char');
