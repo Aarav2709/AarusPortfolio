@@ -138,10 +138,15 @@ window.addEventListener('load', () => {
     initProjectWordReveal();
     // Ensure every .project has a .project-number element (create at runtime if missing)
     ensureProjectNumbers();
-    // render star badges, then reorder projects by star count (descending)
+    // ensure sorting indicator exists and show it while background fetches are pending
+    ensureSortingIndicator();
+    showSortingIndicator();
+    // render star badges (immediate cached results), then initial reorder; background fetches will update and re-sort incrementally
     renderGitHubStars().then((starMap) => {
         try { sortProjectsByStars(starMap); } catch(e) { /* noop */ }
     }).catch(() => {/* ignore errors */});
+    // hide indicator when background fetching completes
+    window.addEventListener('stars:allDone', () => { hideSortingIndicator(); });
 });
 
 // Create .project-number elements for projects that don't have them.
@@ -162,9 +167,42 @@ function ensureProjectNumbers() {
     });
 }
 
+// Sorting indicator helpers
+function ensureSortingIndicator() {
+    if (document.getElementById('sorting-indicator')) return;
+    const el = document.createElement('div');
+    el.id = 'sorting-indicator';
+    el.setAttribute('aria-hidden', 'true');
+    el.style.cssText = `position: fixed; right: 18px; bottom: 18px; z-index: 9000; background: rgba(0,0,0,0.6); color: #fff; padding: 8px 12px; border-radius: 999px; font-size: 13px; display: none; align-items: center; gap: 8px;`;
+    el.innerHTML = `<span class="dot" style="width:8px;height:8px;background:#fff;border-radius:50%;display:inline-block;animation: pulse 1s infinite;"></span><span style="opacity:0.95">sorting…</span>`;
+    document.body.appendChild(el);
+    // small keyframes for pulse
+    const style = document.createElement('style');
+    style.id = 'sorting-indicator-style';
+    style.textContent = `@keyframes pulse {0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}100%{transform:scale(1);opacity:1}}`;
+    document.head.appendChild(style);
+}
+
+function showSortingIndicator() {
+    const el = document.getElementById('sorting-indicator');
+    if (!el) return;
+    el.style.display = 'flex';
+}
+
+function hideSortingIndicator() {
+    const el = document.getElementById('sorting-indicator');
+    if (!el) return;
+    el.style.display = 'none';
+}
+
 // Render GitHub star badges next to project GitHub links.
 function renderGitHubStars() {
-    // Returns a Promise resolving to a map of repoKey -> starCount
+    // Improved behavior:
+    // - Immediately apply cached star counts and resolve with that map so initial sort is fast
+    // - Fetch uncached repos in background and update badges + dataset as results arrive
+    // - Debounced incremental re-sorts happen after each batch of arrivals
+    // - Dispatches a 'stars:allDone' event when all background fetches finish
+
     return new Promise((resolve) => {
         const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
         if (!projectContainers.length) return resolve({});
@@ -176,6 +214,15 @@ function renderGitHubStars() {
 
         const starMap = {};
         const fetchPromises = [];
+        let pendingFetchCount = 0;
+        let resortTimer = null;
+
+        const scheduleResort = () => {
+            if (resortTimer) clearTimeout(resortTimer);
+            resortTimer = setTimeout(() => {
+                try { sortProjectsByStars(starMap); } catch(e) {}
+            }, 120);
+        };
 
         projectContainers.forEach(container => {
             const link = container.querySelector('a[href*="github.com/"]');
@@ -218,6 +265,8 @@ function renderGitHubStars() {
                     return;
                 }
 
+                // not cached -> fetch in background
+                pendingFetchCount++;
                 const p = fetch(`https://api.github.com/repos/${owner}/${repo}`)
                     .then(res => {
                         if (!res.ok) throw new Error('GitHub API error');
@@ -229,11 +278,16 @@ function renderGitHubStars() {
                         starMap[repoKey] = stars;
                         if (projectEl) projectEl.dataset.stars = String(stars);
                         cache[repoKey] = { stars, ts: Date.now() };
+                        scheduleResort();
                     })
                     .catch(() => {
                         setError();
                         starMap[repoKey] = 0;
                         if (projectEl) projectEl.dataset.stars = '0';
+                        scheduleResort();
+                    })
+                    .finally(() => {
+                        pendingFetchCount--;
                     });
 
                 fetchPromises.push(p);
@@ -242,10 +296,15 @@ function renderGitHubStars() {
             }
         });
 
+        // persist cache as fetches arrive (when all done)
         Promise.all(fetchPromises).finally(() => {
             try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
-            resolve(starMap);
+            // dispatch event to signal all background fetches finished
+            try { window.dispatchEvent(new CustomEvent('stars:allDone')); } catch(e) {}
         });
+
+        // resolve immediately with the starMap based on cached values so caller can do an initial sort
+        resolve(starMap);
     });
 }
 
