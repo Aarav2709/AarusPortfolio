@@ -807,8 +807,14 @@ body.dark-mode .achievement:hover {
 
 .project-links {
     display: flex;
-    gap: 40px;
+    gap: 12px; /* smaller gap so badge sits neatly after links */
+    align-items: center;
 }
+
+.project-links.single-link {
+    gap: 8px; /* tighter spacing when only one link exists */
+}
+.project-links .project-link + .star-badge { margin-left: 8px; }
 
 
 .project-info {

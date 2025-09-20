@@ -141,16 +141,22 @@ window.addEventListener('load', () => {
 
 // Render GitHub star badges next to project GitHub links.
 function renderGitHubStars() {
-    const githubLinks = Array.from(document.querySelectorAll('.project-links a[href*="github.com/"]'));
-    if (!githubLinks.length) return;
+    // Find project link containers and their GitHub link (owner/repo)
+    const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
+    if (!projectContainers.length) return;
 
     const cacheKey = 'gh_star_cache_v1';
     const cacheTTL = 1000 * 60 * 60; // 1 hour
     let cache = {};
     try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
 
-    githubLinks.forEach(link => {
-        // find owner/repo from href
+    projectContainers.forEach(container => {
+        const link = container.querySelector('a[href*="github.com/"]');
+        if (!link) return;
+        // mark single-link containers
+        const linkCount = container.querySelectorAll('a').length;
+        if (linkCount === 1) container.classList.add('single-link');
+
         try {
             const url = new URL(link.href);
             const parts = url.pathname.split('/').filter(Boolean);
@@ -165,7 +171,9 @@ function renderGitHubStars() {
             badge.innerHTML = `
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.4 9.75l-5.7 5.556L19.335 24 12 19.897 4.665 24l1.634-8.694L.6 9.75l7.732-1.732z"></path></svg>
                 <span class="star-count">—</span>`;
-            link.after(badge);
+
+            // append badge to the container (so it's after all links)
+            container.appendChild(badge);
 
             const updateBadge = (count) => {
                 badge.classList.remove('loading');
@@ -181,7 +189,6 @@ function renderGitHubStars() {
                 return;
             }
 
-            // unauthenticated API call; rate limits apply
             fetch(`https://api.github.com/repos/${owner}/${repo}`)
                 .then(res => {
                     if (!res.ok) throw new Error('GitHub API error');
