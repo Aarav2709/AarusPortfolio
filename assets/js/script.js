@@ -136,7 +136,6 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
-    initOsmoMenu();
 });
 function initTextRevealAnimations() {
     gsap.utils.toArray('.section-title').forEach((title) => {
@@ -1111,50 +1110,4 @@ if ('ResizeObserver' in window) {
         if (title) ro.observe(title);
     }
 }
-function initOsmoMenu() {
-  if (typeof gsap === 'undefined') return;
-    const navWrap = document.querySelector('.osmo-cloneable .nav');
-    const menuButton = document.querySelector('button.menu-button[data-menu-toggle]') || document.querySelector('.menu-button');
-  if (!navWrap || !menuButton) return;
-  const overlay = navWrap.querySelector('.overlay');
-  const menu = navWrap.querySelector('.menu');
-  const bgPanels = navWrap.querySelectorAll('.bg-panel');
-  const menuToggles = document.querySelectorAll('[data-menu-toggle]');
-  const menuLinks = navWrap.querySelectorAll('.menu-link');
-  const fadeTargets = navWrap.querySelectorAll('[data-menu-fade]');
-  const menuButtonTexts = menuButton.querySelectorAll('p');
-  const menuButtonIcon = menuButton.querySelector('.menu-button-icon');
-  gsap.set(navWrap, { display: 'none' });
-  let tl = gsap.timeline({ defaults: { ease: 'main', duration: 0.7 } });
-  const openNav = () => {
-    navWrap.setAttribute('data-nav', 'open');
-    tl.clear()
-      .set(navWrap, { display: 'block' })
-      .set(menu, { xPercent: 0 }, '<')
-      .fromTo(menuButtonTexts, { yPercent: 0 }, { yPercent: -100, stagger: 0.2 })
-      .fromTo(menuButtonIcon, { rotate: 0 }, { rotate: 315 }, '<')
-      .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1 }, '<')
-      .fromTo(bgPanels, { xPercent: 101 }, { xPercent: 0, stagger: 0.12, duration: 0.575 }, '<')
-      .fromTo(menuLinks, { yPercent: 140, rotate: 10 }, { yPercent: 0, rotate: 0, stagger: 0.05 }, '<+=0.35')
-      .fromTo(fadeTargets, { autoAlpha: 0, yPercent: 50 }, { autoAlpha: 1, yPercent: 0, stagger: 0.04 }, '<+=0.2');
-  };
-  const closeNav = () => {
-    navWrap.setAttribute('data-nav', 'closed');
-    tl.clear()
-      .to(overlay, { autoAlpha: 0 })
-      .to(menu, { xPercent: 120 }, '<')
-      .to(menuButtonTexts, { yPercent: 0 }, '<')
-      .to(menuButtonIcon, { rotate: 0 }, '<')
-      .set(navWrap, { display: 'none' });
-  };
-  menuToggles.forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const state = navWrap.getAttribute('data-nav');
-      if (state === 'open') closeNav(); else openNav();
-    });
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navWrap.getAttribute('data-nav') === 'open') closeNav();
-  });
-  menuLinks.forEach((a) => a.addEventListener('click', () => closeNav()));
-}
+// Menu removed: initOsmoMenu implementation deleted to remove sidebar menu feature
