@@ -15,6 +15,9 @@
     --hover-bg: #f5f5f5;
     --accent-color: #000000;
     --bg-color: #ffffff;
+    /* star badge visual */
+    --star-badge-bg: rgba(0,0,0,0.06);
+    --star-badge-shadow: 0 1px 2px rgba(0,0,0,0.04);
     /* Sizing scales */
     --hero-size: clamp(4rem, 12vw, 12rem);
     --section-size: clamp(2rem, 6vw, 4rem);
@@ -29,6 +32,9 @@ body.dark-mode {
     --hover-bg: #222222;
     --accent-color: #ffffff;
     --bg-color: #121212;
+    /* make star badge visible on dark backgrounds */
+    --star-badge-bg: rgba(255,255,255,0.06);
+    --star-badge-shadow: 0 1px 2px rgba(0,0,0,0.45);
 }
 .cursor, .cursor-dot {
     position: fixed !important;
@@ -71,14 +77,14 @@ body.dark-mode .cursor-dot { background-color: #fff; }
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(0,0,0,0.06);
+    background: var(--star-badge-bg);
     color: var(--primary-text);
     font-size: 13px;
     padding: 4px 8px;
     border-radius: 12px;
     margin-left: 10px;
     vertical-align: middle;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    box-shadow: var(--star-badge-shadow);
 }
 .star-badge svg {
     width: 14px;
