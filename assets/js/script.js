@@ -37,16 +37,25 @@ const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
-if (cursor && cursorDot) {
+// Disable the custom cursor on touch devices / small screens (mobile) to avoid heavy event work
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
+if (!isTouch && cursor && cursorDot) {
     gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-    // Update both cursor elements immediately on mousemove for snappy response.
+    // Throttle mousemove updates using requestAnimationFrame to avoid layout thrashing
+    let rafPending = false;
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2, force3D: true });
-        gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10, force3D: true });
-    });
+        if (!rafPending) {
+            rafPending = true;
+            requestAnimationFrame(() => {
+                gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2, force3D: true });
+                gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10, force3D: true });
+                rafPending = false;
+            });
+        }
+    }, { passive: true });
     document.querySelectorAll('a, .project, .misc-item, .achievement, .nav-link, .demo-button, .submit-button').forEach(el => {
         el.addEventListener('mouseenter', () => {
             gsap.to(cursor, { scale: 1.5, borderColor: '#999', duration: 0.15, ease: 'power2.out' });
@@ -55,6 +64,10 @@ if (cursor && cursorDot) {
             gsap.to(cursor, { scale: 1, borderColor: '', duration: 0.15, ease: 'power2.out' });
         });
     });
+} else {
+    // Hide cursor elements on touch devices or when not available
+    if (cursor) cursor.style.display = 'none';
+    if (cursorDot) cursorDot.style.display = 'none';
 }
 document.addEventListener('DOMContentLoaded', function() {
     const criticalElements = [
