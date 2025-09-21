@@ -27,22 +27,22 @@ if (typeof gsap === 'undefined') {
 }
 gsap.defaults({ overwrite: 'auto' });
 function initSmoothScroll() {
-    // Disable any custom JS smooth-scrolling behavior. Keep native behavior as 'auto'.
+    
     document.documentElement.style.scrollBehavior = 'auto';
     document.body.style.WebkitOverflowScrolling = 'auto';
 }
 initSmoothScroll();
-// Preloader removed: no init call
+
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
-// Disable the custom cursor on touch devices / small screens (mobile) to avoid heavy event work
+
 const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
 if (!isTouch && cursor && cursorDot) {
     gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-    // Throttle mousemove updates using requestAnimationFrame to avoid layout thrashing
+    
     let rafPending = false;
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -65,7 +65,7 @@ if (!isTouch && cursor && cursorDot) {
         });
     });
 } else {
-    // Hide cursor elements on touch devices or when not available
+    
     if (cursor) cursor.style.display = 'none';
     if (cursorDot) cursorDot.style.display = 'none';
 }
@@ -126,20 +126,20 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
-    // Ensure every .project has a .project-number element (create at runtime if missing)
+    
     ensureProjectNumbers();
-    // ensure sorting indicator exists and show it while background fetches are pending
+    
     ensureSortingIndicator();
     showSortingIndicator();
-    // render star badges (immediate cached results), then initial reorder; background fetches will update and re-sort incrementally
+    
     renderGitHubStars().then((starMap) => {
-        try { sortProjectsByStars(starMap); } catch(e) { /* noop */ }
-    }).catch(() => {/* ignore errors */});
-    // hide indicator when background fetching completes
+        try { sortProjectsByStars(starMap); } catch(e) {  }
+    }).catch(() => {});
+    
     window.addEventListener('stars:allDone', () => { hideSortingIndicator(); });
 });
 
-// Create .project-number elements for projects that don't have them.
+
 function ensureProjectNumbers() {
     const projects = document.querySelectorAll('.projects-grid .project');
     projects.forEach((proj, i) => {
@@ -147,17 +147,17 @@ function ensureProjectNumbers() {
         if (!numEl) {
             numEl = document.createElement('div');
             numEl.className = 'project-number';
-            // insert as first child of project (before project-content)
+            
             const content = proj.querySelector('.project-content');
             if (content && content.parentNode) content.parentNode.insertBefore(numEl, content);
             else proj.insertBefore(numEl, proj.firstChild);
         }
-        // initialize with a placeholder (will be updated after sorting)
+        
         numEl.textContent = String(i + 1).padStart(2, '0');
     });
 }
 
-// Sorting indicator helpers
+
 function ensureSortingIndicator() {
     if (document.getElementById('sorting-indicator')) return;
     const el = document.createElement('div');
@@ -166,7 +166,7 @@ function ensureSortingIndicator() {
     el.style.cssText = `position: fixed; right: 18px; bottom: 18px; z-index: 9000; background: rgba(0,0,0,0.6); color: #fff; padding: 8px 12px; border-radius: 999px; font-size: 13px; display: none; align-items: center; gap: 8px;`;
     el.innerHTML = `<span class="dot" style="width:8px;height:8px;background:#fff;border-radius:50%;display:inline-block;animation: pulse 1s infinite;"></span><span style="opacity:0.95">sorting…</span>`;
     document.body.appendChild(el);
-    // small keyframes for pulse
+    
     const style = document.createElement('style');
     style.id = 'sorting-indicator-style';
     style.textContent = `@keyframes pulse {0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}100%{transform:scale(1);opacity:1}}`;
@@ -185,20 +185,20 @@ function hideSortingIndicator() {
     el.style.display = 'none';
 }
 
-// Render GitHub star badges next to project GitHub links.
+
 function renderGitHubStars() {
-    // Improved behavior:
-    // - Immediately apply cached star counts and resolve with that map so initial sort is fast
-    // - Fetch uncached repos in background and update badges + dataset as results arrive
-    // - Debounced incremental re-sorts happen after each batch of arrivals
-    // - Dispatches a 'stars:allDone' event when all background fetches finish
+    
+    
+    
+    
+    
 
     return new Promise((resolve) => {
         const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
         if (!projectContainers.length) return resolve({});
 
         const cacheKey = 'gh_star_cache_v1';
-        const cacheTTL = 1000 * 60 * 60; // 1 hour
+        const cacheTTL = 1000 * 60 * 60; 
         let cache = {};
         try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
 
@@ -255,7 +255,7 @@ function renderGitHubStars() {
                     return;
                 }
 
-                // not cached -> fetch in background
+                
                 pendingFetchCount++;
                 const p = fetch(`https://api.github.com/repos/${owner}/${repo}`)
                     .then(res => {
@@ -282,31 +282,31 @@ function renderGitHubStars() {
 
                 fetchPromises.push(p);
             } catch(e) {
-                // ignore malformed links
+                
             }
         });
 
-        // persist cache as fetches arrive (when all done)
+        
         Promise.all(fetchPromises).finally(() => {
             try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
-            // dispatch event to signal all background fetches finished
+            
             try { window.dispatchEvent(new CustomEvent('stars:allDone')); } catch(e) {}
         });
 
-        // resolve immediately with the starMap based on cached values so caller can do an initial sort
+        
         resolve(starMap);
     });
 }
 
-// Sorts .projects-grid children in-place by star count (descending). Projects without
-// stars are treated as 0 and placed after projects with stars.
+
+
 function sortProjectsByStars(starMap = {}) {
     const grid = document.querySelector('.projects-grid');
     if (!grid) return;
     const projects = Array.from(grid.querySelectorAll('.project'));
-    // capture original index to keep stable sort for ties
+    
     const withMeta = projects.map((el, idx) => {
-        // try to deduce repoKey from the github link
+        
         const link = el.querySelector('.project-links a[href*="github.com/"]');
         let key = null;
         if (link) {
@@ -326,9 +326,9 @@ function sortProjectsByStars(starMap = {}) {
         return a.idx - b.idx;
     });
 
-    // re-append in sorted order
+    
     withMeta.forEach(item => grid.appendChild(item.el));
-    // After reordering, update displayed project numbers (01, 02, ...)
+    
     const pad = (n) => String(n).padStart(2, '0');
     const reordered = Array.from(grid.querySelectorAll('.project'));
     reordered.forEach((proj, i) => {
@@ -704,11 +704,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
         if (target) {
-            // Instant jump to target (no smooth scrolling)
+            
             target.scrollIntoView({ behavior: 'auto', block: 'start' });
-            // update URL hash
+            
             if (targetId !== '#') history.pushState(null, null, targetId);
-            // small nudge animation for visual feedback (non-position changing)
+            
             gsap.fromTo(target, { y: -5, opacity: 0.98 }, { y: 0, opacity: 1, duration: 0.25, ease: 'power2.out' });
         }
     });
@@ -818,7 +818,7 @@ if (backToTopButton) {
         }
     });
     backToTopButton.addEventListener('click', () => {
-        // Instant jump to top
+        
         window.scrollTo({ top: 0, behavior: 'auto' });
     });
 }
@@ -1001,8 +1001,8 @@ if (skillsGrid && skillBars.length) {
         }
     });
 }
-// Custom smooth scrolling IIFE removed completely — rely on native browser scrolling.
-    // Momentum scrolling removed.
+
+    
 function initAchievementsAnimations() {
     const achievements = gsap.utils.toArray('.achievement');
     achievements.forEach((achievement, index) => {
@@ -1177,4 +1177,4 @@ if ('ResizeObserver' in window) {
         if (title) ro.observe(title);
     }
 }
-// Menu removed: initOsmoMenu implementation deleted to remove sidebar menu feature
+
