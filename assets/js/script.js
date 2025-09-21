@@ -27,7 +27,7 @@ if (typeof gsap === 'undefined') {
 }
 gsap.defaults({ overwrite: 'auto' });
 function initSmoothScroll() {
-    
+
     document.documentElement.style.scrollBehavior = 'auto';
     document.body.style.WebkitOverflowScrolling = 'auto';
 }
@@ -42,7 +42,7 @@ const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || wi
 if (!isTouch && cursor && cursorDot) {
     gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-    
+
     let rafPending = false;
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -65,7 +65,7 @@ if (!isTouch && cursor && cursorDot) {
         });
     });
 } else {
-    
+
     if (cursor) cursor.style.display = 'none';
     if (cursorDot) cursorDot.style.display = 'none';
 }
@@ -126,16 +126,16 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
-    
+
     ensureProjectNumbers();
-    
+
     ensureSortingIndicator();
     showSortingIndicator();
-    
+
     renderGitHubStars().then((starMap) => {
         try { sortProjectsByStars(starMap); } catch(e) {  }
     }).catch(() => {});
-    
+
     window.addEventListener('stars:allDone', () => { hideSortingIndicator(); });
 });
 
@@ -147,12 +147,12 @@ function ensureProjectNumbers() {
         if (!numEl) {
             numEl = document.createElement('div');
             numEl.className = 'project-number';
-            
+
             const content = proj.querySelector('.project-content');
             if (content && content.parentNode) content.parentNode.insertBefore(numEl, content);
             else proj.insertBefore(numEl, proj.firstChild);
         }
-        
+
         numEl.textContent = String(i + 1).padStart(2, '0');
     });
 }
@@ -166,7 +166,7 @@ function ensureSortingIndicator() {
     el.style.cssText = `position: fixed; right: 18px; bottom: 18px; z-index: 9000; background: rgba(0,0,0,0.6); color: #fff; padding: 8px 12px; border-radius: 999px; font-size: 13px; display: none; align-items: center; gap: 8px;`;
     el.innerHTML = `<span class="dot" style="width:8px;height:8px;background:#fff;border-radius:50%;display:inline-block;animation: pulse 1s infinite;"></span><span style="opacity:0.95">sorting…</span>`;
     document.body.appendChild(el);
-    
+
     const style = document.createElement('style');
     style.id = 'sorting-indicator-style';
     style.textContent = `@keyframes pulse {0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}100%{transform:scale(1);opacity:1}}`;
@@ -187,18 +187,18 @@ function hideSortingIndicator() {
 
 
 function renderGitHubStars() {
-    
-    
-    
-    
-    
+
+
+
+
+
 
     return new Promise((resolve) => {
         const projectContainers = Array.from(document.querySelectorAll('.project .project-links'));
         if (!projectContainers.length) return resolve({});
 
         const cacheKey = 'gh_star_cache_v1';
-        const cacheTTL = 1000 * 60 * 60; 
+        const cacheTTL = 1000 * 60 * 60;
         let cache = {};
         try { cache = JSON.parse(localStorage.getItem(cacheKey) || '{}'); } catch(e) { cache = {}; }
 
@@ -255,7 +255,7 @@ function renderGitHubStars() {
                     return;
                 }
 
-                
+
                 pendingFetchCount++;
                 const p = fetch(`https://api.github.com/repos/${owner}/${repo}`)
                     .then(res => {
@@ -282,18 +282,18 @@ function renderGitHubStars() {
 
                 fetchPromises.push(p);
             } catch(e) {
-                
+
             }
         });
 
-        
+
         Promise.all(fetchPromises).finally(() => {
             try { localStorage.setItem(cacheKey, JSON.stringify(cache)); } catch(e) {}
-            
+
             try { window.dispatchEvent(new CustomEvent('stars:allDone')); } catch(e) {}
         });
 
-        
+
         resolve(starMap);
     });
 }
@@ -304,9 +304,9 @@ function sortProjectsByStars(starMap = {}) {
     const grid = document.querySelector('.projects-grid');
     if (!grid) return;
     const projects = Array.from(grid.querySelectorAll('.project'));
-    
+
     const withMeta = projects.map((el, idx) => {
-        
+
         const link = el.querySelector('.project-links a[href*="github.com/"]');
         let key = null;
         if (link) {
@@ -326,9 +326,9 @@ function sortProjectsByStars(starMap = {}) {
         return a.idx - b.idx;
     });
 
-    
+
     withMeta.forEach(item => grid.appendChild(item.el));
-    
+
     const pad = (n) => String(n).padStart(2, '0');
     const reordered = Array.from(grid.querySelectorAll('.project'));
     reordered.forEach((proj, i) => {
@@ -392,28 +392,32 @@ function initAboutLineReveal() {
     p.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
     const wordEls = Array.from(p.querySelectorAll('.word'));
     wordEls.forEach(w => { w.style.display = 'inline-block'; w.style.whiteSpace = 'nowrap'; });
-    const lines = [];
-    let currentTop = null;
-    let line = [];
-    wordEls.forEach((w, i) => {
-        const top = w.offsetTop;
-        if (currentTop === null) currentTop = top;
-        if (Math.abs(top - currentTop) <= 2) {
-            line.push(w);
-        } else {
-            lines.push(line);
-            line = [w];
-            currentTop = top;
-        }
-    });
-    if (line.length) lines.push(line);
-    lines.forEach(group => {
-        const wrapper = document.createElement('span');
-        wrapper.className = 'line';
-        group[0].parentNode.insertBefore(wrapper, group[0]);
-        group.forEach((w, idx) => {
-            wrapper.appendChild(w);
-            if (idx < group.length - 1) wrapper.appendChild(document.createTextNode(' '));
+    // Measure offsets in a single animation frame, then perform DOM writes in the same frame.
+    requestAnimationFrame(() => {
+        const tops = wordEls.map(w => w.offsetTop);
+        const lines = [];
+        let currentTop = null;
+        let line = [];
+        tops.forEach((top, i) => {
+            if (currentTop === null) currentTop = top;
+            if (Math.abs(top - currentTop) <= 2) {
+                line.push(wordEls[i]);
+            } else {
+                lines.push(line);
+                line = [wordEls[i]];
+                currentTop = top;
+            }
+        });
+        if (line.length) lines.push(line);
+        // DOM writes: create wrappers and move nodes into them (batched in rAF)
+        lines.forEach(group => {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'line';
+            group[0].parentNode.insertBefore(wrapper, group[0]);
+            group.forEach((w, idx) => {
+                wrapper.appendChild(w);
+                if (idx < group.length - 1) wrapper.appendChild(document.createTextNode(' '));
+            });
         });
     });
     const lineEls = p.querySelectorAll('.line');
@@ -704,11 +708,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
         if (target) {
-            
+
             target.scrollIntoView({ behavior: 'auto', block: 'start' });
-            
+
             if (targetId !== '#') history.pushState(null, null, targetId);
-            
+
             gsap.fromTo(target, { y: -5, opacity: 0.98 }, { y: 0, opacity: 1, duration: 0.25, ease: 'power2.out' });
         }
     });
@@ -818,7 +822,7 @@ if (backToTopButton) {
         }
     });
     backToTopButton.addEventListener('click', () => {
-        
+
         window.scrollTo({ top: 0, behavior: 'auto' });
     });
 }
@@ -1002,7 +1006,7 @@ if (skillsGrid && skillBars.length) {
     });
 }
 
-    
+
 function initAchievementsAnimations() {
     const achievements = gsap.utils.toArray('.achievement');
     achievements.forEach((achievement, index) => {
@@ -1157,11 +1161,15 @@ function alignSkillsNumber() {
     const title = header.querySelector('.section-title');
     const number = header.querySelector('.section-number');
     if (!title || !number) return;
-    const headerTop = header.getBoundingClientRect().top + window.scrollY;
+    // Read layout values now, then write styles inside rAF to avoid forced synchronous reflow.
+    const headerRect = header.getBoundingClientRect();
     const titleRect = title.getBoundingClientRect();
+    const headerTop = headerRect.top + window.scrollY;
     const titleCenterInHeader = (titleRect.top + window.scrollY) - headerTop + (titleRect.height / 2);
-    number.style.top = `${titleCenterInHeader}px`;
-    number.style.transform = 'translateY(-50%)';
+    requestAnimationFrame(() => {
+        number.style.top = `${titleCenterInHeader}px`;
+        number.style.transform = 'translateY(-50%)';
+    });
 }
 window.addEventListener('load', () => {
     alignSkillsNumber();
