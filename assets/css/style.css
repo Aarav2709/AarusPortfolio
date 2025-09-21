@@ -115,7 +115,8 @@ body.dark-mode .cursor-dot { background-color: #fff; }
 }
 
 html {
-    scroll-behavior: smooth;
+    /* Disable css smooth scrolling to keep native instant scrolling */
+    scroll-behavior: auto;
 }
 
 body {

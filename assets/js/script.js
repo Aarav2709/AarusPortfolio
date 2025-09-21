@@ -26,24 +26,10 @@ if (typeof gsap === 'undefined') {
     }
 }
 gsap.defaults({ overwrite: 'auto' });
-let isSmoothScrolling = false;
-const smoothScrollConfig = {
-    duration: 0.8,
-    ease: "power2.out"
-};
 function initSmoothScroll() {
+    // Disable any custom JS smooth-scrolling behavior. Keep native behavior as 'auto'.
     document.documentElement.style.scrollBehavior = 'auto';
-    document.body.style.WebkitOverflowScrolling = 'touch';
-    let scrollTimeout;
-    window.addEventListener('wheel', (e) => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            gsap.to(window, {
-                duration: 0.1,
-                ease: "power1.out"
-            });
-        }, 16);
-    }, { passive: true });
+    document.body.style.WebkitOverflowScrolling = 'auto';
 }
 initSmoothScroll();
 // Preloader removed: no init call
@@ -51,23 +37,16 @@ const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
-let curX = mouseX;
-let curY = mouseY;
 if (cursor && cursorDot) {
     gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
     gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
+    // Update both cursor elements immediately on mousemove for snappy response.
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2, force3D: true });
+        gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10, force3D: true });
     });
-    const updateCursor = () => {
-        curX += (mouseX - curX) * 0.15;
-        curY += (mouseY - curY) * 0.15;
-        gsap.set(cursor, { x: curX - 10, y: curY - 10, force3D: true });
-        requestAnimationFrame(updateCursor);
-    };
-    updateCursor();
     document.querySelectorAll('a, .project, .misc-item, .achievement, .nav-link, .demo-button, .submit-button').forEach(el => {
         el.addEventListener('mouseenter', () => {
             gsap.to(cursor, { scale: 1.5, borderColor: '#999', duration: 0.15, ease: 'power2.out' });
@@ -108,10 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
             y: window.innerHeight / 2 - 2,
             force3D: true
         });
-        mouseX = window.innerWidth / 2;
-        mouseY = window.innerHeight / 2;
-        curX = mouseX;
-        curY = mouseY;
+    mouseX = window.innerWidth / 2;
+    mouseY = window.innerHeight / 2;
     }
 });
 window.addEventListener('load', () => {
@@ -711,35 +688,15 @@ document.querySelectorAll('.achievement').forEach(achievement => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        if (isSmoothScrolling) return;
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
         if (target) {
-            isSmoothScrolling = true;
-            const targetRect = target.getBoundingClientRect();
-            const currentScroll = window.pageYOffset;
-            const targetScroll = currentScroll + targetRect.top;
-            gsap.to(window, {
-                duration: smoothScrollConfig.duration,
-                scrollTo: {
-                    y: targetScroll,
-                    autoKill: false
-                },
-                ease: smoothScrollConfig.ease,
-                onComplete: () => {
-                    isSmoothScrolling = false;
-                    if (targetId !== '#') {
-                        history.pushState(null, null, targetId);
-                    }
-                }
-            });
-            gsap.to(target, {
-                duration: smoothScrollConfig.duration * 0.8,
-                y: -5,
-                ease: "power2.out",
-                yoyo: true,
-                repeat: 1
-            });
+            // Instant jump to target (no smooth scrolling)
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
+            // update URL hash
+            if (targetId !== '#') history.pushState(null, null, targetId);
+            // small nudge animation for visual feedback (non-position changing)
+            gsap.fromTo(target, { y: -5, opacity: 0.98 }, { y: 0, opacity: 1, duration: 0.25, ease: 'power2.out' });
         }
     });
 });
@@ -848,12 +805,8 @@ if (backToTopButton) {
         }
     });
     backToTopButton.addEventListener('click', () => {
-    gsap.to(window, {
-            duration: 1,
-            scrollTo: { y: 0 },
-            ease: "power2.inOut"
-        });
-    if (window.smoothScrollControl) window.smoothScrollControl.set(0);
+        // Instant jump to top
+        window.scrollTo({ top: 0, behavior: 'auto' });
     });
 }
 document.querySelectorAll('.project').forEach(project => {
@@ -1035,116 +988,8 @@ if (skillsGrid && skillBars.length) {
         }
     });
 }
-(() => {
-    let isScrolling = false;
-    let targetY = window.scrollY;
-    let currentY = window.scrollY;
-    const maxDelta = 100;
-    const lerp = 0.08;
-    function onWheel(e) {
-        e.preventDefault();
-        const delta = Math.max(-maxDelta, Math.min(maxDelta, e.deltaY));
-        targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + delta * 1.5));
-        if (!isScrolling) animateScroll();
-    }
-    function animateScroll() {
-        isScrolling = true;
-        function updateScroll() {
-            currentY += (targetY - currentY) * lerp;
-            if (Math.abs(targetY - currentY) > 0.5) {
-                window.scrollTo(0, currentY);
-                requestAnimationFrame(updateScroll);
-            } else {
-                window.scrollTo(0, targetY);
-                currentY = targetY;
-                isScrolling = false;
-            }
-        }
-        updateScroll();
-    }
-    function onKeyDown(e) {
-        const scrollAmount = window.innerHeight * 0.8;
-        switch(e.key) {
-            case 'ArrowDown':
-            case 'PageDown':
-                e.preventDefault();
-                targetY = Math.min(document.body.scrollHeight - window.innerHeight, targetY + scrollAmount);
-                if (!isScrolling) animateScroll();
-                break;
-            case 'ArrowUp':
-            case 'PageUp':
-                e.preventDefault();
-                targetY = Math.max(0, targetY - scrollAmount);
-                if (!isScrolling) animateScroll();
-                break;
-            case 'Home':
-                e.preventDefault();
-                targetY = 0;
-                if (!isScrolling) animateScroll();
-                break;
-            case 'End':
-                e.preventDefault();
-                targetY = document.body.scrollHeight - window.innerHeight;
-                if (!isScrolling) animateScroll();
-                break;
-        }
-    }
-    function updateCurrentY() {
-        currentY = window.scrollY;
-        targetY = window.scrollY;
-    }
-    window.smoothScrollControl = {
-        set(y) {
-            targetY = y;
-            currentY = y;
-        },
-        syncToWindow() {
-            targetY = window.scrollY;
-            currentY = window.scrollY;
-        }
-    };
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (!isTouch) {
-        window.addEventListener('wheel', onWheel, { passive: false });
-        window.addEventListener('keydown', onKeyDown);
-        window.addEventListener('load', updateCurrentY);
-        window.addEventListener('resize', updateCurrentY);
-        window.addEventListener('scroll', () => {
-            if (!isScrolling) {
-                targetY = window.scrollY;
-                currentY = window.scrollY;
-            }
-        }, { passive: true });
-    }
-})();
-function initMomentumScrolling() {
-    let velocity = 0;
-    let isTouch = false;
-    let lastY = 0;
-    window.addEventListener('touchstart', (e) => {
-        isTouch = true;
-        lastY = e.touches[0].clientY;
-        velocity = 0;
-    });
-    window.addEventListener('touchmove', (e) => {
-        if (!isTouch) return;
-        const currentY = e.touches[0].clientY;
-        velocity = currentY - lastY;
-        lastY = currentY;
-    });
-    window.addEventListener('touchend', () => {
-        if (!isTouch) return;
-        isTouch = false;
-        if (Math.abs(velocity) > 5) {
-            gsap.to(window, {
-                scrollTo: `+=${velocity * 3}`,
-                duration: 0.8,
-                ease: "power2.out"
-            });
-        }
-    });
-}
-initMomentumScrolling();
+// Custom smooth scrolling IIFE removed completely — rely on native browser scrolling.
+    // Momentum scrolling removed.
 function initAchievementsAnimations() {
     const achievements = gsap.utils.toArray('.achievement');
     achievements.forEach((achievement, index) => {
