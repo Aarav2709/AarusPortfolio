@@ -860,16 +860,15 @@ body.dark-mode .achievement:hover {
     right: 0;
     font-size: 120px;
     font-weight: 100;
-    color: rgba(0, 0, 0, 0.16);
+    color: var(--tertiary-text);
     line-height: 1;
     pointer-events: none;
     z-index: 10;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 
-body.dark-mode .project-number {
-    color: rgba(255, 255, 255, 0.14);
-}
+/* use the theme-aware tertiary text color for better contrast */
+/* dark-mode will inherit via the CSS variable */
 
 @media (max-width: 768px) {
     .project-content {
