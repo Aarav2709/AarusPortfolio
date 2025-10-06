@@ -1,23 +1,117 @@
 if (typeof gsap === 'undefined') {
     console.warn('GSAP not loaded, using fallback animations');
+    const normalizeElements = (el) => (
+        typeof el === 'string' ? document.querySelectorAll(el) : [el]
+    );
+    const applyTransformFallback = (element, props = {}) => {
+        const state = element.__gsapFallbackState || {
+            x: 0,
+            y: 0,
+            scale: null,
+            scaleX: null,
+            scaleY: null,
+            rotate: null
+        };
+
+        const nextState = { ...state };
+
+        if (Object.prototype.hasOwnProperty.call(props, 'x')) {
+            nextState.x = Number(props.x) || 0;
+        }
+        if (Object.prototype.hasOwnProperty.call(props, 'y')) {
+            nextState.y = Number(props.y) || 0;
+        }
+        if (Object.prototype.hasOwnProperty.call(props, 'scale')) {
+            nextState.scale = props.scale;
+        }
+        if (Object.prototype.hasOwnProperty.call(props, 'scaleX')) {
+            nextState.scaleX = props.scaleX;
+        }
+        if (Object.prototype.hasOwnProperty.call(props, 'scaleY')) {
+            nextState.scaleY = props.scaleY;
+        }
+        if (Object.prototype.hasOwnProperty.call(props, 'rotate')) {
+            nextState.rotate = props.rotate;
+        }
+
+        element.__gsapFallbackState = nextState;
+
+        const transforms = [];
+        const tx = nextState.x || 0;
+        const ty = nextState.y || 0;
+        transforms.push(`translate3d(${tx}px, ${ty}px, 0)`);
+
+        const scaleX = nextState.scaleX != null ? nextState.scaleX : nextState.scale;
+        const scaleY = nextState.scaleY != null ? nextState.scaleY : nextState.scale;
+        if (scaleX != null || scaleY != null) {
+            const sx = scaleX != null ? scaleX : 1;
+            const sy = scaleY != null ? scaleY : (scaleX != null ? scaleX : 1);
+            transforms.push(`scale(${sx}, ${sy})`);
+        }
+
+        if (nextState.rotate != null) {
+            const rotateValue = typeof nextState.rotate === 'number' ? `${nextState.rotate}deg` : nextState.rotate;
+            transforms.push(`rotate(${rotateValue})`);
+        }
+
+        element.style.transform = transforms.join(' ');
+    };
+
     window.gsap = {
-        set: (el, props) => {
-            const elements = typeof el === 'string' ? document.querySelectorAll(el) : [el];
-            elements.forEach(element => {
-                if (element) {
-                    Object.keys(props).forEach(prop => {
-                        if (prop === 'x') element.style.transform = `translateX(${props[prop]}px)`;
-                        else if (prop === 'y') element.style.transform = `translateY(${props[prop]}px)`;
-                        else element.style[prop] = props[prop];
-                    });
+        set: (el, props = {}) => {
+            normalizeElements(el).forEach(element => {
+                if (!element || !props) return;
+
+                const hasTransformProp = ['x', 'y', 'scale', 'scaleX', 'scaleY', 'rotate'].some(key => Object.prototype.hasOwnProperty.call(props, key));
+                if (hasTransformProp) {
+                    applyTransformFallback(element, props);
                 }
+
+                const ignoredProps = new Set(['x', 'y', 'scale', 'scaleX', 'scaleY', 'rotate', 'force3D', 'duration', 'ease', 'delay', 'stagger', 'overwrite', 'onComplete', 'onUpdate', 'onStart', 'onEnd']);
+
+                Object.keys(props).forEach(prop => {
+                    if (ignoredProps.has(prop)) {
+                        return;
+                    }
+                    if (prop === 'transformOrigin') {
+                        element.style.transformOrigin = props[prop];
+                        return;
+                    }
+                    if (prop === 'clearProps') {
+                        const properties = String(props[prop] || '')
+                            .split(',')
+                            .map(part => part.trim())
+                            .filter(Boolean);
+                        properties.forEach(property => {
+                            if (property === 'transform') {
+                                delete element.__gsapFallbackState;
+                            }
+                            element.style.removeProperty(property);
+                        });
+                        return;
+                    }
+                    element.style[prop] = props[prop];
+                });
             });
         },
         to: (el, props) => {
-            gsap.set(el, props);
+            window.gsap.set(el, props);
         },
         from: () => {},
-        timeline: () => ({ from: () => {}, to: () => {} })
+        timeline: () => ({ from: () => {}, to: () => {}, add: () => {}, play: () => {}, pause: () => {} }),
+        defaults: () => {},
+        utils: {
+            toArray: (selectorOrElements) => {
+                if (!selectorOrElements) return [];
+                if (typeof selectorOrElements === 'string') {
+                    return Array.from(document.querySelectorAll(selectorOrElements));
+                }
+                if (selectorOrElements instanceof Element) {
+                    return [selectorOrElements];
+                }
+                return Array.isArray(selectorOrElements) ? selectorOrElements : Array.from(selectorOrElements);
+            }
+        }
     };
 } else {
     gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
@@ -26,6 +120,7 @@ if (typeof gsap === 'undefined') {
     }
 }
 gsap.defaults({ overwrite: 'auto' });
+
 function initSmoothScroll() {
 
     document.documentElement.style.scrollBehavior = 'auto';
@@ -33,46 +128,11 @@ function initSmoothScroll() {
 }
 initSmoothScroll();
 
-const cursor = document.querySelector('.cursor');
-const cursorDot = document.querySelector('.cursor-dot');
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
 
-const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
-if (!isTouch && cursor && cursorDot) {
-    gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10 });
-    gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2 });
-
-    let rafPending = false;
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        if (!rafPending) {
-            rafPending = true;
-            requestAnimationFrame(() => {
-                gsap.set(cursorDot, { x: mouseX - 2, y: mouseY - 2, force3D: true });
-                gsap.set(cursor, { x: mouseX - 10, y: mouseY - 10, force3D: true });
-                rafPending = false;
-            });
-        }
-    }, { passive: true });
-    document.querySelectorAll('a, .project, .misc-item, .achievement, .nav-link, .demo-button, .submit-button').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            gsap.to(cursor, { scale: 1.5, borderColor: '#999', duration: 0.15, ease: 'power2.out' });
-        });
-        el.addEventListener('mouseleave', () => {
-            gsap.to(cursor, { scale: 1, borderColor: '', duration: 0.15, ease: 'power2.out' });
-        });
-    });
-} else {
-
-    if (cursor) cursor.style.display = 'none';
-    if (cursorDot) cursorDot.style.display = 'none';
-}
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
     const criticalElements = [
-        '.header', '.section', '.navigation', '.project', '.achievement',
-        '.dark-mode-toggle', '.back-to-top', '.cursor', '.cursor-dot', '.misc-item', '.skill-item'
+        '.header', '.section', '.navigation', '.project',
+        '.dark-mode-toggle', '.back-to-top', '.misc-item', '.skill-item'
     ];
     criticalElements.forEach(selector => {
         const elements = document.querySelectorAll(selector);
@@ -83,29 +143,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    if (cursor && cursorDot) {
-        cursor.style.display = 'block';
-        cursor.style.visibility = 'visible';
-        cursor.style.opacity = '0.8';
-        cursorDot.style.display = 'block';
-        cursorDot.style.visibility = 'visible';
-        cursorDot.style.opacity = '1';
-        gsap.set(cursor, {
-            x: window.innerWidth / 2 - 10,
-            y: window.innerHeight / 2 - 10,
-            force3D: true
-        });
-        gsap.set(cursorDot, {
-            x: window.innerWidth / 2 - 2,
-            y: window.innerHeight / 2 - 2,
-            force3D: true
-        });
-    mouseX = window.innerWidth / 2;
-    mouseY = window.innerHeight / 2;
-    }
 });
 window.addEventListener('load', () => {
-    gsap.set('.header, .section, .project, .achievement, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title', {
+    gsap.set('.header, .section, .project, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title', {
         opacity: 1,
         visibility: 'visible',
         clearProps: 'transform'
@@ -120,7 +160,6 @@ window.addEventListener('load', () => {
     initTextRevealAnimations();
     initProjectAnimations();
     initScrollAnimations();
-    initAchievementsAnimations();
     initSkillsAnimations();
     initHeroStrips();
     initScrollContrast();
@@ -594,7 +633,7 @@ gsap.utils.toArray('.section').forEach((section, index) => {
         }
     });
     const contentNodes = Array.from(section.querySelectorAll('p, .about'))
-        .filter(el => !el.closest('.project, .achievement, .misc-item, .contact-form'));
+        .filter(el => !el.closest('.project, .misc-item, .contact-form'));
     if (contentNodes.length) {
         gsap.from(contentNodes, {
             duration: 0.6,
@@ -686,22 +725,6 @@ if (typeof IntersectionObserver !== 'undefined') {
     const aboutSection = document.getElementById('about');
     if (aboutSection) sectionInViewObserver.observe(aboutSection);
 }
-document.querySelectorAll('.achievement').forEach(achievement => {
-    achievement.addEventListener('mouseenter', () => {
-        gsap.to(achievement, {
-            duration: 0.3,
-            scale: 1.02,
-            ease: "power2.out"
-        });
-    });
-    achievement.addEventListener('mouseleave', () => {
-        gsap.to(achievement, {
-            duration: 0.3,
-            scale: 1,
-            ease: "power2.out"
-        });
-    });
-});
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -742,7 +765,7 @@ function initAdvancedScrollEffects() {
     if (typeof ScrollTrigger !== 'undefined') {
         gsap.utils.toArray('.section').forEach((section, index) => {
         });
-    gsap.utils.toArray('.project, .achievement, .misc-item').forEach((item) => {
+    gsap.utils.toArray('.project, .misc-item').forEach((item) => {
             gsap.from(item, {
                 y: 24,
                 opacity: 0,
@@ -866,7 +889,7 @@ document.addEventListener('keydown', (e) => {
 });
 function triggerEasterEgg() {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd'];
-    document.querySelectorAll('.skill-item, .project, .achievement').forEach((el, index) => {
+    document.querySelectorAll('.skill-item, .project').forEach((el, index) => {
         gsap.to(el, {
             duration: 0.5,
             backgroundColor: colors[index % colors.length],
@@ -1006,48 +1029,6 @@ if (skillsGrid && skillBars.length) {
     });
 }
 
-
-function initAchievementsAnimations() {
-    const achievements = gsap.utils.toArray('.achievement');
-    achievements.forEach((achievement, index) => {
-        gsap.from(achievement, {
-            duration: 0.8,
-            y: 60,
-            opacity: 0,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: achievement,
-                start: "top 80%",
-                toggleActions: "play none none none",
-                once: true
-            }
-        });
-        achievement.addEventListener('mouseenter', () => {
-            gsap.to(achievement, {
-                scale: 1.02,
-                duration: 0.4,
-                ease: "power2.out"
-            });
-            gsap.to(achievement.querySelector('.achievement-number'), {
-                scale: 1.1,
-                duration: 0.3,
-                ease: "power2.out"
-            });
-        });
-        achievement.addEventListener('mouseleave', () => {
-            gsap.to(achievement, {
-                scale: 1,
-                duration: 0.4,
-                ease: "power2.out"
-            });
-            gsap.to(achievement.querySelector('.achievement-number'), {
-                scale: 1,
-                duration: 0.3,
-                ease: "power2.out"
-            });
-        });
-    });
-}
 function initSkillsAnimations() {
     const skillBars = gsap.utils.toArray('.skill-progress');
     skillBars.forEach(bar => {
@@ -1144,7 +1125,7 @@ function initHeroStrips() {
     });
 }
 function initScrollContrast() {
-    document.querySelectorAll('#about .about, #projects .project-description, #achievements .achievement-content p, #setup .misc-content, #contact .contact-info p').forEach(p => {
+    document.querySelectorAll('#about .about, #projects .project-description, #setup .misc-content, #contact .contact-info p').forEach(p => {
         p.classList.add('contrast-text');
     });
     if (typeof IntersectionObserver === 'undefined') return;
