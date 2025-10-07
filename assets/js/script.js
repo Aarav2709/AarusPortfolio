@@ -145,7 +145,7 @@ initSmoothScroll();
     });
 });
 window.addEventListener('load', () => {
-    gsap.set('.header, .section, .project, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title', {
+    gsap.set('.header, .section, .project, .contact, .contact a, .misc-item, .skill-item, .header .name, .header .title, .project-link', {
         opacity: 1,
         visibility: 'visible',
         clearProps: 'transform'
@@ -157,6 +157,10 @@ window.addEventListener('load', () => {
         yoyo: true,
         ease: "power2.inOut"
     });
+
+    // Enhanced GSAP Animations
+    initPageLoadAnimation();
+    initSmoothParallax();
     initTextRevealAnimations();
     initProjectAnimations();
     initScrollAnimations();
@@ -165,6 +169,7 @@ window.addEventListener('load', () => {
     initScrollContrast();
     initAboutLineReveal();
     initProjectWordReveal();
+    initEnhancedScrollTriggers();
 
     ensureProjectNumbers();
 
@@ -1166,4 +1171,267 @@ if ('ResizeObserver' in window) {
         if (title) ro.observe(title);
     }
 }
+
+// ========== ENHANCED GSAP ANIMATIONS ==========
+
+function initPageLoadAnimation() {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    // Animate hero name with stagger
+    const nameChars = document.querySelectorAll('.name .name-char');
+    gsap.set(nameChars, { y: 100, opacity: 0, rotationX: -90 });
+    tl.to(nameChars, {
+        y: 0,
+        opacity: 1,
+        rotationX: 0,
+        duration: 1.2,
+        stagger: {
+            amount: 0.6,
+            from: "start",
+            ease: "power2.out"
+        }
+    }, 0.3);
+
+    // Animate title
+    const title = document.querySelector('.header .title');
+    if (title) {
+        gsap.set(title, { y: 30, opacity: 0 });
+        tl.to(title, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+        }, 0.8);
+    }
+
+    // Animate contact links
+    const contactLinks = document.querySelectorAll('.contact a');
+    gsap.set(contactLinks, { y: 20, opacity: 0 });
+    tl.to(contactLinks, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1
+    }, 1);
+
+    // Animate scroll indicator
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        gsap.set(scrollIndicator, { y: 20, opacity: 0 });
+        tl.to(scrollIndicator, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8
+        }, 1.2);
+    }
+}
+
+function initMagneticButtons() {
+    const magneticElements = document.querySelectorAll('.project-link, .contact a, .dark-mode-toggle, .back-to-top');
+
+    magneticElements.forEach(el => {
+        el.addEventListener('mouseenter', function() {
+            gsap.to(this, {
+                scale: 1.1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+
+        el.addEventListener('mouseleave', function() {
+            gsap.to(this, {
+                scale: 1,
+                x: 0,
+                y: 0,
+                duration: 0.5,
+                ease: "elastic.out(1, 0.3)"
+            });
+        });
+
+        el.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(this, {
+                x: x * 0.3,
+                y: y * 0.3,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
+function initSmoothParallax() {
+    gsap.utils.toArray('.project-visual').forEach((visual) => {
+        gsap.to(visual, {
+            yPercent: -15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: visual,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1
+            }
+        });
+    });
+
+    // Parallax for section numbers
+    gsap.utils.toArray('.section-number').forEach((number) => {
+        gsap.to(number, {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: number,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.5
+            }
+        });
+    });
+
+    // Parallax for project numbers
+    gsap.utils.toArray('.project-number').forEach((number) => {
+        gsap.to(number, {
+            yPercent: -20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: number,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1
+            }
+        });
+    });
+}
+
+function initEnhancedScrollTriggers() {
+    // Scale up sections on scroll
+    gsap.utils.toArray('.section').forEach((section) => {
+        gsap.fromTo(section,
+            {
+                scale: 0.95,
+                opacity: 0.8
+            },
+            {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    end: "top 20%",
+                    scrub: 0.5
+                }
+            }
+        );
+    });
+
+    // Fade in project tech tags
+    gsap.utils.toArray('.project-tech').forEach((tech) => {
+        gsap.from(tech, {
+            opacity: 0,
+            x: -20,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: tech,
+                start: "top 85%",
+                once: true
+            }
+        });
+    });
+
+    // Animate project links with stagger
+    gsap.utils.toArray('.project-links').forEach((linksContainer) => {
+        const links = linksContainer.querySelectorAll('.project-link');
+        gsap.fromTo(links,
+            {
+                opacity: 0,
+                y: 10
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: linksContainer,
+                    start: "top 85%",
+                    once: true
+                }
+            }
+        );
+    });
+}
+
+function initCursorFollower() {
+    // Create custom cursor
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.style.cssText = `
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--primary-text);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        mix-blend-mode: difference;
+    `;
+    document.body.appendChild(cursor);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.style.opacity = '1';
+    });
+
+    document.addEventListener('mouseleave', () => {
+        cursor.style.opacity = '0';
+    });
+
+    // Smooth cursor follow
+    gsap.ticker.add(() => {
+        const speed = 0.15;
+        cursorX += (mouseX - cursorX) * speed;
+        cursorY += (mouseY - cursorY) * speed;
+
+        gsap.set(cursor, {
+            x: cursorX,
+            y: cursorY,
+            xPercent: -50,
+            yPercent: -50
+        });
+    });
+
+    // Scale cursor on hover
+    const hoverElements = document.querySelectorAll('a, button, .project');
+    hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            gsap.to(cursor, {
+                scale: 2,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+        el.addEventListener('mouseleave', () => {
+            gsap.to(cursor, {
+                scale: 1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
 

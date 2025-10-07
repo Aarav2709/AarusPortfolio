@@ -1621,3 +1621,205 @@ body.dark-mode .misc-item {
 }
 
 .osmo-credits, .osmo-credits__p, .osmo-credits__p-a { display: none; }
+
+/* ========== ENHANCED GSAP ANIMATIONS STYLES ========== */
+
+/* Smooth transitions for all interactive elements */
+.project,
+.misc-item,
+.skill-item {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Enhanced hover states */
+.project-link,
+.contact a {
+    will-change: transform;
+}
+
+/* Ensure project links are always visible */
+.project-link {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline !important;
+}
+
+/* Parallax container */
+.section {
+    will-change: transform, opacity;
+}
+
+/* Project visual enhancements */
+.project-visual {
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project:hover .project-visual {
+    transform: scale(1.02);
+}
+
+/* Section number parallax */
+.section-number,
+.project-number {
+    will-change: transform;
+}
+
+/* Smooth reveal animations */
+.section-title-char {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+.name-char {
+    display: inline-block;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+}
+
+/* Enhanced project cards */
+.project-content {
+    will-change: opacity;
+}
+
+.project-info {
+    will-change: transform;
+}
+
+/* Dark mode toggle enhancement */
+.dark-mode-toggle {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.05);
+}
+
+/* Back to top button enhancement */
+.back-to-top {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+}
+
+/* Smooth opacity transitions */
+.fade-in {
+    will-change: opacity;
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tertiary-text);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-text);
+}
+
+/* Enhanced reading progress bar */
+.reading-progress {
+    transform-origin: left center;
+    will-change: transform;
+}
+
+/* Magnetic effect preparations */
+.project-link,
+.contact a,
+.dark-mode-toggle,
+.back-to-top {
+    will-change: transform;
+    cursor: pointer;
+}
+
+/* Stagger animation support */
+.project-tech {
+    will-change: opacity, transform;
+}
+
+.project-links .project-link {
+    will-change: opacity, transform;
+}
+
+/* Scale animation support */
+.section {
+    transform-origin: center center;
+}
+
+/* Blur effect for enhanced animations */
+.text,
+.about,
+.about-large {
+    will-change: transform, opacity, filter;
+}
+
+/* Hero strips smooth animation */
+.strip-text {
+    will-change: transform;
+}
+
+/* Enhanced link underlines */
+a {
+    position: relative;
+}
+
+/* Project meta smooth reveal */
+.project-meta {
+    will-change: opacity, transform;
+}
+
+/* Smooth color transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Override for elements that shouldn't transition */
+.strip-text,
+.reading-progress {
+    transition: none !important;
+}
+
+/* GPU acceleration for better performance */
+.project,
+.section,
+.name-char,
+.section-title-char,
+.project-visual,
+.project-number,
+.section-number {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Smooth font rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
