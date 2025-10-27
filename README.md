@@ -1,4 +1,4 @@
-<h1 align="center">🌐 AarusPortfolio</h1>
+<h1 align="center">AarusPortfolio</h1>
 
 <p align="center">
   A personal portfolio website showcasing my projects, skills, and experiences.  
@@ -11,51 +11,34 @@
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [⚙️ Installation](#installation)
-- [✨ Features](#features)
-- [🛠️ Technologies](#technologies)
-- [🤝 Contributing](#contributing)
-- [📜 License](#license)
-
----
-
-## 🏆 Notable Achievements
-
-- ✅ Website officially certified by Google  
-- 🌟 Featured in [Github's Most Famous Portfolio Repository](https://github.com/emmabostian/developer-portfolios)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## ⚙️ Installation
+## Notable Achievements
 
-```bash
-# Clone the repository
-git clone https://github.com/Aarav2709/AarusPortfolio.git
+- Website officially certified by Google  
+- Featured in [Github's Most Famous Portfolio Repository](https://github.com/emmabostian/developer-portfolios)
 
-# Navigate to the project directory
-cd AarusPortfolio
+## Features
 
-# Open index.html in your browser or use a local server
-```
-
----
-
-## ✨ Features
-
-- 📱 Responsive design optimized for all devices  
-- 🎬 Smooth animations using GSAP  
-- 🌙 Dark/Light mode toggle  
-- 🖱️ Custom cursor animations  
-- ⏳ Minimalist preloader  
-- 📜 Smooth scrolling  
-- 📩 Contact form integration  
-- 🔍 SEO optimized  
+- Responsive design optimized for all devices  
+- Smooth animations using GSAP  
+- Dark/Light mode toggle  
+- Custom cursor animations  
+- Minimalist preloader  
+- Smooth scrolling  
+- Contact form integration  
+- SEO optimized  
 
 ---
 
-## 🛠️ Technologies
+## Technologies
 
 - HTML5  
 - CSS3 (Custom Properties, Grid, Flexbox)  
@@ -66,7 +49,7 @@ cd AarusPortfolio
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the project  
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)  
@@ -76,14 +59,12 @@ cd AarusPortfolio
 
 ---
 
-## 📜 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 📬 Contact
+## Contact
 
-**Aarav Gupta** – tribejustice35@gmail.com  
-
-Project Link: [https://github.com/Aarav2709/AarusPortfolio](https://github.com/Aarav2709/AarusPortfolio)
+**Aarav Gupta** – [tribejustice35@gmail.com](mailto:tribejustice35@gmail.com)  
