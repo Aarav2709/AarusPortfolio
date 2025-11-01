@@ -1,29 +1,27 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import SkillBar from '../components/SkillBar.astro';
-import ContactForm from '../components/ContactForm.astro';
-import { getCollection } from 'astro:content';
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SkillBar from "../components/SkillBar.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { getCollection } from "astro:content";
 
-// Fetch all projects and sort by order
-const allProjects = await getCollection('projects');
+const allProjects = await getCollection("projects");
 const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
 
-// Skills data
 const programmingLanguages = [
-  { name: 'Python', progress: 90 },
-  { name: 'JavaScript', progress: 85 },
-  { name: 'HTML/CSS', progress: 95 },
-  { name: 'Lua', progress: 70 },
+  { name: "Python", progress: 90 },
+  { name: "JavaScript", progress: 85 },
+  { name: "HTML/CSS", progress: 95 },
+  { name: "Lua", progress: 70 },
 ];
 
 const frameworksTools = [
-  { name: 'Git', progress: 95 },
-  { name: 'Solar2D', progress: 60 },
-  { name: 'VS Code', progress: 100 },
-  { name: 'PyCharm', progress: 100 },
+  { name: "Git", progress: 95 },
+  { name: "Solar2D", progress: 60 },
+  { name: "VS Code", progress: 100 },
+  { name: "PyCharm", progress: 100 },
 ];
 ---
 
@@ -31,61 +29,69 @@ const frameworksTools = [
   <Header />
 
   <main>
-    <!-- About Section -->
     <section id="about" class="section fade-in">
       <div class="container">
         <SectionHeader title="about" number="01" />
         <div class="text">
           <p>
-            I have a keen interest in game development, web applications, and automation scripts. In my free time, I enjoy working on personal projects, contributing to open-source, and exploring new programming languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out.
+            I have a keen interest in game development, web applications, and
+            automation scripts. In my free time, I enjoy working on personal
+            projects, contributing to open-source, and exploring new programming
+            languages. I'm always looking for new challenges and opportunities
+            to collaborate with other developers. If you're interested in
+            working together or just want to chat about tech, feel free to reach
+            out.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="section fade-in">
       <div class="container">
         <SectionHeader title="projects" number="02" />
         <div class="projects-grid">
-          {projects.map((project, index) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              tech={project.data.tech}
-              github={project.data.github}
-              live={project.data.live}
-              stars={project.data.stars}
-              index={index}
-            />
-          ))}
+          {
+            projects.map((project, index) => (
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                tech={project.data.tech}
+                github={project.data.github}
+                live={project.data.live}
+                stars={project.data.stars}
+                index={index}
+              />
+            ))
+          }
         </div>
       </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills" class="section fade-in">
       <div class="container">
         <SectionHeader title="skills" number="03" />
         <div class="skills-grid">
           <div class="skill-category">
             <h3>Programming Languages</h3>
-            {programmingLanguages.map(skill => (
-              <SkillBar name={skill.name} progress={skill.progress} />
-            ))}
+            {
+              programmingLanguages.map((skill) => (
+                <SkillBar name={skill.name} progress={skill.progress} />
+              ))
+            }
           </div>
 
           <div class="skill-category">
             <h3>Frameworks & Tools</h3>
-            {frameworksTools.map(skill => (
-              <SkillBar name={skill.name} progress={skill.progress} />
-            ))}
+            {
+              frameworksTools.map((skill) => (
+                <SkillBar name={skill.name} progress={skill.progress} />
+              ))
+            }
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Tools & Setup Section -->
     <section id="setup" class="section fade-in">
       <div class="container">
         <SectionHeader title="tools & setup" number="04" />
@@ -94,9 +100,9 @@ const frameworksTools = [
             <span class="misc-number">01</span>
             <h3>Development Environment</h3>
             <div class="misc-content">
-              <span class="highlight">vscode</span> for web development.<br>
-              <span class="highlight">pycharm</span> professional edition.<br>
-              <span class="highlight">solar2d</span> for lua scripting.<br>
+              <span class="highlight">vscode</span> for web development.<br />
+              <span class="highlight">pycharm</span> professional edition.<br />
+              <span class="highlight">solar2d</span> for lua scripting.<br />
               <span class="highlight">git</span> for version control.
             </div>
           </div>
@@ -105,8 +111,10 @@ const frameworksTools = [
             <span class="misc-number">02</span>
             <h3>AI Assistance</h3>
             <div class="misc-content">
-              <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br>
-              <span class="highlight">claude opus 4.1</span> for code review.<br>
+              <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br
+              />
+              <span class="highlight">claude opus 4.1</span> for code review.<br
+              />
               <span class="highlight">github copilot pro+</span> for suggestions.
             </div>
           </div>
@@ -115,9 +123,9 @@ const frameworksTools = [
             <span class="misc-number">03</span>
             <h3>Current Device</h3>
             <div class="misc-content">
-              <span class="highlight">intel i3 11th gen</span> @4.1ghz<br>
-              <span class="highlight">8gb ddr4</span> @2666mhz<br>
-              <span class="highlight">intel uhd</span> graphics<br>
+              <span class="highlight">intel i3 11th gen</span> @4.1ghz<br />
+              <span class="highlight">8gb ddr4</span> @2666mhz<br />
+              <span class="highlight">intel uhd</span> graphics<br />
               <span class="highlight">i use arch btw.</span>
             </div>
           </div>
@@ -125,7 +133,6 @@ const frameworksTools = [
       </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="section fade-in">
       <div class="container">
         <SectionHeader title="get in touch" number="05" />

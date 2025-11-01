@@ -1,18 +1,31 @@
 ---
-// Contact form with EmailJS integration
+
 ---
 
 <div class="contact-section">
   <div class="contact-info">
-    <p>Have a project in mind or just want to chat about tech? I'd love to hear from you!</p>
+    <p>
+      Have a project in mind or just want to chat about tech? I'd love to hear
+      from you!
+    </p>
     <div class="contact-links">
       <a href="mailto:tribejustice35@gmail.com" class="contact-link">
         <span>tribejustice35@gmail.com</span>
       </a>
-      <a href="https://github.com/Aarav2709" class="contact-link" target="_blank" rel="noopener">
+      <a
+        href="https://github.com/Aarav2709"
+        class="contact-link"
+        target="_blank"
+        rel="noopener"
+      >
         <span>github.com/Aarav2709</span>
       </a>
-      <a href="https://linkedin.com/in/aarav2709" class="contact-link" target="_blank" rel="noopener">
+      <a
+        href="https://linkedin.com/in/aarav2709"
+        class="contact-link"
+        target="_blank"
+        rel="noopener"
+      >
         <span>linkedin.com/in/aarav2709</span>
       </a>
     </div>
@@ -20,13 +33,30 @@
 
   <form class="contact-form" id="contactForm">
     <div class="form-group">
-      <input type="text" id="name" name="name" placeholder="Your name" required />
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your name"
+        required
+      />
     </div>
     <div class="form-group">
-      <input type="email" id="email" name="email" placeholder="Your email" required />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Your email"
+        required
+      />
     </div>
     <div class="form-group">
-      <textarea id="message" name="message" placeholder="Your message" rows="5" required></textarea>
+      <textarea
+        id="message"
+        name="message"
+        placeholder="Your message"
+        rows="5"
+        required></textarea>
     </div>
     <button type="submit" class="submit-button">
       <span class="button-text">send message</span>
@@ -37,40 +67,46 @@
 <div id="notification" class="notification" style="display: none;"></div>
 
 <script>
-  const form = document.getElementById('contactForm') as HTMLFormElement;
-  const notification = document.getElementById('notification') as HTMLElement;
+  const form = document.getElementById("contactForm") as HTMLFormElement;
+  const notification = document.getElementById("notification") as HTMLElement;
 
-  function showNotification(message: string, type: 'success' | 'error') {
+  function showNotification(message: string, type: "success" | "error") {
     if (!notification) return;
 
     notification.textContent = message;
     notification.className = `notification notification-${type}`;
-    notification.style.display = 'block';
+    notification.style.display = "block";
 
     setTimeout(() => {
-      notification.style.display = 'none';
+      notification.style.display = "none";
     }, 4000);
   }
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const submitButton = form.querySelector('.submit-button') as HTMLButtonElement;
-    const buttonText = submitButton?.querySelector('.button-text') as HTMLElement;
+    const submitButton = form.querySelector(
+      ".submit-button"
+    ) as HTMLButtonElement;
+    const buttonText = submitButton?.querySelector(
+      ".button-text"
+    ) as HTMLElement;
 
     if (submitButton) {
       submitButton.disabled = true;
-      if (buttonText) buttonText.textContent = 'Sending...';
+      if (buttonText) buttonText.textContent = "Sending...";
     }
 
-    // Simulate form submission (replace with actual EmailJS integration)
     setTimeout(() => {
-      showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+      showNotification(
+        "Message sent successfully! I'll get back to you soon.",
+        "success"
+      );
       form.reset();
 
       if (submitButton) {
         submitButton.disabled = false;
-        if (buttonText) buttonText.textContent = 'send message';
+        if (buttonText) buttonText.textContent = "send message";
       }
     }, 1000);
   });
@@ -141,8 +177,8 @@
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
   }
 
-  [data-theme='dark'] .form-group input:focus,
-  [data-theme='dark'] .form-group textarea:focus {
+  [data-theme="dark"] .form-group input:focus,
+  [data-theme="dark"] .form-group textarea:focus {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
   }
 

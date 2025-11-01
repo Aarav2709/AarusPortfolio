@@ -5,7 +5,7 @@ interface Props {
 }
 
 const {
-  title = "Aarav Gupta - 15-Year-Old Developer",
+  title = "AarusPortfolio",
   description = "Portfolio of Aarav Gupta, a 15-year-old developer from India passionate about game development, web applications, and automation scripts.",
 } = Astro.props;
 
@@ -27,29 +27,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       name="keywords"
       content="Aarav Gupta, developer, portfolio, Python, JavaScript, game development, web development"
     />
-
-    <!-- Additional SEO Meta Tags -->
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="General" />
     <meta name="generator" content={Astro.generator} />
-
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Aarav Gupta - Portfolio" />
     <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:creator" content="@Aarav2709" />
-
-    <!-- Structured Data -->
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
@@ -79,8 +71,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         },
       })}
     />
-
-    <!-- Font Preload -->
     <link
       rel="preload"
       href="/fonts/GowunBatang.ttf"
@@ -88,8 +78,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       type="font/ttf"
       crossorigin
     />
-
-    <!-- Global Styles -->
     <style is:global>
       @import "../styles/global.css";
     </style>
@@ -104,11 +92,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </footer>
 
     <script>
-      // Dark mode toggle
       const theme = localStorage.getItem("theme") || "light";
       document.documentElement.setAttribute("data-theme", theme);
 
-      // Reading progress
       const updateProgress = () => {
         const scrollTop =
           window.pageYOffset || document.documentElement.scrollTop;
@@ -123,7 +109,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
       window.addEventListener("scroll", updateProgress, { passive: true });
 
-      // Intersection Observer for animations
       if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver(
           (entries) => {

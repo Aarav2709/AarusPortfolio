@@ -1,19 +1,20 @@
 ---
-// Section header component
 interface Props {
   title: string;
   number: string;
 }
 
 const { title, number } = Astro.props;
-const chars = title.split('');
+const chars = title.split("");
 ---
 
 <div class="section-header">
   <h2 class="section-title">
-    {chars.map((char) => (
-      <span class="section-title-char">{char === ' ' ? '\u00A0' : char}</span>
-    ))}
+    {
+      chars.map((char) => (
+        <span class="section-title-char">{char === " " ? "\u00A0" : char}</span>
+      ))
+    }
   </h2>
   <span class="section-number">{number}</span>
 </div>
@@ -50,14 +51,30 @@ const chars = title.split('');
     animation: fadeIn 0.6s ease forwards;
   }
 
-  .section-title-char:nth-child(1) { animation-delay: 0.05s; }
-  .section-title-char:nth-child(2) { animation-delay: 0.1s; }
-  .section-title-char:nth-child(3) { animation-delay: 0.15s; }
-  .section-title-char:nth-child(4) { animation-delay: 0.2s; }
-  .section-title-char:nth-child(5) { animation-delay: 0.25s; }
-  .section-title-char:nth-child(6) { animation-delay: 0.3s; }
-  .section-title-char:nth-child(7) { animation-delay: 0.35s; }
-  .section-title-char:nth-child(8) { animation-delay: 0.4s; }
+  .section-title-char:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  .section-title-char:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .section-title-char:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+  .section-title-char:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+  .section-title-char:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+  .section-title-char:nth-child(6) {
+    animation-delay: 0.3s;
+  }
+  .section-title-char:nth-child(7) {
+    animation-delay: 0.35s;
+  }
+  .section-title-char:nth-child(8) {
+    animation-delay: 0.4s;
+  }
 
   .section-number {
     position: static;
