@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SkillBar from '../components/SkillBar.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all projects and sort by order
+const allProjects = await getCollection('projects');
+const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+// Skills data
+const programmingLanguages = [
+  { name: 'Python', progress: 90 },
+  { name: 'JavaScript', progress: 85 },
+  { name: 'HTML/CSS', progress: 95 },
+  { name: 'Lua', progress: 70 },
+];
+
+const frameworksTools = [
+  { name: 'Git', progress: 95 },
+  { name: 'Solar2D', progress: 60 },
+  { name: 'VS Code', progress: 100 },
+  { name: 'PyCharm', progress: 100 },
+];
+---
+
+<Layout>
+  <Header />
+
+  <main>
+    <!-- About Section -->
+    <section id="about" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="about" number="01" />
+        <div class="text">
+          <p>
+            I have a keen interest in game development, web applications, and automation scripts. In my free time, I enjoy working on personal projects, contributing to open-source, and exploring new programming languages. I'm always looking for new challenges and opportunities to collaborate with other developers. If you're interested in working together or just want to chat about tech, feel free to reach out.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="projects" number="02" />
+        <div class="projects-grid">
+          {projects.map((project, index) => (
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              tech={project.data.tech}
+              github={project.data.github}
+              live={project.data.live}
+              stars={project.data.stars}
+              index={index}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="skills" number="03" />
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Programming Languages</h3>
+            {programmingLanguages.map(skill => (
+              <SkillBar name={skill.name} progress={skill.progress} />
+            ))}
+          </div>
+
+          <div class="skill-category">
+            <h3>Frameworks & Tools</h3>
+            {frameworksTools.map(skill => (
+              <SkillBar name={skill.name} progress={skill.progress} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools & Setup Section -->
+    <section id="setup" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="tools & setup" number="04" />
+        <div class="misc-grid">
+          <div class="misc-item slide-up stagger-1">
+            <span class="misc-number">01</span>
+            <h3>Development Environment</h3>
+            <div class="misc-content">
+              <span class="highlight">vscode</span> for web development.<br>
+              <span class="highlight">pycharm</span> professional edition.<br>
+              <span class="highlight">solar2d</span> for lua scripting.<br>
+              <span class="highlight">git</span> for version control.
+            </div>
+          </div>
+
+          <div class="misc-item slide-up stagger-2">
+            <span class="misc-number">02</span>
+            <h3>AI Assistance</h3>
+            <div class="misc-content">
+              <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br>
+              <span class="highlight">claude opus 4.1</span> for code review.<br>
+              <span class="highlight">github copilot pro+</span> for suggestions.
+            </div>
+          </div>
+
+          <div class="misc-item slide-up stagger-3">
+            <span class="misc-number">03</span>
+            <h3>Current Device</h3>
+            <div class="misc-content">
+              <span class="highlight">intel i3 11th gen</span> @4.1ghz<br>
+              <span class="highlight">8gb ddr4</span> @2666mhz<br>
+              <span class="highlight">intel uhd</span> graphics<br>
+              <span class="highlight">i use arch btw.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="get in touch" number="05" />
+        <ContactForm />
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: var(--section-padding);
+  }
+
+  .text p {
+    font-size: clamp(24px, 5vw, 52px);
+    line-height: 1.2;
+    margin: 0 0 0 50px;
+    color: var(--secondary-text);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .skill-category h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--primary-text);
+  }
+
+  .misc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 60px;
+  }
+
+  .misc-item {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    padding: 40px 30px;
+    transition: var(--transition-bounce);
+    position: relative;
+  }
+
+  .misc-item:hover {
+    transform: translateY(-10px);
+    background: var(--hover-bg);
+    border-color: var(--primary-text);
+  }
+
+  .misc-number {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--secondary-text);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .misc-item h3 {
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 300;
+    margin-bottom: 16px;
+    color: var(--primary-text);
+    line-height: 1.3;
+  }
+
+  .misc-content {
+    color: var(--secondary-text);
+    line-height: 1.6;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  .highlight {
+    color: var(--primary-text);
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    .text p {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .skills-grid,
+    .misc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+interface Props {
+  name: string;
+  progress: number;
+}
+
+const { name, progress } = Astro.props;
+---
+
+<div class="skill-item">
+  <span class="skill-name">{name}</span>
+  <div class="skill-bar">
+    <div class="skill-progress" data-progress={progress} style={`width: ${progress}%`}></div>
+  </div>
+</div>
+
+<style>
+  .skill-item {
+    margin-bottom: 20px;
+  }
+
+  .skill-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--secondary-text);
+  }
+
+  .skill-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .skill-progress {
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary-text), var(--secondary-text));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .skill-item.visible .skill-progress {
+    width: var(--progress-width);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const progressBar = entry.target.querySelector('.skill-progress') as HTMLElement;
+          if (progressBar) {
+            const progress = progressBar.getAttribute('data-progress');
+            progressBar.style.width = `${progress}%`;
+          }
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.skill-item').forEach(item => {
+      observer.observe(item);
+    });
+  });
+</script>

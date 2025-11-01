@@ -1,0 +1,207 @@
+---
+// Contact form with EmailJS integration
+---
+
+<div class="contact-section">
+  <div class="contact-info">
+    <p>Have a project in mind or just want to chat about tech? I'd love to hear from you!</p>
+    <div class="contact-links">
+      <a href="mailto:tribejustice35@gmail.com" class="contact-link">
+        <span>tribejustice35@gmail.com</span>
+      </a>
+      <a href="https://github.com/Aarav2709" class="contact-link" target="_blank" rel="noopener">
+        <span>github.com/Aarav2709</span>
+      </a>
+      <a href="https://linkedin.com/in/aarav2709" class="contact-link" target="_blank" rel="noopener">
+        <span>linkedin.com/in/aarav2709</span>
+      </a>
+    </div>
+  </div>
+
+  <form class="contact-form" id="contactForm">
+    <div class="form-group">
+      <input type="text" id="name" name="name" placeholder="Your name" required />
+    </div>
+    <div class="form-group">
+      <input type="email" id="email" name="email" placeholder="Your email" required />
+    </div>
+    <div class="form-group">
+      <textarea id="message" name="message" placeholder="Your message" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="submit-button">
+      <span class="button-text">send message</span>
+    </button>
+  </form>
+</div>
+
+<div id="notification" class="notification" style="display: none;"></div>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const notification = document.getElementById('notification') as HTMLElement;
+
+  function showNotification(message: string, type: 'success' | 'error') {
+    if (!notification) return;
+
+    notification.textContent = message;
+    notification.className = `notification notification-${type}`;
+    notification.style.display = 'block';
+
+    setTimeout(() => {
+      notification.style.display = 'none';
+    }, 4000);
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitButton = form.querySelector('.submit-button') as HTMLButtonElement;
+    const buttonText = submitButton?.querySelector('.button-text') as HTMLElement;
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      if (buttonText) buttonText.textContent = 'Sending...';
+    }
+
+    // Simulate form submission (replace with actual EmailJS integration)
+    setTimeout(() => {
+      showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+      form.reset();
+
+      if (submitButton) {
+        submitButton.disabled = false;
+        if (buttonText) buttonText.textContent = 'send message';
+      }
+    }, 1000);
+  });
+</script>
+
+<style>
+  .contact-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 20px;
+  }
+
+  .contact-info p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    color: var(--secondary-text);
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--secondary-text);
+    padding: 12px 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition-smooth);
+  }
+
+  .contact-link:hover {
+    color: var(--primary-text);
+    border-bottom-color: var(--border-color);
+    transform: translateX(5px);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--primary-text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: var(--transition-smooth);
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-text);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+
+  [data-theme='dark'] .form-group input:focus,
+  [data-theme='dark'] .form-group textarea:focus {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--tertiary-text);
+  }
+
+  .submit-button {
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+  }
+
+  .submit-button:hover {
+    background: #333333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    max-width: 400px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: white;
+  }
+
+  .notification-success {
+    background: #4caf50;
+  }
+
+  .notification-error {
+    background: #f44336;
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

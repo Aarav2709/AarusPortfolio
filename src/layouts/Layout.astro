@@ -1,0 +1,172 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Aarav Gupta - 15-Year-Old Developer",
+  description = "Portfolio of Aarav Gupta, a 15-year-old developer from India passionate about game development, web applications, and automation scripts.",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Aarav Gupta" />
+    <meta
+      name="keywords"
+      content="Aarav Gupta, developer, portfolio, Python, JavaScript, game development, web development"
+    />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="General" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Aarav Gupta - Portfolio" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:creator" content="@Aarav2709" />
+
+    <!-- Structured Data -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Aarav Gupta",
+        url: "https://aarus2709.me/",
+        sameAs: [
+          "https://github.com/Aarav2709",
+          "https://linkedin.com/in/aarav2709",
+        ],
+        jobTitle: "Developer",
+        description: description,
+        knowsAbout: [
+          "Python",
+          "JavaScript",
+          "Game Development",
+          "Web Development",
+        ],
+        alumniOf: {
+          "@type": "Organization",
+          name: "SSVE",
+        },
+        nationality: {
+          "@type": "Country",
+          name: "India",
+        },
+      })}
+    />
+
+    <!-- Font Preload -->
+    <link
+      rel="preload"
+      href="/fonts/GowunBatang.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
+    <!-- Global Styles -->
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+  </head>
+  <body>
+    <div class="reading-progress" id="reading-progress"></div>
+
+    <slot />
+
+    <footer class="footer fade-in">
+      <p>copyright 2025. made by aarav gupta. crafted with code & curiosity.</p>
+    </footer>
+
+    <script>
+      // Dark mode toggle
+      const theme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+
+      // Reading progress
+      const updateProgress = () => {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        const scrollHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        const progressBar = document.getElementById("reading-progress");
+        if (progressBar) {
+          progressBar.style.width = `${progress}%`;
+        }
+      };
+
+      window.addEventListener("scroll", updateProgress, { passive: true });
+
+      // Intersection Observer for animations
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelectorAll(".fade-in, .slide-up").forEach((el) => {
+            observer.observe(el);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .footer {
+    margin-top: 120px;
+    padding: 60px 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+  }
+
+  .footer p {
+    color: var(--secondary-text);
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      margin-top: 60px;
+      padding: 40px 0;
+    }
+  }
+</style>

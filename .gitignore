@@ -1,14 +1,24 @@
-.env
-.env.local
-config/private.js
-**/private-config.js
-*.backup
-*.bak
-.DS_Store
-Thumbs.db
-.vscode/settings.json
-.idea/
-*.log
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
 npm-debug.log*
-*.tmp
-*.temp
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/

@@ -1,0 +1,77 @@
+---
+// Section header component
+interface Props {
+  title: string;
+  number: string;
+}
+
+const { title, number } = Astro.props;
+const chars = title.split('');
+---
+
+<div class="section-header">
+  <h2 class="section-title">
+    {chars.map((char) => (
+      <span class="section-title-char">{char === ' ' ? '\u00A0' : char}</span>
+    ))}
+  </h2>
+  <span class="section-number">{number}</span>
+</div>
+
+<style>
+  .section-header {
+    position: static;
+    z-index: 10;
+    background: var(--bg-color);
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 80px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .section-title {
+    font-size: var(--section-size);
+    font-weight: 200;
+    margin: 0;
+    padding-top: 0.15em;
+    color: var(--primary-text);
+    letter-spacing: -0.03em;
+    text-transform: lowercase;
+    line-height: 1;
+    overflow: visible;
+  }
+
+  .section-title-char {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  .section-title-char:nth-child(1) { animation-delay: 0.05s; }
+  .section-title-char:nth-child(2) { animation-delay: 0.1s; }
+  .section-title-char:nth-child(3) { animation-delay: 0.15s; }
+  .section-title-char:nth-child(4) { animation-delay: 0.2s; }
+  .section-title-char:nth-child(5) { animation-delay: 0.25s; }
+  .section-title-char:nth-child(6) { animation-delay: 0.3s; }
+  .section-title-char:nth-child(7) { animation-delay: 0.35s; }
+  .section-title-char:nth-child(8) { animation-delay: 0.4s; }
+
+  .section-number {
+    position: static;
+    font-size: 14px;
+    color: var(--tertiary-text);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .section-header {
+      padding: 40px 0 30px;
+      margin-bottom: 60px;
+    }
+  }
+</style>
