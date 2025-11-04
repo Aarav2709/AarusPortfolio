@@ -4,6 +4,7 @@ description: "A clicker game where you type words instead of clicking! Boost you
 tech: ["react", "vite"]
 github: "https://github.com/Nathan5471/typeconomy"
 live: "https://typeconomy.vercel.app/"
+stars: 13
 featured: true
 order: 2
 ---

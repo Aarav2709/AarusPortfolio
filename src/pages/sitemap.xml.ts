@@ -1,6 +1,3 @@
-// src/pages/sitemap.xml.ts
-// Dynamically generate sitemap from your content
-
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 

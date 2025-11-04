@@ -4,5 +4,6 @@ description: "A project that mimics all typing websites, but now in Python. A si
 tech: ["python"]
 github: "https://github.com/Aarav2709/SnakeType"
 live: "https://snaketype.vercel.app"
-order: 7
+stars: 3
+order: 6
 ---
