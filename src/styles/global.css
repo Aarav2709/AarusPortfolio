@@ -6,10 +6,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; - Managed by Lenis */
+  cursor: none;
 }
 
 body {
@@ -25,6 +28,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: none;
+}
+
+a, button, input, textarea, select {
+  cursor: none;
+}
+
+@media (hover: none) {
+  html, body, a, button, input, textarea, select {
+    cursor: auto;
+  }
+}
+
+::selection {
+  background: var(--primary-text);
+  color: var(--bg-color);
 }
 
 [data-theme='dark'] body {

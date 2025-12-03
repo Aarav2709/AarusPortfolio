@@ -1,0 +1,120 @@
+---
+
+---
+
+<div id="custom-cursor" class="custom-cursor"></div>
+<div id="cursor-follower" class="cursor-follower"></div>
+
+<style>
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.2s,
+      height 0.2s,
+      background-color 0.2s,
+      opacity 0.2s;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.3s,
+      height 0.3s,
+      background-color 0.3s,
+      border-color 0.3s;
+    mix-blend-mode: difference;
+  }
+
+  /* Hide cursor on touch devices */
+  @media (hover: none) {
+    .custom-cursor,
+    .cursor-follower {
+      display: none;
+    }
+  }
+
+  /* Active state (hovering over links/buttons) */
+  .custom-cursor.active {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  .cursor-follower.active {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: transparent;
+    backdrop-filter: invert(1);
+  }
+</style>
+
+<script>
+  const cursor = document.getElementById("custom-cursor");
+  const follower = document.getElementById("cursor-follower");
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let followerX = 0;
+  let followerY = 0;
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    if (cursor) {
+      cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    }
+  });
+
+  function animate() {
+    // Smooth follower movement
+    followerX += (mouseX - followerX) * 0.1;
+    followerY += (mouseY - followerY) * 0.1;
+
+    if (follower) {
+      follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Add hover classes to interactive elements
+  // We need to use event delegation or re-attach listeners for dynamically added elements
+  // For simplicity, we'll attach to body and check target
+  document.body.addEventListener("mouseover", (e) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.closest(
+        "a, button, .project-card, .skill-bar, input, textarea, .achievement-card"
+      )
+    ) {
+      cursor?.classList.add("active");
+      follower?.classList.add("active");
+    } else {
+      cursor?.classList.remove("active");
+      follower?.classList.remove("active");
+    }
+  });
+</script>

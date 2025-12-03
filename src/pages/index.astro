@@ -3,25 +3,48 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import SkillBar from "../components/SkillBar.astro";
 import ContactForm from "../components/ContactForm.astro";
+import AchievementCard from "../components/AchievementCard.astro";
 import { getCollection } from "astro:content";
+import { getGitHubStars } from "../utils/github";
 
 const allProjects = await getCollection("projects");
-const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const projects = await Promise.all(
+  allProjects
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (project) => {
+      if (project.data.github) {
+        const stars = await getGitHubStars(project.data.github);
+        return {
+          ...project,
+          data: {
+            ...project.data,
+            stars: stars,
+          },
+        };
+      }
+      return project;
+    })
+);
 
-const programmingLanguages = [
-  { name: "Python", progress: 90 },
-  { name: "JavaScript", progress: 85 },
-  { name: "HTML/CSS", progress: 95 },
-  { name: "Lua", progress: 70 },
-];
+const skills = ["HTML", "CSS", "JavaScript", "Python", "React", "Astro", "C"];
 
-const frameworksTools = [
-  { name: "Git", progress: 95 },
-  { name: "Solar2D", progress: 60 },
-  { name: "VS Code", progress: 100 },
-  { name: "PyCharm", progress: 100 },
+const achievements = [
+  {
+    title: "Portfolio Featured",
+    description:
+      "Listed across 10+ famous websites and repositories for minimalist design excellence.",
+  },
+  {
+    title: "Best Design Award - IIT Roorkee",
+    description:
+      "Won Best Design Award after qualifying Round 1 among 100k+ participants across India. Selected in top 80 for the 3-day final competition.",
+  },
+  {
+    title: "International Hackathon Winner",
+    description:
+      "Secured 4th position globally with project 'CyberQuest Jr', winning $100 in awards.",
+  },
 ];
 ---
 
@@ -46,9 +69,26 @@ const frameworksTools = [
       </div>
     </section>
 
+    <section id="achievements" class="section fade-in">
+      <div class="container">
+        <SectionHeader title="achievements" number="02" />
+        <div class="achievements-grid">
+          {
+            achievements.map((achievement, index) => (
+              <AchievementCard
+                title={achievement.title}
+                description={achievement.description}
+                index={index}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
     <section id="projects" class="section fade-in">
       <div class="container">
-        <SectionHeader title="projects" number="02" />
+        <SectionHeader title="projects" number="03" />
         <div class="projects-grid">
           {
             projects.map((project, index) => (
@@ -69,58 +109,31 @@ const frameworksTools = [
 
     <section id="skills" class="section fade-in">
       <div class="container">
-        <SectionHeader title="skills" number="03" />
-        <div class="skills-grid">
-          <div class="skill-category">
-            <h3>Programming Languages</h3>
-            {
-              programmingLanguages.map((skill) => (
-                <SkillBar name={skill.name} progress={skill.progress} />
-              ))
-            }
-          </div>
-
-          <div class="skill-category">
-            <h3>Frameworks & Tools</h3>
-            {
-              frameworksTools.map((skill) => (
-                <SkillBar name={skill.name} progress={skill.progress} />
-              ))
-            }
-          </div>
+        <SectionHeader title="skills" number="04" />
+        <div class="skills-list">
+          {skills.map((skill) => <span class="skill-tag">{skill}</span>)}
         </div>
       </div>
     </section>
 
     <section id="setup" class="section fade-in">
       <div class="container">
-        <SectionHeader title="tools & setup" number="04" />
+        <SectionHeader title="tools & setup" number="05" />
         <div class="misc-grid">
           <div class="misc-item slide-up stagger-1">
             <span class="misc-number">01</span>
-            <h3>Development Environment</h3>
+            <h3>AI Assistance</h3>
             <div class="misc-content">
-              <span class="highlight">vscode</span> for web development.<br />
-              <span class="highlight">pycharm</span> professional edition.<br />
-              <span class="highlight">solar2d</span> for lua scripting.<br />
-              <span class="highlight">git</span> for version control.
+              <span class="highlight">gemini 3.0 pro</span> for frontend help.<br
+              />
+              <span class="highlight">chatgpt 5.1 codex</span> for project structure.<br
+              />
+              <span class="highlight">claude opus 4.5</span> for backend.
             </div>
           </div>
 
           <div class="misc-item slide-up stagger-2">
             <span class="misc-number">02</span>
-            <h3>AI Assistance</h3>
-            <div class="misc-content">
-              <span class="highlight">gemini 2.5 pro</span> for brainstorming.<br
-              />
-              <span class="highlight">claude opus 4.1</span> for code review.<br
-              />
-              <span class="highlight">github copilot pro+</span> for suggestions.
-            </div>
-          </div>
-
-          <div class="misc-item slide-up stagger-3">
-            <span class="misc-number">03</span>
             <h3>Current Device</h3>
             <div class="misc-content">
               <span class="highlight">intel i3 11th gen</span> @4.1ghz<br />
@@ -135,7 +148,7 @@ const frameworksTools = [
 
     <section id="contact" class="section fade-in">
       <div class="container">
-        <SectionHeader title="get in touch" number="05" />
+        <SectionHeader title="get in touch" number="06" />
         <ContactForm />
       </div>
     </section>
@@ -165,18 +178,40 @@ const frameworksTools = [
     gap: 40px;
   }
 
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-top: 20px;
   }
 
-  .skill-category h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 20px;
+  .skill-tag {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--secondary-text);
+    position: relative;
+    padding-right: 15px;
+    transition: var(--transition-smooth);
+  }
+
+  .skill-tag:not(:last-child)::after {
+    content: '/';
+    position: absolute;
+    right: 0;
+    color: var(--tertiary-text);
+    opacity: 0.5;
+  }
+
+  .skill-tag:hover {
     color: var(--primary-text);
+    transform: translateY(-2px);
+  }
+
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
   }
 
   .misc-grid {

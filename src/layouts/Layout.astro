@@ -1,4 +1,6 @@
 ---
+import CustomCursor from "../components/CustomCursor.astro";
+
 interface Props {
   title?: string;
   description?: string;
@@ -91,7 +93,31 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <p>copyright 2025. made by aarav gupta. crafted with code & curiosity.</p>
     </footer>
 
+    <CustomCursor />
+
+    <script
+      src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"
+    ></script>
     <script>
+      // @ts-ignore
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+
       const theme = localStorage.getItem("theme") || "light";
       document.documentElement.setAttribute("data-theme", theme);
 
