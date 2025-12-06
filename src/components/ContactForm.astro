@@ -77,7 +77,8 @@
   const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
   const toEmail =
     import.meta.env.PUBLIC_EMAILJS_TO_EMAIL || "tribejustice35@gmail.com";
-  const userTemplateId = import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID;
+  const userTemplateId =
+    import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID || "template_7jl09r8";
 
   function showNotification(message: string, type: "success" | "error") {
     if (!notification) return;

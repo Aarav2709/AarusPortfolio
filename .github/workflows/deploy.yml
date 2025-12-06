@@ -42,7 +42,7 @@ jobs:
           PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
           PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
           PUBLIC_EMAILJS_TO_EMAIL: tribejustice35@gmail.com
-          PUBLIC_EMAILJS_USER_TEMPLATE_ID: ${PUBLIC_EMAILJS_USER_TEMPLATE_ID}
+          PUBLIC_EMAILJS_USER_TEMPLATE_ID: template_7jl09r8
       - name: Build
         run: npm run build
         env:
@@ -50,7 +50,7 @@ jobs:
           PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
           PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
           PUBLIC_EMAILJS_TO_EMAIL: tribejustice35@gmail.com
-          PUBLIC_EMAILJS_USER_TEMPLATE_ID: ${PUBLIC_EMAILJS_USER_TEMPLATE_ID}
+          PUBLIC_EMAILJS_USER_TEMPLATE_ID: template_7jl09r8
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
