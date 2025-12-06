@@ -29,12 +29,23 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Validate EmailJS env
+        run: |
+          set -e
+          : "${PUBLIC_EMAILJS_SERVICE_ID:?PUBLIC_EMAILJS_SERVICE_ID is required}"
+          : "${PUBLIC_EMAILJS_TEMPLATE_ID:?PUBLIC_EMAILJS_TEMPLATE_ID is required}"
+          : "${PUBLIC_EMAILJS_PUBLIC_KEY:?PUBLIC_EMAILJS_PUBLIC_KEY is required}"
+          echo "EmailJS env present: service=${PUBLIC_EMAILJS_SERVICE_ID:+set} template=${PUBLIC_EMAILJS_TEMPLATE_ID:+set} key=${PUBLIC_EMAILJS_PUBLIC_KEY:+set}"
+        env:
+          PUBLIC_EMAILJS_SERVICE_ID: service_r5bdcjs
+          PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
+          PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
       - name: Build
         run: npm run build
         env:
-          PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.PUBLIC_EMAILJS_SERVICE_ID }}
-          PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.PUBLIC_EMAILJS_TEMPLATE_ID }}
-          PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.PUBLIC_EMAILJS_PUBLIC_KEY }}
+          PUBLIC_EMAILJS_SERVICE_ID: service_r5bdcjs
+          PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
+          PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
