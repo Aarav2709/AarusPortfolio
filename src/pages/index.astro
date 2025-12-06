@@ -31,17 +31,22 @@ const skills = ["HTML", "CSS", "JavaScript", "Python", "React", "Astro", "C"];
 
 const achievements = [
   {
-    title: "Portfolio Featured",
+    title: "Minimal Portfolio Design Recognition",
     description:
       "Listed across 10+ famous websites and repositories for minimalist design excellence.",
   },
   {
-    title: "Best Design Award - IIT Roorkee",
+    title: "Famous Across Globe",
     description:
-      "Won Best Design Award after qualifying Round 1 among 100k+ participants across India. Selected in top 80 for the 3-day final competition.",
+      "Crossed 50k+ downloads across my Python and C projects, with nearly 100k visitors across my websites.",
   },
   {
-    title: "International Hackathon Winner",
+    title: "GambitoR 4.0 - IIT Roorkee",
+    description:
+      "Appreciated by the judges for the best PPT Design across the whole competition after qualifying Round 1 among 100k+ participants across India. Selected in top 80 for the 3-day final competition.",
+  },
+  {
+    title: "Student HackPad - International Hackathon Runner Up",
     description:
       "Secured 4th position globally with project 'CyberQuest Jr', winning $100 in awards.",
   },
@@ -126,7 +131,7 @@ const achievements = [
             <div class="misc-content">
               <span class="highlight">gemini 3.0 pro</span> for frontend help.<br
               />
-              <span class="highlight">chatgpt 5.1 codex</span> for project structure.<br
+              <span class="highlight">chatgpt 5.1 codex max</span> for project structure.<br
               />
               <span class="highlight">claude opus 4.5</span> for backend.
             </div>
@@ -209,8 +214,8 @@ const achievements = [
 
   .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
     margin-top: 40px;
   }
 
@@ -267,6 +272,10 @@ const achievements = [
   }
 
   @media (max-width: 768px) {
+    .achievements-grid {
+      grid-template-columns: 1fr;
+    }
+
     .text p {
       margin: 0;
       font-size: 20px;
