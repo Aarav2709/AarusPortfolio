@@ -33,24 +33,16 @@ jobs:
         run: |
           set -e
           : "${PUBLIC_EMAILJS_SERVICE_ID:?PUBLIC_EMAILJS_SERVICE_ID is required}"
-          : "${PUBLIC_EMAILJS_TEMPLATE_ID:?PUBLIC_EMAILJS_TEMPLATE_ID is required}"
           : "${PUBLIC_EMAILJS_PUBLIC_KEY:?PUBLIC_EMAILJS_PUBLIC_KEY is required}"
-          : "${PUBLIC_EMAILJS_TO_EMAIL:?PUBLIC_EMAILJS_TO_EMAIL is required}"
-          echo "EmailJS env present: service=${PUBLIC_EMAILJS_SERVICE_ID:+set} template=${PUBLIC_EMAILJS_TEMPLATE_ID:+set} key=${PUBLIC_EMAILJS_PUBLIC_KEY:+set} to_email=${PUBLIC_EMAILJS_TO_EMAIL:+set} user_template=${PUBLIC_EMAILJS_USER_TEMPLATE_ID:+unset}"
+          echo "EmailJS env present: service=${PUBLIC_EMAILJS_SERVICE_ID:+set} key=${PUBLIC_EMAILJS_PUBLIC_KEY:+set}"
         env:
           PUBLIC_EMAILJS_SERVICE_ID: service_r5bdcjs
-          PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
           PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
-          PUBLIC_EMAILJS_TO_EMAIL: tribejustice35@gmail.com
-          PUBLIC_EMAILJS_USER_TEMPLATE_ID: template_7jl09r8
       - name: Build
         run: npm run build
         env:
           PUBLIC_EMAILJS_SERVICE_ID: service_r5bdcjs
-          PUBLIC_EMAILJS_TEMPLATE_ID: template_l1uu011
           PUBLIC_EMAILJS_PUBLIC_KEY: kEXE9SEqYai171h5J
-          PUBLIC_EMAILJS_TO_EMAIL: tribejustice35@gmail.com
-          PUBLIC_EMAILJS_USER_TEMPLATE_ID: template_7jl09r8
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

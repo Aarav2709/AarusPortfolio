@@ -73,12 +73,10 @@
   ) as HTMLElement | null;
 
   const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
   const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
-  const toEmail =
-    import.meta.env.PUBLIC_EMAILJS_TO_EMAIL || "tribejustice35@gmail.com";
-  const userTemplateId =
-    import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID || "template_7jl09r8";
+  const ownerTemplateId = import.meta.env.PUBLIC_EMAILJS_OWNER_TEMPLATE_ID;
+  const userTemplateId = import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID;
+  const toEmail = import.meta.env.PUBLIC_EMAILJS_TO_EMAIL || "tribejustice35@gmail.com";
 
   function showNotification(message: string, type: "success" | "error") {
     if (!notification) return;
@@ -97,67 +95,73 @@
       ".submit-button"
     ) as HTMLButtonElement | null;
     const buttonText = submitButton?.querySelector(
-      ".button-text"
-    ) as HTMLElement | null;
-
-    if (!submitButton) return;
-
-    submitButton.disabled = isSubmitting;
-    if (buttonText)
-      buttonText.textContent = isSubmitting ? "Sending..." : "send message";
-  }
+      async function sendEmail({
+        name,
+        email,
+        message,
+      }: {
+        name: string;
+        email: string;
+        message: string;
+      }) {
 
   async function sendEmail({
     name,
     email,
     message,
-  }: {
-    name: string;
-    email: string;
-    message: string;
-  }) {
-    const payload = {
-      service_id: serviceId,
-      user_id: publicKey,
-    } as const;
+        const requests: Promise<Response>[] = [];
 
-    // Send to you (owner)
-    const ownerSend = fetch("https://api.emailjs.com/api/v1.0/email/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...payload,
-        template_id: templateId,
-        template_params: {
-          from_name: name,
-          reply_to: email,
-          message,
-          email: toEmail,
-          to_email: toEmail,
-          user_email: email,
-        },
-      }),
-    });
+        if (ownerTemplateId) {
+          requests.push(
+            fetch("https://api.emailjs.com/api/v1.0/email/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ...payload,
+                template_id: ownerTemplateId,
+                template_params: {
+                  from_name: name,
+                  reply_to: email,
+                  message,
+                  email: toEmail,
+                  to_email: toEmail,
+                  user_email: email,
+                },
+              }),
+            })
+          );
+        }
 
-    // Optional auto-reply to the sender (requires PUBLIC_EMAILJS_USER_TEMPLATE_ID)
-    const userSend = userTemplateId
-      ? fetch("https://api.emailjs.com/api/v1.0/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...payload,
-            template_id: userTemplateId,
-            template_params: {
-              from_name: "Aarav", // shown to the sender
-              reply_to: toEmail,
-              message,
-              email, // recipient = sender
-              to_email: email,
-            },
-          }),
-        })
-      : Promise.resolve({ ok: true });
+        if (userTemplateId) {
+          requests.push(
+            fetch("https://api.emailjs.com/api/v1.0/email/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ...payload,
+                template_id: userTemplateId,
+                template_params: {
+                  from_name: "Aarav",
+                  reply_to: toEmail,
+                  message,
+                  email,
+                  to_email: email,
+                },
+              }),
+            })
+          );
+        }
 
+        if (!requests.length) {
+          throw new Error("No EmailJS templates configured.");
+        }
+
+        const responses = await Promise.all(requests);
+        const failures = responses.filter((r) => !r.ok);
+        if (failures.length) {
+          const errorText = await failures[0].text();
+          throw new Error(errorText || "EmailJS send failed");
+        }
     const [ownerRes, userRes] = await Promise.all([ownerSend, userSend]);
 
     if (!ownerRes.ok) {
@@ -173,9 +177,9 @@
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!serviceId || !templateId || !publicKey) {
+    if (!serviceId || !publicKey) {
       showNotification(
-        "Email service is not configured yet. Please add PUBLIC_EMAILJS_SERVICE_ID, PUBLIC_EMAILJS_TEMPLATE_ID, and PUBLIC_EMAILJS_PUBLIC_KEY.",
+        "Email service is not configured yet. Please add PUBLIC_EMAILJS_SERVICE_ID and PUBLIC_EMAILJS_PUBLIC_KEY.",
         "error"
       );
       return;
