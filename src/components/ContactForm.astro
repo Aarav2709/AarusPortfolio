@@ -1,5 +1,12 @@
 ---
-
+const SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ?? null;
+const PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ?? null;
+const OWNER_TEMPLATE_ID =
+  import.meta.env.PUBLIC_EMAILJS_OWNER_TEMPLATE_ID ?? null;
+const USER_TEMPLATE_ID =
+  import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID ?? null;
+const TO_EMAIL =
+  import.meta.env.PUBLIC_EMAILJS_TO_EMAIL ?? "tribejustice35@gmail.com";
 ---
 
 <div class="contact-section">
@@ -66,154 +73,18 @@
 
 <div id="notification" class="notification" style="display: none;"></div>
 
-<script>
-  const form = document.getElementById("contactForm") as HTMLFormElement | null;
-  const notification = document.getElementById(
-    "notification"
-  ) as HTMLElement | null;
+<script type="module">
+  import { initContactForm } from "@utils/contactFormClient";
 
-  const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
-  const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
-  const ownerTemplateId = import.meta.env.PUBLIC_EMAILJS_OWNER_TEMPLATE_ID;
-  const userTemplateId = import.meta.env.PUBLIC_EMAILJS_USER_TEMPLATE_ID;
-  const toEmail = import.meta.env.PUBLIC_EMAILJS_TO_EMAIL || "tribejustice35@gmail.com";
+  const form = document.getElementById("contactForm");
+  const notification = document.getElementById("notification");
 
-  function showNotification(message: string, type: "success" | "error") {
-    if (!notification) return;
-
-    notification.textContent = message;
-    notification.className = `notification notification-${type}`;
-    notification.style.display = "block";
-
-    setTimeout(() => {
-      notification.style.display = "none";
-    }, 4000);
-  }
-
-  function setSubmitting(isSubmitting: boolean) {
-    const submitButton = form?.querySelector(
-      ".submit-button"
-    ) as HTMLButtonElement | null;
-    const buttonText = submitButton?.querySelector(
-      async function sendEmail({
-        name,
-        email,
-        message,
-      }: {
-        name: string;
-        email: string;
-        message: string;
-      }) {
-
-  async function sendEmail({
-    name,
-    email,
-    message,
-        const requests: Promise<Response>[] = [];
-
-        if (ownerTemplateId) {
-          requests.push(
-            fetch("https://api.emailjs.com/api/v1.0/email/send", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                ...payload,
-                template_id: ownerTemplateId,
-                template_params: {
-                  from_name: name,
-                  reply_to: email,
-                  message,
-                  email: toEmail,
-                  to_email: toEmail,
-                  user_email: email,
-                },
-              }),
-            })
-          );
-        }
-
-        if (userTemplateId) {
-          requests.push(
-            fetch("https://api.emailjs.com/api/v1.0/email/send", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                ...payload,
-                template_id: userTemplateId,
-                template_params: {
-                  from_name: "Aarav",
-                  reply_to: toEmail,
-                  message,
-                  email,
-                  to_email: email,
-                },
-              }),
-            })
-          );
-        }
-
-        if (!requests.length) {
-          throw new Error("No EmailJS templates configured.");
-        }
-
-        const responses = await Promise.all(requests);
-        const failures = responses.filter((r) => !r.ok);
-        if (failures.length) {
-          const errorText = await failures[0].text();
-          throw new Error(errorText || "EmailJS send failed");
-        }
-    const [ownerRes, userRes] = await Promise.all([ownerSend, userSend]);
-
-    if (!ownerRes.ok) {
-      const errorText = await ownerRes.text();
-      throw new Error(errorText || "EmailJS owner send failed");
-    }
-    if (userTemplateId && !userRes.ok) {
-      const errorText = userRes instanceof Response ? await userRes.text() : "";
-      throw new Error(errorText || "EmailJS user reply failed");
-    }
-  }
-
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    if (!serviceId || !publicKey) {
-      showNotification(
-        "Email service is not configured yet. Please add PUBLIC_EMAILJS_SERVICE_ID and PUBLIC_EMAILJS_PUBLIC_KEY.",
-        "error"
-      );
-      return;
-    }
-
-    setSubmitting(true);
-
-    const formData = new FormData(form);
-    const name = (formData.get("name")?.toString() || "").trim();
-    const email = (formData.get("email")?.toString() || "").trim();
-    const message = (formData.get("message")?.toString() || "").trim();
-
-    if (!name || !email || !message) {
-      showNotification("Please fill in all fields before sending.", "error");
-      setSubmitting(false);
-      return;
-    }
-
-    try {
-      await sendEmail({ name, email, message });
-      showNotification(
-        "Message sent successfully! I'll get back to you soon.",
-        "success"
-      );
-      form.reset();
-    } catch (error) {
-      console.error("Email send failed", error);
-      showNotification(
-        "Could not send your message. Please try again or email me directly.",
-        "error"
-      );
-    } finally {
-      setSubmitting(false);
-    }
+  initContactForm(form, notification, {
+    serviceId: SERVICE_ID,
+    publicKey: PUBLIC_KEY,
+    ownerTemplateId: OWNER_TEMPLATE_ID,
+    userTemplateId: USER_TEMPLATE_ID,
+    toEmail: TO_EMAIL,
   });
 </script>
 
