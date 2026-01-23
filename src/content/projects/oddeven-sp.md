@@ -4,5 +4,5 @@ description: "A fun, interactive terminal-based game where you challenge a compu
 tech: ["python"]
 github: "https://github.com/Aarav2709/OddEven-SP"
 live: "https://oddevensp.vercel.app"
-order: 9
+order: 6
 ---

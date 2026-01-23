@@ -5,5 +5,5 @@ tech: ["react", "vite"]
 github: "https://github.com/Nathan5471/typeconomy"
 live: "https://typeconomy.vercel.app/"
 featured: true
-order: 2
+order: 9
 ---
