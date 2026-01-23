@@ -4,6 +4,5 @@ description: "A small project demonstrating cookie management and privacy-first 
 tech: ["javascript", "html", "css"]
 github: "https://github.com/Aarav2709/CookiesWeb"
 live: "https://cookiesweb.vercel.app"
-stars: 0
 order: 12
 ---
