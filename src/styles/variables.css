@@ -1,42 +1,74 @@
 :root {
+  /* Accent color — white accent */
+  --accent-color: #ffffff;
+  --accent-color-alpha: rgba(255, 255, 255, 0.1);
+
   /* Colors - Light Mode */
-  --primary-text: #000000;
-  --secondary-text: #444444;
-  --tertiary-text: #666666;
-  --border-color: #e0e0e0;
-  --hover-bg: #f5f5f5;
+  --bg-color: #fafafa;
+  --fg-color: rgba(0, 0, 0, 0.8);
+  --primary-text: rgba(0, 0, 0, 0.85);
+  --secondary-text: rgba(0, 0, 0, 0.6);
+  --tertiary-text: rgba(0, 0, 0, 0.4);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --glass-bg: rgba(242, 242, 242, 0.7);
+  --edge-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-glass: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-raised: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  /* Light mode overrides for white accent */
   --accent-color: #000000;
-  --bg-color: #ffffff;
+  --accent-color-alpha: rgba(0, 0, 0, 0.08);
 
   /* Typography */
-  --font-family: 'Gowun Batang', serif;
-  --hero-size: clamp(4rem, 12vw, 12rem);
-  --section-size: clamp(2rem, 6vw, 4rem);
-  --text-size: clamp(1rem, 2.5vw, 1.5rem);
+  --font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  --hero-size: clamp(3.5rem, 10vw, 8rem);
+  --section-size: clamp(1.75rem, 4vw, 2.5rem);
+  --text-size: clamp(1rem, 1.5vw, 1.125rem);
+
+  /* Font sizes — Duckquill scale */
+  --font-size-small: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-large: 1.25rem;
+  --font-size-x-large: 1.5rem;
+  --font-size-xx-large: 2rem;
+  --font-size-xxx-large: 3rem;
 
   /* Spacing */
-  --container-max: 1400px;
-  --container-padding: 40px;
-  --section-padding: 120px 0;
+  --container-max: 48rem;
+  --container-padding: 2rem;
+  --section-padding: 6rem 0;
+  --rounded-corner: 0.75rem;
+  --rounded-corner-small: 0.5rem;
 
-  /* Transitions */
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Transitions & effects — Duckquill style */
+  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --blur: saturate(1.8) blur(0.75rem);
 }
 
 [data-theme='dark'] {
-  --primary-text: #ffffff;
-  --secondary-text: #eaeaea;
-  --tertiary-text: #c8c8c8;
-  --border-color: #333333;
-  --hover-bg: #222222;
   --accent-color: #ffffff;
-  --bg-color: #121212;
+  --accent-color-alpha: rgba(255, 255, 255, 0.08);
+  --bg-color: #000000;
+  --fg-color: rgba(255, 255, 255, 0.92);
+  --primary-text: rgba(255, 255, 255, 0.92);
+  --secondary-text: rgba(255, 255, 255, 0.6);
+  --tertiary-text: rgba(255, 255, 255, 0.35);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(10, 10, 10, 0.8);
+  --edge-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glass: 0 2px 12px rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-raised: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 @media (max-width: 768px) {
   :root {
-    --container-padding: 20px;
-    --section-padding: 60px 0;
+    --container-padding: 1.25rem;
+    --section-padding: 4rem 0;
   }
 }

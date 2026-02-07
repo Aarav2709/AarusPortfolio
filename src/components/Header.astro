@@ -13,96 +13,19 @@
       </span>
     </h1>
     <p class="title">15-year-old developer from India.</p>
-  </div>
-
-  <div class="hero-strips" aria-hidden="true">
-    <div class="strip">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-    <div class="strip reverse">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-    <div class="strip">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-    <div class="strip reverse">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-    <div class="strip">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-    <div class="strip reverse">
-      <div class="strip-text">
-        aarav gupta · aarav gupta · aarav gupta · aarav gupta · aarav gupta ·
-        aarav gupta ·
-      </div>
-    </div>
-  </div>
-
-  <div class="contact">
-    <div class="contact-left">
+    <div class="hero-links">
       <a href="mailto:tribejustice35@gmail.com">mail</a>
-      <a href="https://github.com/Aarav2709" target="_blank" rel="noopener"
-        >github</a
-      >
-      <a href="https://linkedin.com/in/aarav2709" target="_blank" rel="noopener"
-        >linkedin</a
-      >
-    </div>
-    <div class="scroll-indicator">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
+      <a href="https://github.com/Aarav2709" target="_blank" rel="noopener">github</a>
+      <a href="https://linkedin.com/in/aarav2709" target="_blank" rel="noopener">linkedin</a>
     </div>
   </div>
 </header>
-
-<button
-  id="darkModeToggle"
-  class="dark-mode-toggle"
-  aria-label="Toggle dark mode"
->
-  <span class="toggle-text">dark</span>
-</button>
 
 <button id="backToTop" class="back-to-top" aria-label="Back to top">
   <span class="back-to-top-icon">↑</span>
 </button>
 
 <script>
-  const toggle = document.getElementById("darkModeToggle");
-  const toggleText = toggle?.querySelector(".toggle-text");
-
-  function updateTheme(isDark: boolean) {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDark ? "dark" : "light"
-    );
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    if (toggleText) {
-      toggleText.textContent = isDark ? "light" : "dark";
-    }
-  }
-
-  toggle?.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    updateTheme(current !== "dark");
-  });
-
   const backToTop = document.getElementById("backToTop");
 
   window.addEventListener(
@@ -122,7 +45,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const chars = document.querySelectorAll(".name-char");
     chars.forEach((char, i) => {
-      (char as HTMLElement).style.animationDelay = `${i * 0.05}s`;
+      (char as HTMLElement).style.animationDelay = `${i * 0.06}s`;
       char.classList.add("fade-in");
     });
   });
@@ -130,19 +53,19 @@
 
 <style>
   .header {
-    height: 100vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     position: relative;
-    overflow: hidden;
+    padding-top: 4rem;
   }
 
   .name {
     font-size: var(--hero-size);
-    font-weight: 200;
-    letter-spacing: -0.02em;
+    font-weight: 900;
+    letter-spacing: -0.04em;
     margin: 0;
     color: var(--primary-text);
     line-height: 1;
@@ -154,196 +77,73 @@
   }
 
   .name-line:first-child {
-    margin-bottom: 0.08em;
+    margin-bottom: 0.05em;
   }
 
   .name-char {
     display: inline-block;
     margin-right: 0.01em;
     opacity: 0;
-    animation: fadeIn 0.6s ease forwards;
+    animation: fadeIn 0.5s ease forwards;
   }
 
   .title {
     font-size: var(--text-size);
     color: var(--secondary-text);
-    margin: 3rem 0 0 0;
-    font-weight: 300;
-    letter-spacing: 0.02em;
-  }
-
-  .hero-strips {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.08;
-  }
-
-  .strip {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 12%;
-    overflow: hidden;
-  }
-
-  .strip:nth-child(1) {
-    top: 5%;
-  }
-  .strip:nth-child(2) {
-    top: 22%;
-  }
-  .strip:nth-child(3) {
-    top: 39%;
-  }
-  .strip:nth-child(4) {
-    top: 56%;
-  }
-  .strip:nth-child(5) {
-    top: 73%;
-  }
-  .strip:nth-child(6) {
-    top: 90%;
-  }
-
-  .strip-text {
-    white-space: nowrap;
-    font-size: clamp(24px, 6vw, 56px);
-    font-weight: 200;
-    letter-spacing: -0.02em;
-    color: var(--primary-text);
-    animation: scroll-left 30s linear infinite;
-  }
-
-  .strip.reverse .strip-text {
-    animation: scroll-right 30s linear infinite;
-  }
-
-  @keyframes scroll-left {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @keyframes scroll-right {
-    from {
-      transform: translateX(-50%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  .contact {
-    position: absolute;
-    bottom: 60px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 100%;
-    max-width: var(--container-max);
-    padding: 0 var(--container-padding);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .contact-left {
-    display: flex;
-    gap: 40px;
-  }
-
-  .contact a {
-    color: var(--secondary-text);
-    font-size: 14px;
+    margin: 1.5rem 0 0 0;
     font-weight: 400;
-    letter-spacing: 0.02em;
-    position: relative;
-    transition: color 0.3s ease;
+    line-height: 1.5;
   }
 
-  .contact a::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--primary-text);
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .contact a:hover {
-    color: var(--primary-text);
-  }
-
-  .contact a:hover::after {
-    width: 100%;
-  }
-
-  .scroll-indicator {
+  .hero-links {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: var(--tertiary-text);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    gap: 1.5rem;
+    margin-top: 2rem;
   }
 
-  .scroll-line {
-    width: 40px;
-    height: 1px;
-    background: var(--tertiary-text);
-    opacity: 0.5;
+  .hero-links a {
+    color: var(--accent-color);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    background: var(--accent-color-alpha);
+    transition: background 0.2s, transform 0.2s;
   }
 
-  .dark-mode-toggle {
-    background: transparent;
-    border: none;
-    font-size: 0.9rem;
-    cursor: pointer;
-    position: fixed;
-    top: 28px;
-    right: 30px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-    font-family: var(--font-family);
-    color: var(--primary-text);
-    z-index: 2000;
-    line-height: 1;
-  }
-
-  .dark-mode-toggle:hover {
+  .hero-links a:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    transform: translateY(-2px);
+    text-decoration: none;
     opacity: 1;
   }
 
   .back-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: #000000;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    font-size: 20px;
-    font-weight: 600;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 1rem;
     cursor: pointer;
     transition: var(--transition-smooth);
     z-index: 1100;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
+    transform: translateY(10px);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-glass);
   }
 
   .back-to-top.visible {
@@ -353,30 +153,22 @@
   }
 
   .back-to-top:hover {
-    background: #333333;
-    transform: translateY(-5px);
-  }
-
-  [data-theme="dark"] .back-to-top {
-    background: #000000;
-  }
-
-  [data-theme="dark"] .back-to-top:hover {
-    background: #333333;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    opacity: 1;
   }
 
   @media (max-width: 768px) {
-    .contact {
-      bottom: 30px;
+    .header {
+      min-height: 70vh;
+      padding-top: 3rem;
     }
 
-    .contact-left {
-      gap: 20px;
-    }
-
-    .dark-mode-toggle {
-      top: 15px;
-      right: 15px;
+    .hero-links {
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
   }
 </style>

@@ -11,46 +11,36 @@
 }
 
 html {
-  /* scroll-behavior: smooth; - Managed by Lenis */
-  cursor: none;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--accent-color) transparent;
+  accent-color: var(--accent-color);
 }
 
 body {
   font-family: var(--font-family);
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.6;
   color: var(--primary-text);
   background: var(--bg-color);
-  font-size: 16px;
-  letter-spacing: -0.02em;
+  font-size: var(--font-size-base);
+  letter-spacing: -0.01em;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  cursor: none;
-}
-
-a, button, input, textarea, select {
-  cursor: none;
-}
-
-@media (hover: none) {
-  html, body, a, button, input, textarea, select {
-    cursor: auto;
-  }
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  min-height: 100vh;
 }
 
 ::selection {
-  background: var(--primary-text);
-  color: var(--bg-color);
+  background: transparent;
+  color: inherit;
 }
 
-[data-theme='dark'] body {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+:focus-visible {
+  outline: 0.125rem solid var(--accent-color);
+  outline-offset: 0.125rem;
 }
 
 .container {
@@ -61,53 +51,57 @@ a, button, input, textarea, select {
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-color);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--tertiary-text);
-  border-radius: 4px;
+  background: var(--accent-color);
+  border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-text);
-}
-
-/* Typography utilities */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  text-wrap: balance;
 }
+
+h1 { font-weight: 900; }
 
 a {
-  color: inherit;
+  color: var(--accent-color);
   text-decoration: none;
+  font-weight: 500;
   transition: var(--transition-smooth);
+}
+
+a:hover {
+  opacity: 0.8;
 }
 
 /* Focus states for accessibility */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--primary-text);
+  outline: 2px solid var(--accent-color);
   outline-offset: 2px;
 }
 
 /* Utility classes */
 .fade-in {
   opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
+  animation: fadeIn 0.5s ease forwards;
 }
 
 .slide-up {
   opacity: 0;
-  transform: translateY(30px);
-  animation: slideUp 0.6s ease forwards;
+  transform: translateY(20px);
+  animation: slideUp 0.5s ease forwards;
 }
 
 /* Reading progress bar */
@@ -120,6 +114,16 @@ button:focus-visible {
   width: 0%;
   z-index: 9998;
   transition: width 0.1s ease-out;
+}
+
+pre, code, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+/* Allow selection in form inputs */
+input, textarea, select {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 /* Reduced motion support */

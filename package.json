@@ -9,7 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
     "astro": "^5.15.3"
   },
   "devDependencies": {

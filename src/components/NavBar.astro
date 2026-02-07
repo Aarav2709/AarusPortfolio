@@ -1,0 +1,346 @@
+---
+const navLinks = [
+  { name: "About", url: "#about" },
+  { name: "Achievements", url: "#achievements" },
+  { name: "Projects", url: "#projects" },
+  { name: "Skills", url: "#skills" },
+  { name: "Setup", url: "#setup" },
+  { name: "Contact", url: "#contact" },
+];
+---
+
+<header id="site-nav">
+  <nav>
+    <a href="#" class="skip-link" tabindex="0">Skip to Main Content</a>
+    <ul>
+      <li id="home">
+        <a href="/" class="home-link">
+          <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Aarav Gupta</span>
+        </a>
+      </li>
+      <li class="divider" aria-hidden="true"></li>
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.url} class="nav-link">{link.name}</a>
+        </li>
+      ))}
+      <li class="divider" aria-hidden="true"></li>
+      <li id="theme-switcher">
+        <button id="theme-toggle-light" class="theme-btn" aria-label="Light theme" title="Light theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <button id="theme-toggle-dark" class="theme-btn" aria-label="Dark theme" title="Dark theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <a href="https://github.com/Aarav2709" target="_blank" rel="noopener noreferrer" class="nav-link nav-icon-link" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Theme switcher
+  const lightBtn = document.getElementById('theme-toggle-light');
+  const darkBtn = document.getElementById('theme-toggle-dark');
+
+  function setTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateActiveTheme(theme);
+  }
+
+  function updateActiveTheme(theme: string) {
+    lightBtn?.classList.toggle('active', theme === 'light');
+    darkBtn?.classList.toggle('active', theme === 'dark');
+  }
+
+  lightBtn?.addEventListener('click', () => setTheme('light'));
+  darkBtn?.addEventListener('click', () => setTheme('dark'));
+
+  // Initialize
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateActiveTheme(savedTheme);
+
+  // Active nav link tracking on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#site-nav .nav-link[href^="#"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`#site-nav .nav-link[href="#${entry.target.id}"]`);
+        activeLink?.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -60% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('#site-nav a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector((anchor as HTMLAnchorElement).getAttribute('href')!);
+      target?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Auto-hide nav on scroll down, show on scroll up
+  let lastScrollY = 0;
+  const nav = document.getElementById('site-nav');
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > 100) {
+      if (currentScrollY > lastScrollY) {
+        nav?.classList.add('nav-hidden');
+      } else {
+        nav?.classList.remove('nav-hidden');
+      }
+    } else {
+      nav?.classList.remove('nav-hidden');
+    }
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+</script>
+
+<style>
+  #site-nav {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #site-nav.nav-hidden {
+    transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-radius: 999px;
+    font-size: var(--font-size-small);
+    font-weight: 600;
+  }
+
+  .skip-link:focus {
+    left: 1rem;
+    top: 0.5rem;
+  }
+
+  nav {
+    max-width: min(var(--container-max), 90%);
+    width: auto;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-radius: 999px;
+    box-shadow: var(--shadow-glass), var(--edge-highlight);
+    border: 1px solid var(--border-color);
+    padding: 0.35rem 0.5rem;
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .divider {
+    width: 1px;
+    height: 1.25rem;
+    background: var(--border-color);
+    margin: 0 0.25rem;
+    flex-shrink: 0;
+  }
+
+  /* Home link */
+  #home a {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    color: var(--primary-text);
+    font-weight: 800;
+    font-size: var(--font-size-small);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  #home a:hover {
+    background: var(--hover-bg);
+    text-decoration: none;
+  }
+
+  .home-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* Nav links */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    color: var(--secondary-text);
+    font-weight: 600;
+    font-size: var(--font-size-small);
+    text-decoration: none !important;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    background: var(--hover-bg);
+    color: var(--primary-text);
+    text-decoration: none !important;
+  }
+
+  .nav-link.active {
+    background: var(--accent-color-alpha);
+    color: var(--accent-color);
+  }
+
+  /* Icon-only nav link (GitHub) */
+  .nav-icon-link {
+    padding: 0.4rem;
+  }
+
+  .nav-icon-link svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Theme switcher */
+  #theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+  }
+
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--secondary-text);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    padding: 0;
+  }
+
+  .theme-btn svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .theme-btn:hover {
+    background: var(--hover-bg);
+    color: var(--primary-text);
+  }
+
+  .theme-btn.active {
+    background: var(--accent-color-alpha);
+    color: var(--accent-color);
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    #site-nav {
+      top: 0.5rem;
+      padding: 0 0.5rem;
+    }
+
+    nav {
+      max-width: 100%;
+      border-radius: var(--rounded-corner);
+      padding: 0.35rem;
+    }
+
+    nav ul {
+      gap: 0.1rem;
+    }
+
+    .nav-link {
+      padding: 0.35rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    #home a {
+      padding: 0.35rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    #home a span {
+      display: none;
+    }
+
+    .divider {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    nav ul {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    nav ul::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>

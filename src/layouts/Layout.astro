@@ -1,5 +1,5 @@
 ---
-import CustomCursor from "../components/CustomCursor.astro";
+import NavBar from "../components/NavBar.astro";
 
 interface Props {
   title?: string;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const {
-  title = "AarusPortfolio",
+  title = "Aarav Gupta — Portfolio",
   description = "Portfolio of Aarav Gupta, a 15-year-old developer from India passionate about game development, web applications, and automation scripts.",
 } = Astro.props;
 
@@ -15,7 +15,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -75,9 +75,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     />
     <link
       rel="preload"
-      href="/fonts/GowunBatang.ttf"
+      href="/fonts/InterVariable.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin
     />
     <style is:global>
@@ -86,31 +86,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <div class="reading-progress" id="reading-progress"></div>
+    <NavBar />
 
     <slot />
 
     <footer class="footer fade-in">
-      <p>copyright 2025. made by aarav gupta. crafted with code & curiosity.</p>
+      <p>&copy; 2026 Aarav Gupta. Crafted with code &amp; curiosity.</p>
     </footer>
 
-    <CustomCursor />
-
     <script>
-      import Lenis from "@studio-freight/lenis";
-
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-
-      requestAnimationFrame(raf);
-
-      const theme = localStorage.getItem("theme") || "light";
+      const theme = localStorage.getItem("theme") || "dark";
       document.documentElement.setAttribute("data-theme", theme);
 
       const updateProgress = () => {
@@ -151,25 +136,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <style>
   .footer {
-    margin-top: 120px;
-    padding: 60px 0;
+    margin-top: 4rem;
+    padding: 3rem 0;
     border-top: 1px solid var(--border-color);
     text-align: center;
   }
 
   .footer p {
     color: var(--secondary-text);
-    font-size: 12px;
-    font-weight: 300;
+    font-size: var(--font-size-small);
+    font-weight: 400;
     line-height: 1.6;
-    letter-spacing: 0.05em;
-    text-transform: lowercase;
   }
 
   @media (max-width: 768px) {
     .footer {
-      margin-top: 60px;
-      padding: 40px 0;
+      margin-top: 2rem;
+      padding: 2rem 0;
     }
   }
 </style>
