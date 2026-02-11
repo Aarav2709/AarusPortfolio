@@ -12,8 +12,8 @@ const TO_EMAIL =
 <div class="contact-section">
   <div class="contact-info">
     <p>
-      Have a project in mind or just want to chat about tech? I'd love to hear
-      from you!
+      Open to collaboration, consulting, and interesting engineering problems.
+      Reach out directly or use the form below.
     </p>
     <div class="contact-links">
       <a href="mailto:tribejustice35@gmail.com" class="contact-link">
@@ -73,19 +73,32 @@ const TO_EMAIL =
 
 <div id="notification" class="notification" style="display: none;"></div>
 
-<script type="module">
-  import { initContactForm } from "@utils/contactFormClient";
+<div
+  id="contactConfig"
+  data-service-id={SERVICE_ID}
+  data-public-key={PUBLIC_KEY}
+  data-owner-template-id={OWNER_TEMPLATE_ID}
+  data-user-template-id={USER_TEMPLATE_ID}
+  data-to-email={TO_EMAIL}
+  style="display:none;"
+></div>
 
-  const form = document.getElementById("contactForm");
+<script>
+  import { initContactForm } from "../utils/contactFormClient";
+
+  const cfg = document.getElementById("contactConfig");
+  const form = document.getElementById("contactForm") as HTMLFormElement | null;
   const notification = document.getElementById("notification");
 
-  initContactForm(form, notification, {
-    serviceId: SERVICE_ID,
-    publicKey: PUBLIC_KEY,
-    ownerTemplateId: OWNER_TEMPLATE_ID,
-    userTemplateId: USER_TEMPLATE_ID,
-    toEmail: TO_EMAIL,
-  });
+  if (cfg && form) {
+    initContactForm(form, notification, {
+      serviceId: cfg.dataset.serviceId ?? null,
+      publicKey: cfg.dataset.publicKey ?? null,
+      ownerTemplateId: cfg.dataset.ownerTemplateId ?? null,
+      userTemplateId: cfg.dataset.userTemplateId ?? null,
+      toEmail: cfg.dataset.toEmail ?? "tribejustice35@gmail.com",
+    });
+  }
 </script>
 
 <style>
@@ -97,7 +110,7 @@ const TO_EMAIL =
   }
 
   .contact-info p {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-small);
     line-height: 1.7;
     margin-bottom: 1.5rem;
     color: var(--secondary-text);
@@ -106,7 +119,7 @@ const TO_EMAIL =
   .contact-links {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
   .contact-link {
@@ -114,17 +127,19 @@ const TO_EMAIL =
     align-items: center;
     gap: 0.5rem;
     text-decoration: none !important;
-    color: var(--accent-color);
+    color: var(--secondary-text);
     font-weight: 500;
     padding: 0.5rem 0.75rem;
     border-radius: var(--rounded-corner-small);
     transition: var(--transition-smooth);
     font-size: var(--font-size-small);
+    font-family: var(--font-mono);
     background: transparent;
   }
 
   .contact-link:hover {
-    background: var(--accent-color-alpha);
+    background: var(--hover-bg);
+    color: var(--primary-text);
     text-decoration: none !important;
     transform: translateX(4px);
   }
@@ -162,23 +177,24 @@ const TO_EMAIL =
   }
 
   .submit-button {
-    background: var(--accent-color);
-    color: var(--bg-color);
-    border: none;
+    background: transparent;
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
     padding: 0.75rem 1.5rem;
     border-radius: 999px;
     font-family: var(--font-family);
     font-size: var(--font-size-small);
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: var(--transition-smooth);
     align-self: flex-start;
   }
 
   .submit-button:hover {
-    filter: brightness(1.1);
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-raised);
   }
 
   .submit-button:disabled {

@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = "Aarav Gupta — Portfolio",
-  description = "Portfolio of Aarav Gupta, a 15-year-old developer from India passionate about game development, web applications, and automation scripts.",
+  title = "AarusPortfolio",
+  description = "Student dude building systems in Go, TypeScript, Lua, and Python. Focused on developer tools, game engines, and open source infrastructure.",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -27,18 +27,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="author" content="Aarav Gupta" />
     <meta
       name="keywords"
-      content="Aarav Gupta, developer, portfolio, Python, JavaScript, game development, web development"
+      content="Aarav Gupta, developer, Go, TypeScript, Python, Lua, developer tools, open source"
     />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
-    <meta name="revisit-after" content="7 days" />
-    <meta name="rating" content="General" />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Aarav Gupta - Portfolio" />
+    <meta property="og:site_name" content="AarusPortfolio" />
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
@@ -55,27 +53,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           "https://github.com/Aarav2709",
           "https://linkedin.com/in/aarav2709",
         ],
-        jobTitle: "Developer",
+        jobTitle: "Student Developer",
         description: description,
         knowsAbout: [
+          "Go",
+          "TypeScript",
           "Python",
-          "JavaScript",
+          "Lua",
+          "React",
           "Game Development",
-          "Web Development",
+          "Developer Tools",
+          "Systems Programming",
         ],
-        alumniOf: {
-          "@type": "Organization",
-          name: "SSVE",
-        },
-        nationality: {
-          "@type": "Country",
-          name: "India",
-        },
       })}
     />
     <link
       rel="preload"
-      href="/fonts/InterVariable.woff2"
+      href="/fonts/SpaceGrotesk.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -91,7 +85,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <slot />
 
     <footer class="footer fade-in">
-      <p>&copy; 2026 Aarav Gupta. Crafted with code &amp; curiosity.</p>
+      <div class="footer-inner">
+        <span class="footer-left">&copy; 2026 Aarav Gupta</span>
+        <span class="footer-right">Built with Astro</span>
+      </div>
     </footer>
 
     <script>
@@ -130,29 +127,52 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         });
       }
+
+      // Console easter egg
+      console.log(
+        "%c> aarav.init()",
+        "color: #fff; font-family: monospace; font-size: 14px; font-weight: bold;"
+      );
+      console.log(
+        "%cStudent dude. Open source contributor. Shipping code since before I could drive.",
+        "color: #888; font-family: monospace; font-size: 11px;"
+      );
+      console.log(
+        "%c\nStack: Go, TypeScript, Python, Lua, React, Astro.\nSystems: Linux (Arch), Neovim, tmux.\n\nLooking at the source? Good instinct.\nhttps://github.com/Aarav2709/AarusPortfolio",
+        "color: #666; font-family: monospace; font-size: 11px;"
+      );
     </script>
   </body>
 </html>
 
 <style>
   .footer {
-    margin-top: 4rem;
-    padding: 3rem 0;
+    margin-top: 3rem;
+    padding: 2rem 0;
     border-top: 1px solid var(--border-color);
-    text-align: center;
   }
 
-  .footer p {
-    color: var(--secondary-text);
-    font-size: var(--font-size-small);
+  .footer-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left,
+  .footer-right {
+    color: var(--tertiary-text);
+    font-size: var(--font-size-xs);
     font-weight: 400;
-    line-height: 1.6;
+    letter-spacing: 0.02em;
   }
 
   @media (max-width: 768px) {
     .footer {
       margin-top: 2rem;
-      padding: 2rem 0;
+      padding: 1.5rem 0;
     }
   }
 </style>

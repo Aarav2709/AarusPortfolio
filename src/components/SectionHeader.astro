@@ -5,74 +5,47 @@ interface Props {
 }
 
 const { title, number } = Astro.props;
-const chars = title.split("");
 ---
 
 <div class="section-header">
-  <h2 class="section-title">
-    {
-      chars.map((char) => (
-        <span class="section-title-char">{char === " " ? "\u00A0" : char}</span>
-      ))
-    }
-  </h2>
   <span class="section-number">{number}</span>
+  <h2 class="section-title">{title}</h2>
 </div>
 
 <style>
   .section-header {
-    position: static;
-    z-index: 10;
-    padding: 2rem 0 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 2.5rem;
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
+    padding: 0 0 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
   }
 
   .section-title {
     font-size: var(--section-size);
-    font-weight: 800;
+    font-weight: 600;
     margin: 0;
     color: var(--primary-text);
     letter-spacing: -0.03em;
     text-transform: lowercase;
     line-height: 1.2;
-    overflow: visible;
   }
-
-  .section-title-char {
-    display: inline-block;
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
-  }
-
-  .section-title-char:nth-child(1) { animation-delay: 0.03s; }
-  .section-title-char:nth-child(2) { animation-delay: 0.06s; }
-  .section-title-char:nth-child(3) { animation-delay: 0.09s; }
-  .section-title-char:nth-child(4) { animation-delay: 0.12s; }
-  .section-title-char:nth-child(5) { animation-delay: 0.15s; }
-  .section-title-char:nth-child(6) { animation-delay: 0.18s; }
-  .section-title-char:nth-child(7) { animation-delay: 0.21s; }
-  .section-title-char:nth-child(8) { animation-delay: 0.24s; }
 
   .section-number {
-    font-size: 0.75rem;
-    color: var(--accent-color);
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--tertiary-text);
+    font-weight: 500;
+    letter-spacing: 0.05em;
     white-space: nowrap;
-    background: var(--accent-color-alpha);
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
+    flex-shrink: 0;
   }
 
   @media (max-width: 768px) {
     .section-header {
-      padding: 1.5rem 0 1rem;
-      margin-bottom: 2rem;
+      padding: 0 0 1rem;
+      margin-bottom: 1.5rem;
     }
   }
 </style>

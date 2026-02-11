@@ -1,16 +1,8 @@
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: 'Space Grotesk';
   font-style: normal;
-  font-weight: 100 900;
-  src: url('/fonts/InterVariable.woff2') format('woff2');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter Variable';
-  font-style: italic;
-  font-weight: 100 900;
-  src: url('/fonts/InterVariable-Italic.woff2') format('woff2');
+  font-weight: 300 700;
+  src: url('/fonts/SpaceGrotesk.woff2') format('woff2');
   font-display: swap;
 }
 

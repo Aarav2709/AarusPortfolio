@@ -1,7 +1,7 @@
 ---
 title: "AarusPlatformer"
-description: "A platformer game prototype built as part of my game development experiments."
-tech: ["c", "typescript", "cmake", "javascript", "shell", "python"]
+description: "Platformer engine prototype. Custom physics, tilemap rendering, and cross language build pipeline using C, TypeScript, and CMake."
+tech: ["c", "typescript", "cmake"]
 github: "https://github.com/Aarav2709/AarusPlatformer"
 order: 8
 ---

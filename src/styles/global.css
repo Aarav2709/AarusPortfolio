@@ -23,7 +23,7 @@ body {
   color: var(--primary-text);
   background: var(--bg-color);
   font-size: var(--font-size-base);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -49,10 +49,10 @@ body {
   padding: 0 var(--container-padding);
 }
 
-/* Scrollbar styling */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -60,19 +60,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
-  border-radius: 3px;
+  background: var(--border-color);
+  border-radius: 2px;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
   text-wrap: balance;
 }
 
-h1 { font-weight: 900; }
+h1 { font-weight: 700; }
 
 a {
   color: var(--accent-color);
@@ -82,10 +82,9 @@ a {
 }
 
 a:hover {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
-/* Focus states for accessibility */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--accent-color);
@@ -95,13 +94,13 @@ button:focus-visible {
 /* Utility classes */
 .fade-in {
   opacity: 0;
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn 0.6s ease forwards;
 }
 
 .slide-up {
   opacity: 0;
   transform: translateY(20px);
-  animation: slideUp 0.5s ease forwards;
+  animation: slideUp 0.6s ease forwards;
 }
 
 /* Reading progress bar */
@@ -109,7 +108,7 @@ button:focus-visible {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 1px;
   background: var(--accent-color);
   width: 0%;
   z-index: 9998;
@@ -120,13 +119,12 @@ pre, code, kbd, samp {
   font-family: var(--font-mono);
 }
 
-/* Allow selection in form inputs */
 input, textarea, select {
   user-select: text;
   -webkit-user-select: text;
 }
 
-/* Reduced motion support */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
